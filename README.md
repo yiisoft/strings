@@ -10,5 +10,5 @@ The Yii string helper provides static methods allowing you to deal with strings 
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/string/v/stable.png)](https://packagist.org/packages/yiisoft/string)
 [![Total Downloads](https://poser.pugx.org/yiisoft/string/downloads.png)](https://packagist.org/packages/yiisoft/string)
-[![Build Status](https://travis-ci.org/yiisoft/string.svg?branch=master)](https://travis-ci.org/yiisoft/string)
+[![Build Status](https://travis-ci.com/yiisoft/string.svg?branch=master)](https://travis-ci.com/yiisoft/string)
 

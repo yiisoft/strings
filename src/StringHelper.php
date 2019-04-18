@@ -7,6 +7,13 @@
 
 namespace Yii\Helpers;
 
+use function array_slice;
+use function htmlspecialchars;
+use function mb_strlen;
+use function mb_strtolower;
+use function mb_strtoupper;
+use function mb_substr;
+
 /**
  * The Yii string helper provides static methods allowing you to deal with strings more efficiently.
  */
@@ -18,7 +25,7 @@ class StringHelper
      * @param string $string the string being measured for length
      * @return int the number of bytes in the given string.
      */
-    public static function byteLength($string)
+    public static function byteLength(string $string): int
     {
         return mb_strlen($string, '8bit');
     }
@@ -33,9 +40,9 @@ class StringHelper
      * @return string the extracted part of string, or FALSE on failure or an empty string.
      * @see http://www.php.net/manual/en/function.substr.php
      */
-    public static function byteSubstr($string, $start, $length = null)
+    public static function byteSubstr(string $string, int $start, int $length = null): string
     {
-        return mb_substr($string, $start, $length === null ? mb_strlen($string, '8bit') : $length, '8bit');
+        return mb_substr($string, $start, $length ?? mb_strlen($string, '8bit'), '8bit');
     }
 
     /**
@@ -43,7 +50,7 @@ class StringHelper
      * This method is similar to the php function `basename()` except that it will
      * treat both \ and / as directory separators, independent of the operating system.
      * This method was mainly created to work on php namespaces. When working with real
-     * file paths, php's `basename()` should work fine for you.
+     * file paths, PHP's `basename()` should work fine for you.
      * Note: this method is not aware of the actual filesystem, or path components such as "..".
      *
      * @param string $path A path string.
@@ -51,7 +58,7 @@ class StringHelper
      * @return string the trailing name component of the given path.
      * @see http://www.php.net/manual/en/function.basename.php
      */
-    public static function basename($path, $suffix = '')
+    public static function basename($path, $suffix = ''): string
     {
         if (($len = mb_strlen($suffix)) > 0 && mb_substr($path, -$len) === $suffix) {
             $path = mb_substr($path, 0, -$len);
@@ -73,7 +80,7 @@ class StringHelper
      * @return string the parent directory's path.
      * @see http://www.php.net/manual/en/function.basename.php
      */
-    public static function dirname($path)
+    public static function dirname(string $path): string
     {
         $pos = mb_strrpos(str_replace('\\', '/', $path), '/');
         if ($pos !== false) {
@@ -92,7 +99,7 @@ class StringHelper
      * @param string $encoding The charset to use, defaults to charset currently used by application.
      * @return string the truncated string.
      */
-    public static function truncateCharacters($string, $length, $suffix = '...', $encoding = null)
+    public static function truncateCharacters(string $string, int $length, string $suffix = '...', string $encoding = null): string
     {
         if (static::mb_strlen($string, $encoding) > $length) {
             return rtrim(static::mb_substr($string, 0, $length, $encoding)) . $suffix;
@@ -109,11 +116,11 @@ class StringHelper
      * @param string $suffix String to append to the end of truncated string.
      * @return string the truncated string.
      */
-    public static function truncateWords($string, $count, $suffix = '...'): string
+    public static function truncateWords(string $string, int $count, string $suffix = '...'): string
     {
         $words = preg_split('/(\s+)/u', trim($string), null, PREG_SPLIT_DELIM_CAPTURE);
         if (count($words) / 2 > $count) {
-            return implode('', \array_slice($words, 0, ($count * 2) - 1)) . $suffix;
+            return implode('', array_slice($words, 0, ($count * 2) - 1)) . $suffix;
         }
 
         return $string;
@@ -128,7 +135,7 @@ class StringHelper
      * @param bool $caseSensitive Case sensitive search. Default is true. When case sensitive is enabled, $with must exactly match the starting of the string in order to get a true value.
      * @return bool Returns true if first input starts with second input, false otherwise
      */
-    public static function startsWith($string, $with, $caseSensitive = true)
+    public static function startsWith(string $string, string $with, bool $caseSensitive = true): bool
     {
         if (!$bytes = static::byteLength($with)) {
             return true;
@@ -149,7 +156,7 @@ class StringHelper
      * @param bool $caseSensitive Case sensitive search. Default is true. When case sensitive is enabled, $with must exactly match the ending of the string in order to get a true value.
      * @return bool Returns true if first input ends with second input, false otherwise
      */
-    public static function endsWith($string, $with, $caseSensitive = true)
+    public static function endsWith(string $string, string $with, bool $caseSensitive = true): bool
     {
         if (!$bytes = static::byteLength($with)) {
             return true;
@@ -178,14 +185,14 @@ class StringHelper
      * @param bool $skipEmpty Whether to skip empty strings between delimiters. Default is false.
      * @return array
      */
-    public static function explode($string, $delimiter = ',', $trim = true, $skipEmpty = false)
+    public static function explode(string $string, string $delimiter = ',', $trim = true, bool $skipEmpty = false): array
     {
         $result = explode($delimiter, $string);
         if ($trim !== false) {
             if ($trim === true) {
                 $trim = 'trim';
             } elseif (!is_callable($trim)) {
-                $trim = function ($v) use ($trim) {
+                $trim = static function ($v) use ($trim) {
                     return trim($v, $trim);
                 };
             }
@@ -193,7 +200,7 @@ class StringHelper
         }
         if ($skipEmpty) {
             // Wrapped with array_values to make array keys sequential after empty values removing
-            $result = array_values(array_filter($result, function ($value) {
+            $result = array_values(array_filter($result, static function ($value) {
                 return $value !== '';
             }));
         }
@@ -207,7 +214,7 @@ class StringHelper
      * @param string $string
      * @return int
      */
-    public static function countWords($string)
+    public static function countWords(string $string): int
     {
         return count(preg_split('/\s+/u', $string, null, PREG_SPLIT_NO_EMPTY));
     }
@@ -218,7 +225,7 @@ class StringHelper
      * @param int|float|string $value
      * @return string
      */
-    public static function normalizeNumber($value)
+    public static function normalizeNumber($value): string
     {
         $value = (string)$value;
 
@@ -242,7 +249,7 @@ class StringHelper
      * @param string $input the string to encode.
      * @return string encoded string.
      */
-    public static function base64UrlEncode($input)
+    public static function base64UrlEncode(string $input): string
     {
         return strtr(base64_encode($input), '+/', '-_');
     }
@@ -254,7 +261,7 @@ class StringHelper
      * @param string $input encoded string.
      * @return string decoded string.
      */
-    public static function base64UrlDecode($input)
+    public static function base64UrlDecode(string $input): string
     {
         return base64_decode(strtr($input, '-_', '+/'));
     }
@@ -266,7 +273,7 @@ class StringHelper
      * @param float|int $number a floating point number or integer.
      * @return string the string representation of the number.
      */
-    public static function floatToString($number)
+    public static function floatToString(int $number): string
     {
         // . and , are the only decimal separators known in ICU data,
         // so its safe to call str_replace here
@@ -286,7 +293,7 @@ class StringHelper
      *
      * @return bool whether the string matches pattern or not.
      */
-    public static function matchWildcard($pattern, $string, $options = [])
+    public static function matchWildcard(string $pattern, string $string, array $options = []): bool
     {
         if ($pattern === '*' && empty($options['filePath'])) {
             return true;
@@ -305,9 +312,7 @@ class StringHelper
         ];
 
         if (isset($options['escape']) && !$options['escape']) {
-            unset($replacements['\\\\\\\\']);
-            unset($replacements['\\\\\\*']);
-            unset($replacements['\\\\\\?']);
+            unset($replacements['\\\\\\\\'], $replacements['\\\\\\*'], $replacements['\\\\\\?']);
         }
 
         if (!empty($options['filePath'])) {
@@ -333,7 +338,7 @@ class StringHelper
      * @return string
      * @see https://php.net/manual/en/function.ucfirst.php
      */
-    public static function mb_ucfirst(string $string, string $encoding = null)
+    public static function mb_ucfirst(string $string, string $encoding = null): string
     {
         $firstChar = static::mb_substr($string, 0, 1, $encoding);
         $rest = static::mb_substr($string, 1, null, $encoding);
@@ -349,15 +354,15 @@ class StringHelper
      * @see https://php.net/manual/en/function.ucwords.php
      * @return string
      */
-    public static function mb_ucwords(string $string, string $encoding = null)
+    public static function mb_ucwords(string $string, string $encoding = null): string
     {
         $words = preg_split("/\s/u", $string, -1, PREG_SPLIT_NO_EMPTY);
 
-        $titelized = array_map(function ($word) use ($encoding) {
+        $ucfirst = array_map(static function ($word) use ($encoding) {
             return static::mb_ucfirst($word, $encoding);
         }, $words);
 
-        return implode(' ', $titelized);
+        return implode(' ', $ucfirst);
     }
 
     /**
@@ -368,9 +373,9 @@ class StringHelper
      * @see https://php.net/manual/en/function.mb-strlen.php
      * @return int
      */
-    public static function mb_strlen(string $string, string $encoding = null)
+    public static function mb_strlen(string $string, string $encoding = null): int
     {
-        return empty($encoding) ? \mb_strlen($string) : \mb_strlen($string, $encoding);
+        return empty($encoding) ? mb_strlen($string) : mb_strlen($string, $encoding);
     }
 
     /**
@@ -383,9 +388,9 @@ class StringHelper
      * @see https://php.net/manual/en/function.mb-substr.php
      * @return string
      */
-    public static function mb_substr(string $string, int $start, int $length = null, string $encoding = null)
+    public static function mb_substr(string $string, int $start, int $length = null, string $encoding = null): string
     {
-        return empty($encoding) ? \mb_substr($string, $start, $length) : \mb_substr($string, $start, $length, $encoding);
+        return empty($encoding) ? mb_substr($string, $start, $length) : mb_substr($string, $start, $length, $encoding);
     }
 
     /**
@@ -396,9 +401,9 @@ class StringHelper
      * @see https://php.net/manual/en/function.mb-strtolower.php
      * @return string
      */
-    public static function mb_strtolower(string $string, string $encoding = null)
+    public static function mb_strtolower(string $string, string $encoding = null): string
     {
-        return empty($encoding) ? \mb_strtolower($string) : \mb_strtolower($string, $encoding);
+        return empty($encoding) ? mb_strtolower($string) : mb_strtolower($string, $encoding);
     }
 
     /**
@@ -409,9 +414,9 @@ class StringHelper
      * @see https://php.net/manual/en/function.mb-strtoupper.php
      * @return string
      */
-    public static function mb_strtoupper(string $string, string $encoding = null)
+    public static function mb_strtoupper(string $string, string $encoding = null): string
     {
-        return empty($encoding) ? \mb_strtoupper($string) : \mb_strtoupper($string, $encoding);
+        return empty($encoding) ? mb_strtoupper($string) : mb_strtoupper($string, $encoding);
     }
 
     /**
@@ -424,11 +429,10 @@ class StringHelper
      * @see https://php.net/manual/en/function.htmlspecialchars.php
      * @return string
      */
-    public static function htmlspecialchars(string $string, int $flags, string $encoding = null, $double_encode = true)
+    public static function htmlspecialchars(string $string, int $flags, string $encoding = null, bool $double_encode = true): string
     {
         return empty($encoding) && $double_encode
-            ? \htmlspecialchars($string, $flags)
-            : \htmlspecialchars($string, $flags, $encoding ?: ini_get('default_charset'), $double_encode)
-            ;
+            ? htmlspecialchars($string, $flags)
+            : htmlspecialchars($string, $flags, $encoding ?: ini_get('default_charset'), $double_encode);
     }
 }
