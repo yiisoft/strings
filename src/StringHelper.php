@@ -25,7 +25,7 @@ class StringHelper
      * @param string $string the string being measured for length
      * @return int the number of bytes in the given string.
      */
-    public static function byteLength(string $string): int
+    public static function byteLength(?string $string): int
     {
         return mb_strlen($string, '8bit');
     }
@@ -58,7 +58,7 @@ class StringHelper
      * @return string the trailing name component of the given path.
      * @see http://www.php.net/manual/en/function.basename.php
      */
-    public static function basename($path, $suffix = ''): string
+    public static function basename(string $path, string $suffix = ''): string
     {
         if (($len = mb_strlen($suffix)) > 0 && mb_substr($path, -$len) === $suffix) {
             $path = mb_substr($path, 0, -$len);
@@ -135,7 +135,7 @@ class StringHelper
      * @param bool $caseSensitive Case sensitive search. Default is true. When case sensitive is enabled, $with must exactly match the starting of the string in order to get a true value.
      * @return bool Returns true if first input starts with second input, false otherwise
      */
-    public static function startsWith(string $string, string $with, bool $caseSensitive = true): bool
+    public static function startsWith(string $string, ?string $with, bool $caseSensitive = true): bool
     {
         if (!$bytes = static::byteLength($with)) {
             return true;
@@ -156,7 +156,7 @@ class StringHelper
      * @param bool $caseSensitive Case sensitive search. Default is true. When case sensitive is enabled, $with must exactly match the ending of the string in order to get a true value.
      * @return bool Returns true if first input ends with second input, false otherwise
      */
-    public static function endsWith(string $string, string $with, bool $caseSensitive = true): bool
+    public static function endsWith(string $string, ?string $with, bool $caseSensitive = true): bool
     {
         if (!$bytes = static::byteLength($with)) {
             return true;
