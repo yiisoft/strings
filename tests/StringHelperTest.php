@@ -5,9 +5,9 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\tests\framework\helpers;
+namespace Yiisoft\Helpers\Tests;
 
-use Yii\Helpers\StringHelper;
+use Yiisoft\Helpers\StringHelper;
 use PHPUnit\Framework\TestCase;
 
 /**

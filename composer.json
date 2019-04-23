@@ -41,12 +41,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yii\\Helpers\\": "src"
+            "Yiisoft\\Helpers\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yii\\Helpers\\Tests\\": "tests"
+            "Yiisoft\\Helpers\\Tests\\": "tests"
         }
     },
     "extra": {
