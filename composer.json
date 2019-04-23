@@ -1,5 +1,5 @@
 {
-    "name": "yiisoft/string",
+    "name": "yiisoft/strings",
     "type": "library",
     "description": "Yii - String Helper",
     "keywords": [
@@ -24,8 +24,8 @@
         }
     ],
     "support": {
-        "source": "https://github.com/yiisoft/string",
-        "issues": "https://github.com/yiisoft/string/issues",
+        "source": "https://github.com/yiisoft/strings",
+        "issues": "https://github.com/yiisoft/strings/issues",
         "forum": "http://www.yiiframework.com/forum/",
         "wiki": "http://www.yiiframework.com/wiki/",
         "irc": "irc://irc.freenode.net/yii"
@@ -41,12 +41,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\Helpers\\": "src"
+            "Yiisoft\\Strings\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiisoft\\Helpers\\Tests\\": "tests"
+            "Yiisoft\\Strings\\Tests\\": "tests"
         }
     },
     "extra": {

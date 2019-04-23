@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace Yiisoft\Helpers;
+namespace Yiisoft\Strings;
 
 use function array_slice;
 use function htmlspecialchars;
