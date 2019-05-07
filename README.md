@@ -6,7 +6,10 @@
     <br>
 </p>
 
-The Yii string helper provides static methods allowing you to deal with strings more efficiently.
+The Yii string helper provides:
+
+- static methods allowing to deal with strings more efficiently;
+- Inflector helper pluralizes and singularizes English nouns.
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/strings/v/stable.png)](https://packagist.org/packages/yiisoft/strings)
 [![Total Downloads](https://poser.pugx.org/yiisoft/strings/downloads.png)](https://packagist.org/packages/yiisoft/strings)
