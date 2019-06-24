@@ -1,8 +1,8 @@
 language: php
 
 php:
-  - "7.2"
-  - "7.3"
+  - '7.2'
+  - '7.3'
 
 # faster builds on new travis setup not using sudo
 sudo: false
@@ -22,5 +22,8 @@ script:
   - vendor/bin/phpunit $PHPUNIT_FLAGS --coverage-clover=coverage.clover
 
 after_script:
-  - wget -c https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - |
+    if [[ "$TRAVIS_PHP_VERSION" != '7.3' ]]; then
+      wget https://scrutinizer-ci.com/ocular.phar
+      php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+    fi
