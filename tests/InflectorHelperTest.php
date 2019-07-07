@@ -1,10 +1,4 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
-
 namespace Yiisoft\Strings\Tests;
 
 use Yiisoft\Strings\Inflector;
@@ -174,7 +168,7 @@ class InflectorTest extends TestCase
             $this->assertEquals($expected, Inflector::slug($source));
         }
     }
-    
+
     public function testSlugReplacements()
     {
         $this->assertEquals('dont_replace_replacement', Inflector::slug('dont replace_replacement', '_'));
