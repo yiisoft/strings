@@ -439,14 +439,6 @@ class StringHelper
      */
     public static function compareString(string $expected, string $actual): bool
     {
-        if (!is_string($expected)) {
-            throw new \InvalidArgumentException('Expected expected value to be a string, ' . gettype($expected) . ' given.');
-        }
-
-        if (!is_string($actual)) {
-            throw new \InvalidArgumentException('Expected actual value to be a string, ' . gettype($actual) . ' given.');
-        }
-
         if (function_exists('hash_equals')) {
             return hash_equals($expected, $actual);
         }
