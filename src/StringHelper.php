@@ -429,4 +429,37 @@ class StringHelper
             ? htmlspecialchars($string, $flags)
             : htmlspecialchars($string, $flags, $encoding ?: ini_get('default_charset'), $double_encode);
     }
+    
+    /**
+     * Performs string comparison using timing attack resistant approach.
+     * @see http://codereview.stackexchange.com/questions/13512
+     * @param string $expected string to compare.
+     * @param string $actual user-supplied string.
+     * @return bool whether strings are equal.
+     */
+    public function compareString(string $expected, string $actual): bool
+    {
+        if (!is_string($expected)) {
+            throw new \InvalidArgumentException('Expected expected value to be a string, ' . gettype($expected) . ' given.');
+        }
+
+        if (!is_string($actual)) {
+            throw new \InvalidArgumentException('Expected actual value to be a string, ' . gettype($actual) . ' given.');
+        }
+
+        if (function_exists('hash_equals')) {
+            return hash_equals($expected, $actual);
+        }
+
+        $expected .= "\0";
+        $actual .= "\0";
+        $expectedLength = static::byteLength($expected);
+        $actualLength = static::byteLength($actual);
+        $diff = $expectedLength - $actualLength;
+        for ($i = 0; $i < $actualLength; $i++) {
+            $diff |= (ord($actual[$i]) ^ ord($expected[$i % $expectedLength]));
+        }
+
+        return $diff === 0;
+    }
 }
