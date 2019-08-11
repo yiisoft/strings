@@ -437,7 +437,7 @@ class StringHelper
      * @param string $actual user-supplied string.
      * @return bool whether strings are equal.
      */
-    public function compareString(string $expected, string $actual): bool
+    public static function compareString(string $expected, string $actual): bool
     {
         if (!is_string($expected)) {
             throw new \InvalidArgumentException('Expected expected value to be a string, ' . gettype($expected) . ' given.');
