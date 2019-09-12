@@ -44,104 +44,128 @@ final class InflectorTest extends TestCase
 
     public function testPluralize(): void
     {
+        $inflector = new Inflector();
+
         foreach ($this->getTestDataForPluralize() as $testIn => $testOut) {
-            $this->assertEquals($testOut, Inflector::pluralize($testIn), 'Should be ' . $testIn . ' -> ' . $testOut);
-            $this->assertEquals(ucfirst($testOut), ucfirst(Inflector::pluralize($testIn)));
+            $this->assertEquals($testOut, $inflector->pluralize($testIn), 'Should be ' . $testIn . ' -> ' . $testOut);
+            $this->assertEquals(ucfirst($testOut), ucfirst($inflector->pluralize($testIn)));
         }
     }
 
     public function testSingularize(): void
     {
+        $inflector = new Inflector();
+
         foreach ($this->getTestDataForSignularize() as $testIn => $testOut) {
-            $this->assertEquals($testOut, Inflector::singularize($testIn), 'Should be ' . $testIn . ' -> ' . $testOut);
-            $this->assertEquals(ucfirst($testOut), ucfirst(Inflector::singularize($testIn)));
+            $this->assertEquals($testOut, $inflector->singularize($testIn), 'Should be ' . $testIn . ' -> ' . $testOut);
+            $this->assertEquals(ucfirst($testOut), ucfirst($inflector->singularize($testIn)));
         }
     }
 
     public function testTitleize(): void
     {
-        $this->assertEquals('Me my self and i', Inflector::titleize('MeMySelfAndI'));
-        $this->assertEquals('Me My Self And I', Inflector::titleize('MeMySelfAndI', true));
-        $this->assertEquals('Треба Більше Тестів!', Inflector::titleize('ТребаБільшеТестів!', true));
+        $inflector = new Inflector();
+
+        $this->assertEquals('Me my self and i', $inflector->titleize('MeMySelfAndI'));
+        $this->assertEquals('Me My Self And I', $inflector->titleize('MeMySelfAndI', true));
+        $this->assertEquals('Треба Більше Тестів!', $inflector->titleize('ТребаБільшеТестів!', true));
     }
 
     public function testCamelize(): void
     {
-        $this->assertEquals('MeMySelfAndI', Inflector::camelize('me my_self-andI'));
-        $this->assertEquals('QweQweEwq', Inflector::camelize('qwe qwe^ewq'));
-        $this->assertEquals('ВідомоЩоТестиЗберігатьНашіНЕРВИ', Inflector::camelize('Відомо, що тести зберігать наші НЕРВИ! 🙃'));
+        $inflector = new Inflector();
+
+        $this->assertEquals('MeMySelfAndI', $inflector->camelize('me my_self-andI'));
+        $this->assertEquals('QweQweEwq', $inflector->camelize('qwe qwe^ewq'));
+        $this->assertEquals('ВідомоЩоТестиЗберігатьНашіНЕРВИ', $inflector->camelize('Відомо, що тести зберігать наші НЕРВИ! 🙃'));
     }
 
     public function testUnderscore(): void
     {
-        $this->assertEquals('me_my_self_and_i', Inflector::underscore('MeMySelfAndI'));
-        $this->assertEquals('кожний_тест_особливий', Inflector::underscore('КожнийТестОсобливий'));
+        $inflector = new Inflector();
+
+        $this->assertEquals('me_my_self_and_i', $inflector->underscore('MeMySelfAndI'));
+        $this->assertEquals('кожний_тест_особливий', $inflector->underscore('КожнийТестОсобливий'));
     }
 
     public function testCamel2words(): void
     {
-        $this->assertEquals('Camel Case', Inflector::camel2words('camelCase'));
-        $this->assertEquals('Lower Case', Inflector::camel2words('lower_case'));
-        $this->assertEquals('Tricky Stuff It Is Testing', Inflector::camel2words(' tricky_stuff.it-is testing... '));
-        $this->assertEquals('І Це Дійсно Так!', Inflector::camel2words('ІЦеДійсноТак!'));
+        $inflector = new Inflector();
+
+        $this->assertEquals('Camel Case', $inflector->camel2words('camelCase'));
+        $this->assertEquals('Lower Case', $inflector->camel2words('lower_case'));
+        $this->assertEquals('Tricky Stuff It Is Testing', $inflector->camel2words(' tricky_stuff.it-is testing... '));
+        $this->assertEquals('І Це Дійсно Так!', $inflector->camel2words('ІЦеДійсноТак!'));
     }
 
     public function testCamel2id(): void
     {
-        $this->assertEquals('post-tag', Inflector::camel2id('PostTag'));
-        $this->assertEquals('post_tag', Inflector::camel2id('PostTag', '_'));
-        $this->assertEquals('єдиний_код', Inflector::camel2id('ЄдинийКод', '_'));
+        $inflector = new Inflector();
 
-        $this->assertEquals('post-tag', Inflector::camel2id('postTag'));
-        $this->assertEquals('post_tag', Inflector::camel2id('postTag', '_'));
-        $this->assertEquals('єдиний_код', Inflector::camel2id('єдинийКод', '_'));
+        $this->assertEquals('post-tag', $inflector->camel2id('PostTag'));
+        $this->assertEquals('post_tag', $inflector->camel2id('PostTag', '_'));
+        $this->assertEquals('єдиний_код', $inflector->camel2id('ЄдинийКод', '_'));
 
-        $this->assertEquals('foo-ybar', Inflector::camel2id('FooYBar', '-', false));
-        $this->assertEquals('foo_ybar', Inflector::camel2id('fooYBar', '_', false));
-        $this->assertEquals('невже_іце_працює', Inflector::camel2id('НевжеІЦеПрацює', '_', false));
+        $this->assertEquals('post-tag', $inflector->camel2id('postTag'));
+        $this->assertEquals('post_tag', $inflector->camel2id('postTag', '_'));
+        $this->assertEquals('єдиний_код', $inflector->camel2id('єдинийКод', '_'));
 
-        $this->assertEquals('foo-y-bar', Inflector::camel2id('FooYBar', '-', true));
-        $this->assertEquals('foo_y_bar', Inflector::camel2id('fooYBar', '_', true));
-        $this->assertEquals('foo_y_bar', Inflector::camel2id('fooYBar', '_', true));
-        $this->assertEquals('невже_і_це_працює', Inflector::camel2id('НевжеІЦеПрацює', '_', true));
+        $this->assertEquals('foo-ybar', $inflector->camel2id('FooYBar', '-', false));
+        $this->assertEquals('foo_ybar', $inflector->camel2id('fooYBar', '_', false));
+        $this->assertEquals('невже_іце_працює', $inflector->camel2id('НевжеІЦеПрацює', '_', false));
+
+        $this->assertEquals('foo-y-bar', $inflector->camel2id('FooYBar', '-', true));
+        $this->assertEquals('foo_y_bar', $inflector->camel2id('fooYBar', '_', true));
+        $this->assertEquals('foo_y_bar', $inflector->camel2id('fooYBar', '_', true));
+        $this->assertEquals('невже_і_це_працює', $inflector->camel2id('НевжеІЦеПрацює', '_', true));
     }
 
     public function testId2camel(): void
     {
-        $this->assertEquals('PostTag', Inflector::id2camel('post-tag'));
-        $this->assertEquals('PostTag', Inflector::id2camel('post_tag', '_'));
-        $this->assertEquals('ЄдинийСвіт', Inflector::id2camel('єдиний_світ', '_'));
+        $inflector = new Inflector();
 
-        $this->assertEquals('PostTag', Inflector::id2camel('post-tag'));
-        $this->assertEquals('PostTag', Inflector::id2camel('post_tag', '_'));
-        $this->assertEquals('НевжеІЦеПрацює', Inflector::id2camel('невже_і_це_працює', '_'));
+        $this->assertEquals('PostTag', $inflector->id2camel('post-tag'));
+        $this->assertEquals('PostTag', $inflector->id2camel('post_tag', '_'));
+        $this->assertEquals('ЄдинийСвіт', $inflector->id2camel('єдиний_світ', '_'));
 
-        $this->assertEquals('ShouldNotBecomeLowercased', Inflector::id2camel('ShouldNotBecomeLowercased', '_'));
+        $this->assertEquals('PostTag', $inflector->id2camel('post-tag'));
+        $this->assertEquals('PostTag', $inflector->id2camel('post_tag', '_'));
+        $this->assertEquals('НевжеІЦеПрацює', $inflector->id2camel('невже_і_це_працює', '_'));
 
-        $this->assertEquals('FooYBar', Inflector::id2camel('foo-y-bar'));
-        $this->assertEquals('FooYBar', Inflector::id2camel('foo_y_bar', '_'));
+        $this->assertEquals('ShouldNotBecomeLowercased', $inflector->id2camel('ShouldNotBecomeLowercased', '_'));
+
+        $this->assertEquals('FooYBar', $inflector->id2camel('foo-y-bar'));
+        $this->assertEquals('FooYBar', $inflector->id2camel('foo_y_bar', '_'));
     }
 
     public function testHumanize(): void
     {
-        $this->assertEquals('Me my self and i', Inflector::humanize('me_my_self_and_i'));
-        $this->assertEquals('Me My Self And I', Inflector::humanize('me_my_self_and_i', true));
-        $this->assertEquals('Але й веселі ці ваші тести', Inflector::humanize('але_й_веселі_ці_ваші_тести'));
+        $inflector = new Inflector();
+
+        $this->assertEquals('Me my self and i', $inflector->humanize('me_my_self_and_i'));
+        $this->assertEquals('Me My Self And I', $inflector->humanize('me_my_self_and_i', true));
+        $this->assertEquals('Але й веселі ці ваші тести', $inflector->humanize('але_й_веселі_ці_ваші_тести'));
     }
 
     public function testVariablize(): void
     {
-        $this->assertEquals('customerTable', Inflector::variablize('customer_table'));
-        $this->assertEquals('ひらがなHepimiz', Inflector::variablize('ひらがな_hepimiz'));
+        $inflector = new Inflector();
+
+        $this->assertEquals('customerTable', $inflector->variablize('customer_table'));
+        $this->assertEquals('ひらがなHepimiz', $inflector->variablize('ひらがな_hepimiz'));
     }
 
     public function testTableize(): void
     {
-        $this->assertEquals('customer_tables', Inflector::tableize('customerTable'));
+        $inflector = new Inflector();
+
+        $this->assertEquals('customer_tables', $inflector->tableize('customerTable'));
     }
 
     public function testSlugCommons(): void
     {
+        $inflector = (new Inflector())->withoutIntl();
+
         $data = [
             '' => '',
             'hello world 123' => 'hello-world-123',
@@ -155,18 +179,20 @@ final class InflectorTest extends TestCase
 
         foreach ($data as $source => $expected) {
             if (extension_loaded('intl')) {
-                $this->assertEquals($expected, FallbackInflector::slug($source));
+                $this->assertEquals($expected, $inflector->slug($source));
             }
-            $this->assertEquals($expected, Inflector::slug($source));
+            $this->assertEquals($expected, $inflector->slug($source));
         }
     }
 
     public function testSlugReplacements(): void
     {
-        $this->assertEquals('dont_replace_replacement', Inflector::slug('dont replace_replacement', '_'));
-        $this->assertEquals('remove_trailing_replacements', Inflector::slug('_remove trailing replacements_', '_'));
-        $this->assertEquals('thisrepisreprepreplacement', Inflector::slug('this is REP-lacement', 'REP'));
-        $this->assertEquals('0_100_kmh', Inflector::slug('0-100 Km/h', '_'));
+        $inflector = new Inflector();
+
+        $this->assertEquals('dont_replace_replacement', $inflector->slug('dont replace_replacement', '_'));
+        $this->assertEquals('remove_trailing_replacements', $inflector->slug('_remove trailing replacements_', '_'));
+        $this->assertEquals('thisrepisreprepreplacement', $inflector->slug('this is REP-lacement', 'REP'));
+        $this->assertEquals('0_100_kmh', $inflector->slug('0-100 Km/h', '_'));
     }
 
     public function testSlugIntl(): void
@@ -199,8 +225,10 @@ final class InflectorTest extends TestCase
             'Jääär' => 'jaaar',
         ];
 
+        $inflector = new Inflector();
+
         foreach ($data as $source => $expected) {
-            $this->assertEquals($expected, Inflector::slug($source));
+            $this->assertEquals($expected, $inflector->slug($source));
         }
     }
 
@@ -242,8 +270,10 @@ final class InflectorTest extends TestCase
             '美国' => 'měi guó',
         ];
 
+        $inflector = new Inflector();
+
         foreach ($data as $source => $expected) {
-            $this->assertEquals($expected, Inflector::transliterate($source, Inflector::TRANSLITERATE_STRICT));
+            $this->assertEquals($expected, $inflector->transliterate($source, Inflector::TRANSLITERATE_STRICT));
         }
     }
 
@@ -285,8 +315,10 @@ final class InflectorTest extends TestCase
             '美国' => ['mei guo'],
         ];
 
+        $inflector = new Inflector();
+
         foreach ($data as $source => $allowed) {
-            $this->assertIsOneOf(Inflector::transliterate($source, Inflector::TRANSLITERATE_MEDIUM), $allowed);
+            $this->assertIsOneOf($inflector->transliterate($source, Inflector::TRANSLITERATE_MEDIUM), $allowed);
         }
     }
 
@@ -328,8 +360,10 @@ final class InflectorTest extends TestCase
             '美国' => ['mei guo'],
         ];
 
+        $inflector = new Inflector();
+
         foreach ($data as $source => $allowed) {
-            $this->assertIsOneOf(Inflector::transliterate($source, Inflector::TRANSLITERATE_LOOSE), $allowed);
+            $this->assertIsOneOf($inflector->transliterate($source, Inflector::TRANSLITERATE_LOOSE), $allowed);
         }
     }
 
@@ -339,55 +373,63 @@ final class InflectorTest extends TestCase
             'we have недвижимость' => 'we-have',
         ];
 
+        $inflector = (new Inflector())->withoutIntl();
+
         foreach ($data as $source => $expected) {
-            $this->assertEquals($expected, FallbackInflector::slug($source));
+            $this->assertEquals($expected, $inflector->slug($source));
         }
     }
 
     public function testClassify(): void
     {
-        $this->assertEquals('CustomerTable', Inflector::classify('customer_tables'));
+        $inflector = new Inflector();
+
+        $this->assertEquals('CustomerTable', $inflector->classify('customer_tables'));
     }
 
     public function testOrdinalize(): void
     {
-        $this->assertEquals('21st', Inflector::ordinalize('21'));
-        $this->assertEquals('22nd', Inflector::ordinalize('22'));
-        $this->assertEquals('23rd', Inflector::ordinalize('23'));
-        $this->assertEquals('24th', Inflector::ordinalize('24'));
-        $this->assertEquals('25th', Inflector::ordinalize('25'));
-        $this->assertEquals('111th', Inflector::ordinalize('111'));
-        $this->assertEquals('113th', Inflector::ordinalize('113'));
+        $inflector = new Inflector();
+
+        $this->assertEquals('21st', $inflector->ordinalize('21'));
+        $this->assertEquals('22nd', $inflector->ordinalize('22'));
+        $this->assertEquals('23rd', $inflector->ordinalize('23'));
+        $this->assertEquals('24th', $inflector->ordinalize('24'));
+        $this->assertEquals('25th', $inflector->ordinalize('25'));
+        $this->assertEquals('111th', $inflector->ordinalize('111'));
+        $this->assertEquals('113th', $inflector->ordinalize('113'));
     }
 
     public function testSentence(): void
     {
+        $inflector = new Inflector();
+
         $array = [];
-        $this->assertEquals('', Inflector::sentence($array));
+        $this->assertEquals('', $inflector->sentence($array));
 
         $array = ['Spain'];
-        $this->assertEquals('Spain', Inflector::sentence($array));
+        $this->assertEquals('Spain', $inflector->sentence($array));
 
         $array = ['Spain', 'France'];
-        $this->assertEquals('Spain and France', Inflector::sentence($array));
+        $this->assertEquals('Spain and France', $inflector->sentence($array));
 
         $array = ['Spain', 'France', 'Italy'];
-        $this->assertEquals('Spain, France and Italy', Inflector::sentence($array));
+        $this->assertEquals('Spain, France and Italy', $inflector->sentence($array));
 
         $array = ['Spain', 'France', 'Italy', 'Germany'];
-        $this->assertEquals('Spain, France, Italy and Germany', Inflector::sentence($array));
+        $this->assertEquals('Spain, France, Italy and Germany', $inflector->sentence($array));
 
         $array = ['Spain', 'France'];
-        $this->assertEquals('Spain or France', Inflector::sentence($array, ' or '));
+        $this->assertEquals('Spain or France', $inflector->sentence($array, ' or '));
 
         $array = ['Spain', 'France', 'Italy'];
-        $this->assertEquals('Spain, France or Italy', Inflector::sentence($array, ' or '));
+        $this->assertEquals('Spain, France or Italy', $inflector->sentence($array, ' or '));
 
         $array = ['Spain', 'France'];
-        $this->assertEquals('Spain and France', Inflector::sentence($array, ' and ', ' or ', ' - '));
+        $this->assertEquals('Spain and France', $inflector->sentence($array, ' and ', ' or ', ' - '));
 
         $array = ['Spain', 'France', 'Italy'];
-        $this->assertEquals('Spain - France or Italy', Inflector::sentence($array, ' and ', ' or ', ' - '));
+        $this->assertEquals('Spain - France or Italy', $inflector->sentence($array, ' and ', ' or ', ' - '));
     }
 
     /** Asserts that value is one of expected values.
