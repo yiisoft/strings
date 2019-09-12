@@ -270,7 +270,7 @@ final class Inflector
     /**
      * @var mixed Either a [[\Transliterator]], or a string from which a [[\Transliterator]] can be built
      * for transliteration. Used by [[transliterate()]] when intl is available. Defaults to [[TRANSLITERATE_LOOSE]]
-     * @see http://php.net/manual/en/transliterator.transliterate.php
+     * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
     private $transliterator = self::TRANSLITERATE_LOOSE;
 
@@ -378,14 +378,14 @@ final class Inflector
      * Converts an underscored or CamelCase word into a English
      * sentence.
      * @param string $words
-     * @param bool $ucAll whether to set all words to uppercase
+     * @param bool $uppercaseAll whether to set all words to uppercase
      * @return string
      */
-    public function titleize(string $words, bool $ucAll = false): string
+    public function titleize(string $words, bool $uppercaseAll = false): string
     {
-        $words = $this->humanize($this->underscore($words), $ucAll);
+        $words = $this->humanize($this->underscore($words), $uppercaseAll);
 
-        return $ucAll ? StringHelper::ucwords($words) : StringHelper::ucfirst($words);
+        return $uppercaseAll ? StringHelper::ucwords($words) : StringHelper::ucfirst($words);
     }
 
     /**
@@ -416,7 +416,7 @@ final class Inflector
             '-',
             '_',
             '.',
-        ], ' ', preg_replace('/(\p{Lu})/u', ' \0', $name))));
+        ], ' ', preg_replace('/(?<!\p{Lu})(\p{Lu})|(\p{Lu})(?=\p{Ll})/u', ' \0', $name))));
 
         return $ucwords ? StringHelper::ucwords($label) : $label;
     }
