@@ -11,7 +11,7 @@ use function mb_substr;
 /**
  * The Yii string helper provides static methods allowing you to deal with strings more efficiently.
  */
-class StringHelper
+final class StringHelper
 {
     /**
      * Returns the number of bytes in the given string.
@@ -95,8 +95,8 @@ class StringHelper
      */
     public static function truncateCharacters(string $string, int $length, string $suffix = '...', string $encoding = null): string
     {
-        if (static::mb_strlen($string, $encoding) > $length) {
-            return rtrim(static::mb_substr($string, 0, $length, $encoding)) . $suffix;
+        if (static::strlen($string, $encoding) > $length) {
+            return rtrim(static::substr($string, 0, $length, $encoding)) . $suffix;
         }
 
         return $string;
@@ -138,7 +138,7 @@ class StringHelper
             return strncmp($string, $with, $bytes) === 0;
         }
 
-        return static::mb_strtolower(static::mb_substr($string, 0, $bytes, '8bit')) === static::mb_strtolower($with);
+        return static::strtolower(static::substr($string, 0, $bytes, '8bit')) === static::strtolower($with);
     }
 
     /**
@@ -164,7 +164,7 @@ class StringHelper
             return substr_compare($string, $with, -$bytes, $bytes) === 0;
         }
 
-        return static::mb_strtolower(mb_substr($string, -$bytes, mb_strlen($string, '8bit'), '8bit')) === static::mb_strtolower($with);
+        return static::strtolower(mb_substr($string, -$bytes, mb_strlen($string, '8bit'), '8bit')) === static::strtolower($with);
     }
 
     /**
@@ -332,12 +332,12 @@ class StringHelper
      * @return string
      * @see https://php.net/manual/en/function.ucfirst.php
      */
-    public static function mb_ucfirst(string $string, string $encoding = null): string
+    public static function ucfirst(string $string, string $encoding = null): string
     {
-        $firstChar = static::mb_substr($string, 0, 1, $encoding);
-        $rest = static::mb_substr($string, 1, null, $encoding);
+        $firstChar = static::substr($string, 0, 1, $encoding);
+        $rest = static::substr($string, 1, null, $encoding);
 
-        return static::mb_strtoupper($firstChar, $encoding) . $rest;
+        return static::strtoupper($firstChar, $encoding) . $rest;
     }
 
     /**
@@ -348,12 +348,12 @@ class StringHelper
      * @see https://php.net/manual/en/function.ucwords.php
      * @return string
      */
-    public static function mb_ucwords(string $string, string $encoding = null): string
+    public static function ucwords(string $string, string $encoding = null): string
     {
         $words = preg_split("/\s/u", $string, -1, PREG_SPLIT_NO_EMPTY);
 
         $ucfirst = array_map(static function ($word) use ($encoding) {
-            return static::mb_ucfirst($word, $encoding);
+            return static::ucfirst($word, $encoding);
         }, $words);
 
         return implode(' ', $ucfirst);
@@ -367,7 +367,7 @@ class StringHelper
      * @see https://php.net/manual/en/function.mb-strlen.php
      * @return int
      */
-    public static function mb_strlen(string $string, string $encoding = null): int
+    public static function strlen(string $string, string $encoding = null): int
     {
         return empty($encoding) ? mb_strlen($string) : mb_strlen($string, $encoding);
     }
@@ -382,7 +382,7 @@ class StringHelper
      * @see https://php.net/manual/en/function.mb-substr.php
      * @return string
      */
-    public static function mb_substr(string $string, int $start, int $length = null, string $encoding = null): string
+    public static function substr(string $string, int $start, int $length = null, string $encoding = null): string
     {
         return empty($encoding) ? mb_substr($string, $start, $length) : mb_substr($string, $start, $length, $encoding);
     }
@@ -395,7 +395,7 @@ class StringHelper
      * @see https://php.net/manual/en/function.mb-strtolower.php
      * @return string
      */
-    public static function mb_strtolower(string $string, string $encoding = null): string
+    public static function strtolower(string $string, string $encoding = null): string
     {
         return empty($encoding) ? mb_strtolower($string) : mb_strtolower($string, $encoding);
     }
@@ -408,7 +408,7 @@ class StringHelper
      * @see https://php.net/manual/en/function.mb-strtoupper.php
      * @return string
      */
-    public static function mb_strtoupper(string $string, string $encoding = null): string
+    public static function strtoupper(string $string, string $encoding = null): string
     {
         return empty($encoding) ? mb_strtoupper($string) : mb_strtoupper($string, $encoding);
     }

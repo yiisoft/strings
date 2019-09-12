@@ -381,7 +381,7 @@ class StringHelperTest extends TestCase
      */
     public function testMb_ucfirst($string, $expectedResult)
     {
-        $this->assertSame($expectedResult, StringHelper::mb_ucfirst($string));
+        $this->assertSame($expectedResult, StringHelper::ucfirst($string));
     }
 
     public function dataProviderMb_ucwords()
@@ -402,6 +402,6 @@ class StringHelperTest extends TestCase
      */
     public function testMb_ucwords($string, $expectedResult)
     {
-        $this->assertSame($expectedResult, StringHelper::mb_ucwords($string));
+        $this->assertSame($expectedResult, StringHelper::ucwords($string));
     }
 }

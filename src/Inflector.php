@@ -325,7 +325,7 @@ class Inflector
     {
         $words = static::humanize(static::underscore($words), $ucAll);
 
-        return $ucAll ? StringHelper::mb_ucwords($words) : StringHelper::mb_ucfirst($words);
+        return $ucAll ? StringHelper::ucwords($words) : StringHelper::ucfirst($words);
     }
 
     /**
@@ -334,13 +334,13 @@ class Inflector
      * Converts a word like "send_email" to "SendEmail". It
      * will remove non alphanumeric character from the word, so
      * "who's online" will be converted to "WhoSOnline".
-     * @see variablize()
      * @param string $word the word to CamelCase
      * @return string
+     * @see variablize()
      */
     public static function camelize(string $word): string
     {
-        return str_replace(' ', '', StringHelper::mb_ucwords(preg_replace('/[^\pL\pN]+/u', ' ', $word)));
+        return str_replace(' ', '', StringHelper::ucwords(preg_replace('/[^\pL\pN]+/u', ' ', $word)));
     }
 
     /**
@@ -358,7 +358,7 @@ class Inflector
             '.',
         ], ' ', preg_replace('/(\p{Lu})/u', ' \0', $name))));
 
-        return $ucwords ? StringHelper::mb_ucwords($label) : $label;
+        return $ucwords ? StringHelper::ucwords($label) : $label;
     }
 
     /**
@@ -390,7 +390,7 @@ class Inflector
      */
     public static function id2camel(string $id, string $separator = '-'): string
     {
-        return str_replace(' ', '', StringHelper::mb_ucwords(str_replace($separator, ' ', $id)));
+        return str_replace(' ', '', StringHelper::ucwords(str_replace($separator, ' ', $id)));
     }
 
     /**
@@ -413,7 +413,7 @@ class Inflector
     {
         $word = str_replace('_', ' ', preg_replace('/_id$/', '', $word));
 
-        return $ucAll ? StringHelper::mb_ucwords($word) : StringHelper::mb_ucfirst($word);
+        return $ucAll ? StringHelper::ucwords($word) : StringHelper::ucfirst($word);
     }
 
     /**
