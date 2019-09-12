@@ -2,7 +2,7 @@
 namespace Yiisoft\Strings\Tests;
 
 use PHPUnit\Framework\Constraint\Constraint;
-use yii\helpers\VarDumper;
+use Yiisoft\VarDumper\VarDumper;
 
 /**
  * IsOneOfAssert asserts that the value is one of the expected values.
