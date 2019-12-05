@@ -442,5 +442,4 @@ final class InflectorTest extends TestCase
     {
         self::assertThat($actual, new IsOneOfAssert($expected), $message);
     }
-
 }
