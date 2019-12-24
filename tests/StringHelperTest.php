@@ -92,7 +92,7 @@ final class StringHelperTest extends TestCase
 
     public function testTruncate(): void
     {
-        $this->assertEquals('привет, я multibyte...', StringHelper::truncateCharacters('привет, я multibyte строка!', 20));
+        $this->assertEquals('привет, я multibyte…', StringHelper::truncateCharacters('привет, я multibyte строка!', 20));
         $this->assertEquals('Не трогаем строку', StringHelper::truncateCharacters('Не трогаем строку', 20));
         $this->assertEquals('исполь!!!', StringHelper::truncateCharacters('используем восклицательные знаки', 6, '!!!'));
     }
@@ -100,9 +100,9 @@ final class StringHelperTest extends TestCase
     public function testTruncateWords(): void
     {
         $this->assertEquals('это тестовая multibyte строка', StringHelper::truncateWords('это тестовая multibyte строка', 5));
-        $this->assertEquals('это тестовая multibyte...', StringHelper::truncateWords('это тестовая multibyte строка', 3));
+        $this->assertEquals('это тестовая multibyte…', StringHelper::truncateWords('это тестовая multibyte строка', 3));
         $this->assertEquals('это тестовая multibyte!!!', StringHelper::truncateWords('это тестовая multibyte строка', 3, '!!!'));
-        $this->assertEquals('это строка с          неожиданными...', StringHelper::truncateWords('это строка с          неожиданными пробелами', 4));
+        $this->assertEquals('это строка с          неожиданными…', StringHelper::truncateWords('это строка с          неожиданными пробелами', 4));
     }
 
     /**
