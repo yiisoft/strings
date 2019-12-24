@@ -93,7 +93,7 @@ final class StringHelper
      * @param string $encoding The charset to use, defaults to charset currently used by application.
      * @return string the truncated string.
      */
-    public static function truncateCharacters(string $string, int $length, string $suffix = '...', string $encoding = null): string
+    public static function truncateCharacters(string $string, int $length, string $suffix = '…', string $encoding = null): string
     {
         if (static::strlen($string, $encoding) > $length) {
             return rtrim(static::substr($string, 0, $length, $encoding)) . $suffix;
@@ -110,7 +110,7 @@ final class StringHelper
      * @param string $suffix String to append to the end of truncated string.
      * @return string the truncated string.
      */
-    public static function truncateWords(string $string, int $count, string $suffix = '...'): string
+    public static function truncateWords(string $string, int $count, string $suffix = '…'): string
     {
         $words = preg_split('/(\s+)/u', trim($string), null, PREG_SPLIT_DELIM_CAPTURE);
         if (count($words) / 2 > $count) {
