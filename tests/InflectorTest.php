@@ -162,37 +162,38 @@ final class InflectorTest extends TestCase
         $this->assertEquals('customer_tables', $inflector->tableize('customerTable'));
     }
 
-    public function testSlugCommons(): void
+    public function slugCommonsDataProvider(): array
     {
-        $inflector = (new Inflector())->withoutIntl();
-
-        $data = [
-            '' => '',
-            'hello world 123' => 'hello-world-123',
-            'remove.!?[]{}…symbols' => 'removesymbols',
-            'minus-sign' => 'minus-sign',
-            'mdash—sign' => 'mdash-sign',
-            'ndash–sign' => 'ndash-sign',
-            'áàâéèêíìîóòôúùûã' => 'aaaeeeiiiooouuua',
-            'älä lyö ääliö ööliä läikkyy' => 'ala-lyo-aalio-oolia-laikkyy',
+        return [
+            ['', ''],
+            ['hello world 123', 'hello-world-123'],
+            ['remove.!?[]{}…symbols', 'remove-symbols'],
+            ['minus-sign', 'minus-sign'],
+            ['mdash—sign', 'mdash-sign'],
+            ['ndash–sign', 'ndash-sign'],
+            ['áàâéèêíìîóòôúùûã', 'aaaeeeiiiooouuua'],
+            ['älä lyö ääliö ööliä läikkyy', 'ala-lyo-aalio-oolia-laikkyy'],
+            'start' => ['---test', 'test'],
+            'end' => ['test---', 'test'],
+            'startAndEnd' => ['---test---', 'test'],
+            'repeated' => ['hello----world', 'hello-world'],
+            ['dont replace_replacement', 'dont_replace_replacement', '_'],
+            ['_remove trailing replacements_', 'remove_trailing_replacements', '_'],
+            ['this is REP-lacement', 'thisrepisreprepreplacement', 'REP'],
+            ['0-100 Km/h', '0_100_km_h', '_'],
         ];
-
-        foreach ($data as $source => $expected) {
-            if (extension_loaded('intl')) {
-                $this->assertEquals($expected, $inflector->slug($source));
-            }
-            $this->assertEquals($expected, $inflector->slug($source));
-        }
     }
 
-    public function testSlugReplacements(): void
+    /**
+     * @dataProvider slugCommonsDataProvider
+     */
+    public function testSlugCommons(string $input, string $expected, string $replacement = '-'): void
     {
         $inflector = new Inflector();
-
-        $this->assertEquals('dont_replace_replacement', $inflector->slug('dont replace_replacement', '_'));
-        $this->assertEquals('remove_trailing_replacements', $inflector->slug('_remove trailing replacements_', '_'));
-        $this->assertEquals('thisrepisreprepreplacement', $inflector->slug('this is REP-lacement', 'REP'));
-        $this->assertEquals('0_100_kmh', $inflector->slug('0-100 Km/h', '_'));
+        if (extension_loaded('intl')) {
+            $this->assertEquals($expected, $inflector->slug($input, $replacement));
+        }
+        $this->assertEquals($expected, $inflector->withoutIntl()->slug($input, $replacement));
     }
 
     public function testSlugIntl(): void
