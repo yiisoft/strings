@@ -519,14 +519,10 @@ final class Inflector
      */
     public function slug(string $string, string $replacement = '-', bool $lowercase = true): string
     {
-        $parts = explode($replacement, $this->transliterate($string));
-
-        $replaced = array_map(static function ($element) use ($replacement) {
-            $element = preg_replace('/[^a-zA-Z0-9=\s—–-]+/u', '', $element);
-            return preg_replace('/[=\s—–-]+/u', $replacement, $element);
-        }, $parts);
-
-        $string = trim(implode($replacement, $replaced), $replacement);
+        // replace all non words character
+        $string = preg_replace('/[^a-zA-Z0-9]++/u', $replacement, $this->transliterate($string));
+        // remove first and last replacements
+        $string = preg_replace('/^(?:'.preg_quote($replacement).')++|(?:'.preg_quote($replacement).')++$/u'. ($lowercase ? 'i' : ''), '', $string);
 
         return $lowercase ? strtolower($string) : $string;
     }
