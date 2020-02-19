@@ -181,6 +181,7 @@ final class InflectorTest extends TestCase
             ['_remove trailing replacements_', 'remove_trailing_replacements', '_'],
             ['this is REP-lacement', 'thisrepisreprepreplacement', 'REP'],
             ['0-100 Km/h', '0_100_km_h', '_'],
+            ['test empty', 'testempty', ''],
         ];
     }
 
