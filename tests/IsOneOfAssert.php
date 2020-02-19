@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Strings\Tests;
 
 use PHPUnit\Framework\Constraint\Constraint;

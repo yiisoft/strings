@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Strings;
 
 use function array_slice;

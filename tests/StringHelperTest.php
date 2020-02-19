@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Strings\Tests;
 
 use Yiisoft\Strings\StringHelper;
