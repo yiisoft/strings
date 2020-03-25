@@ -432,10 +432,10 @@ final class StringHelper
     }
 
     /**
-     * Truncate the start string
+     * Truncate the string from the beginning
      *
      * @param string $string string to process
-     * @param int $length total of character to process
+     * @param int $length total of character to truncate
      * @return string
      */
     public static function truncateBegin(string $string, int $length): string
