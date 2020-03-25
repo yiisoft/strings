@@ -430,4 +430,16 @@ final class StringHelper
             ? htmlspecialchars($string, $flags)
             : htmlspecialchars($string, $flags, $encoding ?: ini_get('default_charset'), $double_encode);
     }
+
+    /**
+     * Truncate the start string
+     *
+     * @param string $string string to process
+     * @param int $length total of character to process
+     * @return string
+     */
+    public static function truncateBegin(string $string, int $length): string
+    {
+        return substr_replace($string, '…', 0, $length);
+    }
 }
