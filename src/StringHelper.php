@@ -122,6 +122,19 @@ final class StringHelper
     }
 
     /**
+     * Truncate the string from the beginning
+     *
+     * @param string $string string to process
+     * @param int $length total of character to truncate
+     * @param string $suffix String to append to the beginning
+     * @return string
+     */
+    public static function truncateBegin(string $string, int $length, string $suffix = '…'): string
+    {
+        return substr_replace($string, $suffix, 0, $length);
+    }
+
+    /**
      * Check if given string starts with specified substring.
      * Binary and multibyte safe.
      *

@@ -401,4 +401,10 @@ final class StringHelperTest extends TestCase
     {
         $this->assertSame($expectedResult, StringHelper::ucwords($string));
     }
+
+    public function testTruncateBegin(): void
+    {
+        $this->assertSame('sms sent to …456', 'sms sent to ' . StringHelper::truncateBegin('123456', 3));
+        $this->assertSame('sms sent to *56', 'sms sent to ' . StringHelper::truncateBegin('123456', 4, '*'));
+    }
 }
