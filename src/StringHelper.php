@@ -126,12 +126,12 @@ final class StringHelper
      *
      * @param string $string string to process
      * @param int $length total of character to truncate
-     * @param string $prefix String to append to the beginning
+     * @param string $suffix String to append to the beginning
      * @return string
      */
-    public static function truncateBegin(string $string, int $length, string $prefix = '…'): string
+    public static function truncateBegin(string $string, int $length, string $suffix = '…'): string
     {
-        return substr_replace($string, $prefix, 0, $length);
+        return substr_replace($string, $suffix, 0, $length);
     }
 
     /**
