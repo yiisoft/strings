@@ -122,6 +122,19 @@ final class StringHelper
     }
 
     /**
+     * Truncate the string from the beginning
+     *
+     * @param string $string string to process
+     * @param int $length total of character to truncate
+     * @param string $prefix String to append to the beginning
+     * @return string
+     */
+    public static function truncateBegin(string $string, int $length, string $prefix = '…'): string
+    {
+        return substr_replace($string, $prefix, 0, $length);
+    }
+
+    /**
      * Check if given string starts with specified substring.
      * Binary and multibyte safe.
      *
@@ -429,17 +442,5 @@ final class StringHelper
         return empty($encoding) && $double_encode
             ? htmlspecialchars($string, $flags)
             : htmlspecialchars($string, $flags, $encoding ?: ini_get('default_charset'), $double_encode);
-    }
-
-    /**
-     * Truncate the string from the beginning
-     *
-     * @param string $string string to process
-     * @param int $length total of character to truncate
-     * @return string
-     */
-    public static function truncateBegin(string $string, int $length): string
-    {
-        return substr_replace($string, '…', 0, $length);
     }
 }

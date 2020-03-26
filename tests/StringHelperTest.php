@@ -404,8 +404,7 @@ final class StringHelperTest extends TestCase
 
     public function testTruncateBegin(): void
     {
-        $this->assertSame('sms sent to …456.', 'sms sent to ' . StringHelper::truncateBegin('123456', 3) . '.');
-        $this->assertSame('sms sent to …56.', 'sms sent to ' . StringHelper::truncateBegin('123456', 4) . '.');
-        $this->assertSame('sms sent to …6.', 'sms sent to ' . StringHelper::truncateBegin('123456', 5) . '.');
+        $this->assertSame('sms sent to …456', 'sms sent to ' . StringHelper::truncateBegin('123456', 3));
+        $this->assertSame('sms sent to *56', 'sms sent to ' . StringHelper::truncateBegin('123456', 4, '*'));
     }
 }
