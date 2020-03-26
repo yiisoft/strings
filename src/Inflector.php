@@ -523,7 +523,7 @@ final class Inflector
         // replace all non words character
         $string = preg_replace('/[^a-zA-Z0-9]++/u', $replacement, $this->transliterate($string));
         // remove first and last replacements
-        $string = preg_replace('/^(?:'.preg_quote($replacement).')++|(?:'.preg_quote($replacement).')++$/u'. ($lowercase ? 'i' : ''), '', $string);
+        $string = preg_replace('/^(?:' . preg_quote($replacement) . ')++|(?:' . preg_quote($replacement) . ')++$/u' . ($lowercase ? 'i' : ''), '', $string);
 
         return $lowercase ? strtolower($string) : $string;
     }
