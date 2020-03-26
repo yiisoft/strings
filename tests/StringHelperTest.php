@@ -407,4 +407,10 @@ final class StringHelperTest extends TestCase
         $this->assertSame('sms sent to …456', 'sms sent to ' . StringHelper::truncateBegin('123456', 3));
         $this->assertSame('sms sent to *56', 'sms sent to ' . StringHelper::truncateBegin('123456', 4, '*'));
     }
+
+    public function testTruncateMiddle(): void
+    {
+        $this->assertSame('Hell...er 2', StringHelper::truncateMiddle('Hello world number 2', 8));
+        $this->assertSame('Hell*er 2', StringHelper::truncateMiddle('Hello world number 2', 8, '*'));
+    }
 }
