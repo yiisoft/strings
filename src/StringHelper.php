@@ -148,8 +148,6 @@ final class StringHelper
      */
     public static function truncateMiddle(string $string, int $length, string $separator = '...', string $encoding = 'UTF-8'): string
     {
-        $string = strip_tags($string);
-
         $strLen = mb_strlen($string, $encoding);
 
         if ($strLen <= $length) {
