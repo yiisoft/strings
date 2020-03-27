@@ -135,6 +135,33 @@ final class StringHelper
     }
 
     /**
+     * Truncates a string in the middle. Keeping start and end.
+     * `StringHelper::truncateMiddle('Hello world number 2', 8)` produces "Hell...er 2".
+     *
+     * This method does not support HTML. It will strip all tags even if length is smaller than the string including tags.
+     *
+     * @param string $string The string to truncate.
+     * @param int $length How many characters from original string to include into truncated string.
+     * @param string $separator String to append in the middle of truncated string.
+     * @param string $encoding The charset to use, defaults to charset currently used by application.
+     * @return string the truncated string.
+     */
+    public static function truncateMiddle(string $string, int $length, string $separator = '...', string $encoding = 'UTF-8'): string
+    {
+        $strLen = mb_strlen($string, $encoding);
+
+        if ($strLen <= $length) {
+            return $string;
+        }
+
+        $partLen = floor($length / 2);
+        $left = ltrim(mb_substr($string, 0, $partLen, $encoding));
+        $right = rtrim(mb_substr($string, -$partLen, $partLen, $encoding));
+
+        return $left . $separator . $right;
+    }
+
+    /**
      * Check if given string starts with specified substring.
      * Binary and multibyte safe.
      *
