@@ -103,7 +103,6 @@ final class InflectorTest extends TestCase
      */
     public function testCamel2id(string $expectedResult, array $arguments): void
     {
-
         $inflector = new Inflector();
 
         $result = call_user_func_array([$inflector, 'camel2id'], $arguments);
