@@ -440,6 +440,10 @@ final class InflectorTest extends TestCase
 
             ['photo\\album_controller', ['Photo\\AlbumController', '_', false]],
             ['photo\\album_controller', ['Photo\\AlbumController', '_', true]],
+            ['photo\\album\\controller', ['Photo\\AlbumController', '\\', false]],
+            ['photo\\album\\controller', ['Photo\\AlbumController', '\\', true]],
+            ['photo\\album/controller', ['Photo\\AlbumController', '/', false]],
+            ['photo\\album/controller', ['Photo\\AlbumController', '/', true]],
             ['photo\\album\\controller', ['Photo\\Album\\Controller', '_', false]],
             ['photo\\album\\controller', ['Photo\\Album\\Controller', '_', true]],
 

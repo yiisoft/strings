@@ -436,7 +436,7 @@ final class Inflector
         $regex = $strict
             ? '/(?<=\p{L})(\p{Lu})/u'
             : '/(?<=\p{L})(?<!\p{Lu})(\p{Lu})/u';
-        $result = preg_replace($regex, $separator . '$1', $name);
+        $result = preg_replace($regex, addslashes($separator) . '\1', $name);
 
         if ($separator !== '_') {
             $result = str_replace('_', $separator, $result);
