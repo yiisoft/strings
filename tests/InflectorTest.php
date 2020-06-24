@@ -103,6 +103,7 @@ final class InflectorTest extends TestCase
      */
     public function testCamel2id(string $expectedResult, array $arguments): void
     {
+
         $inflector = new Inflector();
 
         $result = call_user_func_array([$inflector, 'camel2id'], $arguments);
@@ -433,13 +434,18 @@ final class InflectorTest extends TestCase
     public function camel2idProvider():array
     {
         return [
-            ['photo\\album-controller', ['Photo\\AlbumController']],
-            ['photo\\album\\controller', ['Photo\\Album\\Controller']],
+            ['photo\\album-controller', ['Photo\\AlbumController', '-', false]],
+            ['photo\\album-controller', ['Photo\\AlbumController', '-', true]],
+            ['photo\\album\\controller', ['Photo\\Album\\Controller', '-', false]],
+            ['photo\\album\\controller', ['Photo\\Album\\Controller', '-', true]],
 
-            ['photo\\album_controller', ['Photo\\AlbumController', '_']],
-            ['photo\\album\\controller', ['Photo\\Album\\Controller', '_']],
+            ['photo\\album_controller', ['Photo\\AlbumController', '_', false]],
+            ['photo\\album_controller', ['Photo\\AlbumController', '_', true]],
+            ['photo\\album\\controller', ['Photo\\Album\\Controller', '_', false]],
+            ['photo\\album\\controller', ['Photo\\Album\\Controller', '_', true]],
 
-            ['photo/album/controller', ['Photo/Album/Controller']],
+            ['photo/album/controller', ['Photo/Album/Controller', '-', false]],
+            ['photo/album/controller', ['Photo/Album/Controller', '-', true]],
 
             ['post-tag', ['PostTag']],
             ['post_tag', ['PostTag', '_']],
