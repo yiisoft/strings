@@ -430,7 +430,7 @@ final class InflectorTest extends TestCase
         self::assertThat($actual, new IsOneOfAssert($expected), $message);
     }
 
-    public function camel2idProvider():array
+    public function camel2idProvider(): array
     {
         return [
             ['photo\\album-controller', ['Photo\\AlbumController']],
