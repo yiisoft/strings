@@ -13,5 +13,7 @@ The Yii string helper provides:
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/strings/v/stable.png)](https://packagist.org/packages/yiisoft/strings)
 [![Total Downloads](https://poser.pugx.org/yiisoft/strings/downloads.png)](https://packagist.org/packages/yiisoft/strings)
-[![Build Status](https://travis-ci.com/yiisoft/strings.svg?branch=master)](https://travis-ci.com/yiisoft/strings)
+[![Build Status](https://github.com/yiisoft/strings/workflows/build/badge.svg)](https://github.com/yiisoft/strings/actions)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiisoft/strings/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/strings/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/strings/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/strings/?branch=master)
 
