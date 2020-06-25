@@ -3,14 +3,13 @@
 namespace Yiisoft\Strings\Tests;
 
 use PHPUnit\Framework\Constraint\Constraint;
-use Yiisoft\VarDumper\VarDumper;
 
 /**
  * IsOneOfAssert asserts that the value is one of the expected values.
  */
 class IsOneOfAssert extends Constraint
 {
-    private $allowedValues;
+    private array $allowedValues;
 
     /**
      * IsOneOfAssert constructor.
@@ -30,7 +29,7 @@ class IsOneOfAssert extends Constraint
     public function toString(): string
     {
         $allowedValues = array_map(static function ($value) {
-            return VarDumper::dumpAsString($value);
+            return (string)$value;
         }, $this->allowedValues);
         $expectedAsString = implode(', ', $allowedValues);
         return "is one of $expectedAsString";
