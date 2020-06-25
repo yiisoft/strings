@@ -98,44 +98,29 @@ final class InflectorTest extends TestCase
         $this->assertEquals('І Це Дійсно Так!', $inflector->camel2words('ІЦеДійсноТак!'));
     }
 
-    public function testCamel2id(): void
+    /**
+     * @dataProvider camel2idProvider()
+     */
+    public function testCamel2id(string $expectedResult, array $arguments): void
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('post-tag', $inflector->camel2id('PostTag'));
-        $this->assertEquals('post_tag', $inflector->camel2id('PostTag', '_'));
-        $this->assertEquals('єдиний_код', $inflector->camel2id('ЄдинийКод', '_'));
+        $result = call_user_func_array([$inflector, 'camel2id'], $arguments);
 
-        $this->assertEquals('post-tag', $inflector->camel2id('postTag'));
-        $this->assertEquals('post_tag', $inflector->camel2id('postTag', '_'));
-        $this->assertEquals('єдиний_код', $inflector->camel2id('єдинийКод', '_'));
-
-        $this->assertEquals('foo-ybar', $inflector->camel2id('FooYBar', '-', false));
-        $this->assertEquals('foo_ybar', $inflector->camel2id('fooYBar', '_', false));
-        $this->assertEquals('невже_іце_працює', $inflector->camel2id('НевжеІЦеПрацює', '_', false));
-
-        $this->assertEquals('foo-y-bar', $inflector->camel2id('FooYBar', '-', true));
-        $this->assertEquals('foo_y_bar', $inflector->camel2id('fooYBar', '_', true));
-        $this->assertEquals('foo_y_bar', $inflector->camel2id('fooYBar', '_', true));
-        $this->assertEquals('невже_і_це_працює', $inflector->camel2id('НевжеІЦеПрацює', '_', true));
+        $this->assertEquals($expectedResult, $result);
     }
 
-    public function testId2camel(): void
+
+    /**
+     * @dataProvider id2camelProvider()
+     */
+    public function testId2camel(string $expectedResult, array $arguments): void
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('PostTag', $inflector->id2camel('post-tag'));
-        $this->assertEquals('PostTag', $inflector->id2camel('post_tag', '_'));
-        $this->assertEquals('ЄдинийСвіт', $inflector->id2camel('єдиний_світ', '_'));
+        $result = call_user_func_array([$inflector, 'id2camel'], $arguments);
 
-        $this->assertEquals('PostTag', $inflector->id2camel('post-tag'));
-        $this->assertEquals('PostTag', $inflector->id2camel('post_tag', '_'));
-        $this->assertEquals('НевжеІЦеПрацює', $inflector->id2camel('невже_і_це_працює', '_'));
-
-        $this->assertEquals('ShouldNotBecomeLowercased', $inflector->id2camel('ShouldNotBecomeLowercased', '_'));
-
-        $this->assertEquals('FooYBar', $inflector->id2camel('foo-y-bar'));
-        $this->assertEquals('FooYBar', $inflector->id2camel('foo_y_bar', '_'));
+        $this->assertEquals($expectedResult, $result);
     }
 
     public function testHumanize(): void
@@ -443,5 +428,63 @@ final class InflectorTest extends TestCase
     private function assertIsOneOf($actual, array $expected, $message = ''): void
     {
         self::assertThat($actual, new IsOneOfAssert($expected), $message);
+    }
+
+    public function camel2idProvider(): array
+    {
+        return [
+            ['photo\\album-controller', ['Photo\\AlbumController', '-', false]],
+            ['photo\\album-controller', ['Photo\\AlbumController', '-', true]],
+            ['photo\\album\\controller', ['Photo\\Album\\Controller', '-', false]],
+            ['photo\\album\\controller', ['Photo\\Album\\Controller', '-', true]],
+
+            ['photo\\album_controller', ['Photo\\AlbumController', '_', false]],
+            ['photo\\album_controller', ['Photo\\AlbumController', '_', true]],
+            ['photo\\album\\controller', ['Photo\\AlbumController', '\\', false]],
+            ['photo\\album\\controller', ['Photo\\AlbumController', '\\', true]],
+            ['photo\\album/controller', ['Photo\\AlbumController', '/', false]],
+            ['photo\\album/controller', ['Photo\\AlbumController', '/', true]],
+            ['photo\\album\\controller', ['Photo\\Album\\Controller', '_', false]],
+            ['photo\\album\\controller', ['Photo\\Album\\Controller', '_', true]],
+
+            ['photo/album/controller', ['Photo/Album/Controller', '-', false]],
+            ['photo/album/controller', ['Photo/Album/Controller', '-', true]],
+
+            ['post-tag', ['PostTag']],
+            ['post_tag', ['PostTag', '_']],
+            ['єдиний_код', ['ЄдинийКод', '_']],
+
+            ['post-tag', ['postTag']],
+            ['post_tag', ['postTag', '_']],
+            ['єдиний_код', ['єдинийКод', '_']],
+
+            ['foo-ybar', ['FooYBar', '-', false]],
+            ['foo_ybar', ['fooYBar', '_', false]],
+            ['невже_іце_працює', ['НевжеІЦеПрацює', '_', false]],
+
+            ['foo-y-bar', ['FooYBar', '-', true]],
+            ['foo_y_bar', ['fooYBar', '_', true]],
+            ['foo_y_bar', ['fooYBar', '_', true]],
+            ['невже_і_це_працює', ['НевжеІЦеПрацює', '_', true]],
+
+        ];
+    }
+
+    public function id2camelProvider(): array
+    {
+        return [
+            ['PostTag', ['post-tag']],
+            ['PostTag', ['post_tag', '_']],
+            ['ЄдинийСвіт', ['єдиний_світ', '_']],
+
+            ['PostTag', ['post-tag']],
+            ['PostTag', ['post_tag', '_']],
+            ['НевжеІЦеПрацює', ['невже_і_це_працює', '_']],
+
+            ['ShouldNotBecomeLowercased', ['ShouldNotBecomeLowercased', '_']],
+
+            ['FooYBar', ['foo-y-bar']],
+            ['FooYBar', ['foo_y_bar', '_']],
+        ];
     }
 }

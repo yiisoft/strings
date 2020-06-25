@@ -428,17 +428,21 @@ final class Inflector
      * For example, 'PostTag' will be converted to 'post-tag'.
      * @param string $name the string to be converted
      * @param string $separator the character used to concatenate the words in the ID
-     * @param bool|string $strict whether to insert a separator between two consecutive uppercase chars, defaults to false
+     * @param bool $strict whether to insert a separator between two consecutive uppercase chars, defaults to false
      * @return string the resulting ID
      */
     public function camel2id(string $name, string $separator = '-', bool $strict = false): string
     {
-        $regex = $strict ? '/\p{Lu}/u' : '/(?<!\p{Lu})\p{Lu}/u';
-        if ($separator === '_') {
-            return mb_strtolower(trim(preg_replace($regex, '_\0', $name), '_'));
+        $regex = $strict
+            ? '/(?<=\p{L})(\p{Lu})/u'
+            : '/(?<=\p{L})(?<!\p{Lu})(\p{Lu})/u';
+        $result = preg_replace($regex, addslashes($separator) . '\1', $name);
+
+        if ($separator !== '_') {
+            $result = str_replace('_', $separator, $result);
         }
 
-        return mb_strtolower(trim(str_replace('_', $separator, preg_replace($regex, $separator . '\0', $name)), $separator));
+        return mb_strtolower(trim($result, $separator));
     }
 
     /**
