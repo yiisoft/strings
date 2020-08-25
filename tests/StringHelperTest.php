@@ -93,17 +93,32 @@ final class StringHelperTest extends TestCase
 
     public function testTruncate(): void
     {
-        $this->assertEquals('привет, я multibyte…', StringHelper::truncateCharacters('привет, я multibyte строка!', 20));
+        $this->assertEquals(
+            'привет, я multibyte…',
+            StringHelper::truncateCharacters('привет, я multibyte строка!', 20)
+        );
         $this->assertEquals('Не трогаем строку', StringHelper::truncateCharacters('Не трогаем строку', 20));
-        $this->assertEquals('исполь!!!', StringHelper::truncateCharacters('используем восклицательные знаки', 6, '!!!'));
+        $this->assertEquals(
+            'исполь!!!',
+            StringHelper::truncateCharacters('используем восклицательные знаки', 6, '!!!')
+        );
     }
 
     public function testTruncateWords(): void
     {
-        $this->assertEquals('это тестовая multibyte строка', StringHelper::truncateWords('это тестовая multibyte строка', 5));
+        $this->assertEquals(
+            'это тестовая multibyte строка',
+            StringHelper::truncateWords('это тестовая multibyte строка', 5)
+        );
         $this->assertEquals('это тестовая multibyte…', StringHelper::truncateWords('это тестовая multibyte строка', 3));
-        $this->assertEquals('это тестовая multibyte!!!', StringHelper::truncateWords('это тестовая multibyte строка', 3, '!!!'));
-        $this->assertEquals('это строка с          неожиданными…', StringHelper::truncateWords('это строка с          неожиданными пробелами', 4));
+        $this->assertEquals(
+            'это тестовая multibyte!!!',
+            StringHelper::truncateWords('это тестовая multibyte строка', 3, '!!!')
+        );
+        $this->assertEquals(
+            'это строка с          неожиданными…',
+            StringHelper::truncateWords('это строка с          неожиданными пробелами', 4)
+        );
     }
 
     /**
@@ -220,16 +235,35 @@ final class StringHelperTest extends TestCase
     public function testExplode(): void
     {
         $this->assertEquals(['It', 'is', 'a first', 'test'], StringHelper::explode('It, is, a first, test'));
-        $this->assertEquals(['It', 'is', 'a test with trimmed digits', '0', '1', '2'], StringHelper::explode('It, is, a test with trimmed digits, 0, 1, 2', ',', true, true));
+        $this->assertEquals(
+            ['It', 'is', 'a test with trimmed digits', '0', '1', '2'],
+            StringHelper::explode('It, is, a test with trimmed digits, 0, 1, 2', ',', true, true)
+        );
         $this->assertEquals(['It', 'is', 'a second', 'test'], StringHelper::explode('It+ is+ a second+ test', '+'));
-        $this->assertEquals(['Save', '', '', 'empty trimmed string'], StringHelper::explode('Save, ,, empty trimmed string', ','));
+        $this->assertEquals(
+            ['Save', '', '', 'empty trimmed string'],
+            StringHelper::explode('Save, ,, empty trimmed string', ',')
+        );
         $this->assertEquals(['44', '512'], StringHelper::explode('0 0 440 512', ' ', '0', true));
         $this->assertEquals(['Здесь', 'multibyte', 'строка'], StringHelper::explode('Здесь我 multibyte我 строка', '我'));
-        $this->assertEquals(['Disable', '  trim  ', 'here but ignore empty'], StringHelper::explode('Disable,  trim  ,,,here but ignore empty', ',', false, true));
-        $this->assertEquals(['It/', ' is?', ' a', ' test with rtrim'], StringHelper::explode('It/, is?, a , test with rtrim', ',', 'rtrim'));
-        $this->assertEquals(['It', ' is', ' a ', ' test with closure'], StringHelper::explode('It/, is?, a , test with closure', ',', static function ($value) {
-            return trim($value, '/?');
-        }));
+        $this->assertEquals(
+            ['Disable', '  trim  ', 'here but ignore empty'],
+            StringHelper::explode('Disable,  trim  ,,,here but ignore empty', ',', false, true)
+        );
+        $this->assertEquals(
+            ['It/', ' is?', ' a', ' test with rtrim'],
+            StringHelper::explode('It/, is?, a , test with rtrim', ',', 'rtrim')
+        );
+        $this->assertEquals(
+            ['It', ' is', ' a ', ' test with closure'],
+            StringHelper::explode(
+                'It/, is?, a , test with closure',
+                ',',
+                static function ($value) {
+                    return trim($value, '/?');
+                }
+            )
+        );
     }
 
     public function testWordCount(): void
@@ -269,7 +303,10 @@ final class StringHelperTest extends TestCase
             'Regular string' => ['This is an encoded string', 'VGhpcyBpcyBhbiBlbmNvZGVkIHN0cmluZw=='],
             '? and _ characters' => ['subjects?_d=1', 'c3ViamVjdHM_X2Q9MQ=='],
             '> character' => ['subjects>_d=1', 'c3ViamVjdHM-X2Q9MQ=='],
-            'Unicode' => ['Это закодированная строка', '0K3RgtC-INC30LDQutC-0LTQuNGA0L7QstCw0L3QvdCw0Y8g0YHRgtGA0L7QutCw'],
+            'Unicode' => [
+                'Это закодированная строка',
+                '0K3RgtC-INC30LDQutC-0LTQuNGA0L7QstCw0L3QvdCw0Y8g0YHRgtGA0L7QutCw'
+            ],
         ];
     }
 
@@ -412,5 +449,40 @@ final class StringHelperTest extends TestCase
     {
         $this->assertSame('Hell...er 2', StringHelper::truncateMiddle('Hello world number 2', 8));
         $this->assertSame('Hell*er 2', StringHelper::truncateMiddle('Hello world number 2', 8, '*'));
+    }
+
+    public function testTruncateMiddleWithLengthGreaterThanString(): void
+    {
+        $this->assertSame('Hello world', StringHelper::truncateMiddle('Hello world', 11, '*'));
+    }
+
+    public function testDirname(): void
+    {
+        $this->assertSame('\App\Test', StringHelper::dirname('\App\Test\Class.php'));
+        $this->assertSame('', StringHelper::dirname('Class.php'));
+    }
+
+    public function testNormalizeNumber(): void
+    {
+        $setLocale = setlocale(LC_ALL, 'Norwegian');
+
+        if (!$setLocale) {
+            $this->markTestSkipped('Norwegian locale not found.');
+        }
+
+        $this->assertSame('10.000', StringHelper::normalizeNumber('10,000'));
+    }
+
+    public function testFloatToString(): void
+    {
+        $this->assertSame('10.111', StringHelper::floatToString('10,111'));
+    }
+
+    public function testHtmlSpecialChars(): void
+    {
+        $this->assertSame(
+            '&lt;a href=&#039;test&#039;&gt;Тест&lt;/a&gt;',
+            StringHelper::htmlspecialchars("<a href='test'>Тест</a>", ENT_QUOTES)
+        );
     }
 }
