@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Strings;
 
 /**
@@ -11,7 +13,7 @@ final class Inflector
      * @var array the rules for converting a word into its plural form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
-    private $pluralizeRules = [
+    private array $pluralizeRules = [
         '/([nrlm]ese|deer|fish|sheep|measles|ois|pox|media)$/i' => '\1',
         '/^(sea[- ]bass)$/i' => '\1',
         '/(m)ove$/i' => '\1oves',
@@ -48,7 +50,7 @@ final class Inflector
      * @var array the rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
-    private $singularizeRules = [
+    private array $singularizeRules = [
         '/([nrlm]ese|deer|fish|sheep|measles|ois|pox|media|ss)$/i' => '\1',
         '/^(sea[- ]bass)$/i' => '\1',
         '/(s)tatuses$/i' => '\1tatus',
@@ -95,7 +97,7 @@ final class Inflector
      * @var array the special rules for converting a word between its plural form and singular form.
      * The keys are the special words in singular form, and the values are the corresponding plural form.
      */
-    private $specialRules = [
+    private array $specialRules = [
         'atlas' => 'atlases',
         'beef' => 'beefs',
         'brother' => 'brothers',
@@ -212,7 +214,7 @@ final class Inflector
     /**
      * @var array fallback map for transliteration used by [[transliterate()]] when intl isn't available.
      */
-    private $transliterationMap = [
+    private array $transliterationMap = [
         'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A', 'Æ' => 'AE', 'Ç' => 'C',
         'È' => 'E', 'É' => 'E', 'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I', 'Ï' => 'I',
         'Ð' => 'D', 'Ñ' => 'N', 'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ö' => 'O', 'Ő' => 'O',
@@ -273,9 +275,9 @@ final class Inflector
      * for transliteration. Used by [[transliterate()]] when intl is available. Defaults to [[TRANSLITERATE_LOOSE]]
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
-    private $transliterator = self::TRANSLITERATE_LOOSE;
+    private string $transliterator = self::TRANSLITERATE_LOOSE;
 
-    private $withoutIntl = false;
+    private bool $withoutIntl = false;
 
     public function withPluralizeRules(array $rules): self
     {
@@ -563,7 +565,7 @@ final class Inflector
     /**
      * @return bool if intl extension should be used
      */
-    protected function useIntl(): bool
+    private function useIntl(): bool
     {
         return $this->withoutIntl === false && extension_loaded('intl');
     }
