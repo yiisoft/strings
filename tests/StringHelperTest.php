@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class StringHelperTest extends TestCase
 {
-    public function testStrlen(): void
+    public function byteLength(): void
     {
         $this->assertEquals(4, StringHelper::byteLength('this'));
         $this->assertEquals(6, StringHelper::byteLength('это'));
@@ -143,25 +143,21 @@ final class StringHelperTest extends TestCase
             // false-positive check
             [false, '', ' '],
             [false, ' ', '  '],
+            [false, 'Abc', 'a'],
             [false, 'Abc', 'Abcde'],
             [false, 'abc', 'abe'],
             [false, 'abc', 'b'],
             [false, 'abc', 'c'],
+            [false, 'üЯ multibyte', 'Üя multibyte'],
         ];
     }
 
-    public function testStartsWithCaseSensitive(): void
+    public function testStartsWithIgnoringCase(): void
     {
-        $this->assertFalse(StringHelper::startsWith('Abc', 'a'));
-        $this->assertFalse(StringHelper::startsWith('üЯ multibyte', 'Üя multibyte'));
-    }
-
-    public function testStartsWithCaseInsensitive(): void
-    {
-        $this->assertTrue(StringHelper::startsWith('sTrInG', 'StRiNg', false));
-        $this->assertTrue(StringHelper::startsWith('CaSe', 'cAs', false));
-        $this->assertTrue(StringHelper::startsWith('HTTP://BÜrger.DE/', 'http://bürger.de', false));
-        $this->assertTrue(StringHelper::startsWith('üЯйΨB', 'ÜяЙΨ', false));
+        $this->assertTrue(StringHelper::startsWithIgnoringCase('sTrInG', 'StRiNg'));
+        $this->assertTrue(StringHelper::startsWithIgnoringCase('CaSe', 'cAs'));
+        $this->assertTrue(StringHelper::startsWithIgnoringCase('HTTP://BÜrger.DE/', 'http://bürger.de'));
+        $this->assertTrue(StringHelper::startsWithIgnoringCase('üЯйΨB', 'ÜяЙΨ'));
     }
 
     /**
@@ -174,8 +170,6 @@ final class StringHelperTest extends TestCase
     {
         // case sensitive version check
         $this->assertSame($result, StringHelper::endsWith($string, $with));
-        // case insensitive version check
-        $this->assertSame($result, StringHelper::endsWith($string, $with, false));
     }
 
     /**
@@ -203,20 +197,16 @@ final class StringHelperTest extends TestCase
             [false, 'abc', 'abe'],
             [false, 'abc', 'a'],
             [false, 'abc', 'b'],
+            [false, 'string', 'G'],
+            [false, 'multibyte строка', 'А'],
         ];
-    }
-
-    public function testEndsWithCaseSensitive(): void
-    {
-        $this->assertFalse(StringHelper::endsWith('string', 'G'));
-        $this->assertFalse(StringHelper::endsWith('multibyte строка', 'А'));
     }
 
     public function testEndsWithCaseInsensitive(): void
     {
-        $this->assertTrue(StringHelper::endsWith('sTrInG', 'StRiNg', false));
-        $this->assertTrue(StringHelper::endsWith('string', 'nG', false));
-        $this->assertTrue(StringHelper::endsWith('BüЯйΨ', 'ÜяЙΨ', false));
+        $this->assertTrue(StringHelper::endsWithIgnoringCase('sTrInG', 'StRiNg'));
+        $this->assertTrue(StringHelper::endsWithIgnoringCase('string', 'nG'));
+        $this->assertTrue(StringHelper::endsWithIgnoringCase('BüЯйΨ', 'ÜяЙΨ'));
     }
 
     public function testExplode(): void

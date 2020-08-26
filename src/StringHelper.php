@@ -18,7 +18,8 @@ final class StringHelper
 {
     /**
      * Returns the number of bytes in the given string.
-     * This method ensures the string is treated as a byte array by using `mb_strlen()`.
+     * This method ensures the string is treated as a byte array even if `mbstring.func_overload` is turned on
+     * by using {@see mb_strlen()}.
      * @param string|null $input The string being measured for length.
      * @return int The number of bytes in the given string.
      */
@@ -57,12 +58,14 @@ final class StringHelper
      */
     public static function basename(string $path, string $suffix = ''): string
     {
-        if (($len = mb_strlen($suffix)) > 0 && mb_substr($path, -$len) === $suffix) {
-            $path = mb_substr($path, 0, -$len);
+        $length = mb_strlen($suffix);
+        if ($length > 0 && mb_substr($path, -$length) === $suffix) {
+            $path = mb_substr($path, 0, -$length);
         }
         $path = rtrim(str_replace('\\', '/', $path), '/\\');
-        if (($pos = mb_strrpos($path, '/')) !== false) {
-            return mb_substr($path, $pos + 1);
+        $position = mb_strrpos($path, '/');
+        if ($position !== false) {
+            return mb_substr($path, $position + 1);
         }
 
         return $path;
@@ -169,16 +172,31 @@ final class StringHelper
      *
      * @param string $input Input string.
      * @param string|null $with Part to search inside the $string.
-     * @param bool $caseSensitive Case sensitive search. Default is true. When case sensitive is enabled, $with must exactly match the starting of the string in order to get a true value.
      * @return bool Returns true if first input starts with second input, false otherwise.
      */
-    public static function startsWith(string $input, ?string $with, bool $caseSensitive = true): bool
+    public static function startsWith(string $input, ?string $with): bool
     {
-        if (!$bytes = static::byteLength($with)) {
+        $bytes = static::byteLength($with);
+        if ($bytes === 0) {
             return true;
         }
-        if ($caseSensitive) {
-            return strncmp($input, $with, $bytes) === 0;
+
+        return strncmp($input, $with, $bytes) === 0;
+    }
+
+    /**
+     * Check if given string starts with specified substring ignoring case.
+     * Binary and multibyte safe.
+     *
+     * @param string $input Input string.
+     * @param string|null $with Part to search inside the $string.
+     * @return bool Returns true if first input starts with second input, false otherwise.
+     */
+    public static function startsWithIgnoringCase(string $input, ?string $with): bool
+    {
+        $bytes = static::byteLength($with);
+        if ($bytes === 0) {
+            return true;
         }
 
         return static::strtolower(static::substr($input, 0, $bytes, '8bit')) === static::strtolower($with);
@@ -190,22 +208,36 @@ final class StringHelper
      *
      * @param string $input Input string to check.
      * @param string|null $with Part to search inside of the $string.
-     * @param bool $caseSensitive Case sensitive search. Default is true. When case sensitive is enabled, $with must
-     * exactly match the ending of the string in order to get a true value.
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
-    public static function endsWith(string $input, ?string $with, bool $caseSensitive = true): bool
+    public static function endsWith(string $input, ?string $with): bool
     {
-        if (!$bytes = static::byteLength($with)) {
+        $bytes = static::byteLength($with);
+        if ($bytes === 0) {
             return true;
         }
-        if ($caseSensitive) {
-            // Warning check, see http://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
-            if (static::byteLength($input) < $bytes) {
-                return false;
-            }
 
-            return substr_compare($input, $with, -$bytes, $bytes) === 0;
+        // Warning check, see http://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
+        if (static::byteLength($input) < $bytes) {
+            return false;
+        }
+
+        return substr_compare($input, $with, -$bytes, $bytes) === 0;
+    }
+
+    /**
+     * Check if given string ends with specified substring.
+     * Binary and multibyte safe.
+     *
+     * @param string $input Input string to check.
+     * @param string|null $with Part to search inside of the $string.
+     * @return bool Returns true if first input ends with second input, false otherwise.
+     */
+    public static function endsWithIgnoringCase(string $input, ?string $with): bool
+    {
+        $bytes = static::byteLength($with);
+        if ($bytes === 0) {
+            return true;
         }
 
         return static::strtolower(mb_substr($input, -$bytes, mb_strlen($input, '8bit'), '8bit')) === static::strtolower($with);
@@ -413,7 +445,7 @@ final class StringHelper
      */
     public static function strlen(string $string, string $encoding = null): int
     {
-        return empty($encoding) ? mb_strlen($string) : mb_strlen($string, $encoding);
+        return $encoding === null ? mb_strlen($string) : mb_strlen($string, $encoding);
     }
 
     /**
@@ -428,7 +460,7 @@ final class StringHelper
      */
     public static function substr(string $string, int $start, int $length = null, string $encoding = null): string
     {
-        return empty($encoding) ? mb_substr($string, $start, $length) : mb_substr($string, $start, $length, $encoding);
+        return $encoding === null ? mb_substr($string, $start, $length) : mb_substr($string, $start, $length, $encoding);
     }
 
     /**
@@ -441,7 +473,7 @@ final class StringHelper
      */
     public static function strtolower(string $string, string $encoding = null): string
     {
-        return empty($encoding) ? mb_strtolower($string) : mb_strtolower($string, $encoding);
+        return $encoding === null ? mb_strtolower($string) : mb_strtolower($string, $encoding);
     }
 
     /**
@@ -454,7 +486,7 @@ final class StringHelper
      */
     public static function strtoupper(string $string, string $encoding = null): string
     {
-        return empty($encoding) ? mb_strtoupper($string) : mb_strtoupper($string, $encoding);
+        return $encoding === null ? mb_strtoupper($string) : mb_strtoupper($string, $encoding);
     }
 
     /**
@@ -465,11 +497,11 @@ final class StringHelper
      * @param string|null $encoding Optional, defaults to "UTF-8".
      * @param bool $doubleEncode If set to false, method will not encode existing HTML entities.
      * @return string
-     *@see https://php.net/manual/en/function.htmlspecialchars.php
+     * @see https://php.net/manual/en/function.htmlspecialchars.php
      */
     public static function htmlspecialchars(string $string, int $flags, string $encoding = null, bool $doubleEncode = true): string
     {
-        return empty($encoding) && $doubleEncode
+        return $encoding === null && $doubleEncode
             ? htmlspecialchars($string, $flags)
             : htmlspecialchars($string, $flags, $encoding ?: ini_get('default_charset'), $doubleEncode);
     }

@@ -457,18 +457,15 @@ final class Inflector
      * Converts a CamelCase name into space-separated words.
      * For example, 'PostTag' will be converted to 'Post Tag'.
      * @param string $input The string to be converted.
-     * @param bool $ucwords Whether to capitalize the first letter in each word.
      * @return string The resulting words.
      */
-    public function camel2words(string $input, bool $ucwords = true): string
+    public function camel2words(string $input): string
     {
-        $label = mb_strtolower(trim(str_replace([
+        return mb_strtolower(trim(str_replace([
             '-',
             '_',
             '.',
         ], ' ', preg_replace('/(?<!\p{Lu})(\p{Lu})|(\p{Lu})(?=\p{Ll})/u', ' \0', $input))));
-
-        return $ucwords ? StringHelper::ucwords($label) : $label;
     }
 
     /**
