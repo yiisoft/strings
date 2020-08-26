@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Strings;
 
 use function array_slice;
@@ -22,7 +24,7 @@ final class StringHelper
      */
     public static function byteLength(?string $string): int
     {
-        return mb_strlen($string, '8bit');
+        return mb_strlen((string)$string, '8bit');
     }
 
     /**
@@ -113,7 +115,7 @@ final class StringHelper
      */
     public static function truncateWords(string $string, int $count, string $suffix = '…'): string
     {
-        $words = preg_split('/(\s+)/u', trim($string), null, PREG_SPLIT_DELIM_CAPTURE);
+        $words = preg_split('/(\s+)/u', trim($string), -1, PREG_SPLIT_DELIM_CAPTURE);
         if (count($words) / 2 > $count) {
             return implode('', array_slice($words, 0, ($count * 2) - 1)) . $suffix;
         }
@@ -154,7 +156,7 @@ final class StringHelper
             return $string;
         }
 
-        $partLen = floor($length / 2);
+        $partLen = (int)(floor($length / 2));
         $left = ltrim(mb_substr($string, 0, $partLen, $encoding));
         $right = rtrim(mb_substr($string, -$partLen, $partLen, $encoding));
 
@@ -251,7 +253,7 @@ final class StringHelper
      */
     public static function countWords(string $string): int
     {
-        return count(preg_split('/\s+/u', $string, null, PREG_SPLIT_NO_EMPTY));
+        return count(preg_split('/\s+/u', $string, -1, PREG_SPLIT_NO_EMPTY));
     }
 
     /**
