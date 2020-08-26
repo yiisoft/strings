@@ -96,10 +96,10 @@ final class StringHelper
      * @param string $input The string to truncate.
      * @param int $length How many characters from original string to include into truncated string.
      * @param string $suffix String to append to the end of truncated string.
-     * @param string|null $encoding The charset to use, defaults to charset currently used by application.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @return string The truncated string.
      */
-    public static function truncateCharacters(string $input, int $length, string $suffix = '…', string $encoding = null): string
+    public static function truncateCharacters(string $input, int $length, string $suffix = '…', string $encoding = 'UTF-8'): string
     {
         if (static::strlen($input, $encoding) > $length) {
             return rtrim(static::substr($input, 0, $length, $encoding)) . $suffix;
@@ -148,7 +148,7 @@ final class StringHelper
      * @param string $input The string to truncate.
      * @param int $length How many characters from original string to include into truncated string.
      * @param string $separator String to append in the middle of truncated string.
-     * @param string $encoding The charset to use, defaults to charset currently used by application.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @return string The truncated string.
      */
     public static function truncateMiddle(string $input, int $length, string $separator = '...', string $encoding = 'UTF-8'): string
@@ -404,11 +404,11 @@ final class StringHelper
      * This method provides a unicode-safe implementation of built-in PHP function `ucfirst()`.
      *
      * @param string $string The string to be processed.
-     * @param string|null $encoding Optional, defaults to "UTF-8".
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @return string
      * @see https://php.net/manual/en/function.ucfirst.php
      */
-    public static function ucfirst(string $string, string $encoding = null): string
+    public static function ucfirst(string $string, string $encoding = 'UTF-8'): string
     {
         $firstChar = static::substr($string, 0, 1, $encoding);
         $rest = static::substr($string, 1, null, $encoding);
@@ -420,11 +420,11 @@ final class StringHelper
      * This method provides a unicode-safe implementation of built-in PHP function `ucwords()`.
      *
      * @param string $string The string to be processed.
-     * @param string|null $encoding Optional, defaults to "UTF-8".
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.ucwords.php
      * @return string
      */
-    public static function ucwords(string $string, string $encoding = null): string
+    public static function ucwords(string $string, string $encoding = 'UTF-8'): string
     {
         $words = preg_split("/\s/u", $string, -1, PREG_SPLIT_NO_EMPTY);
 
@@ -439,13 +439,13 @@ final class StringHelper
      * Get string length.
      *
      * @param string $string String to calculate length for.
-     * @param string|null $encoding Optional, defaults to "UTF-8".
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.mb-strlen.php
      * @return int
      */
-    public static function strlen(string $string, string $encoding = null): int
+    public static function strlen(string $string, string $encoding = 'UTF-8'): int
     {
-        return $encoding === null ? mb_strlen($string) : mb_strlen($string, $encoding);
+        return mb_strlen($string, $encoding);
     }
 
     /**
@@ -454,39 +454,39 @@ final class StringHelper
      * @param string $string To get substring from.
      * @param int $start Character to start at.
      * @param int|null $length Number of characters to get.
-     * @param string|null $encoding Optional, defaults to "UTF-8".
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.mb-substr.php
      * @return string
      */
-    public static function substr(string $string, int $start, int $length = null, string $encoding = null): string
+    public static function substr(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
     {
-        return $encoding === null ? mb_substr($string, $start, $length) : mb_substr($string, $start, $length, $encoding);
+        return mb_substr($string, $start, $length, $encoding);
     }
 
     /**
      * Make a string lowercase.
      *
      * @param string $string String to process.
-     * @param string|null $encoding Optional, defaults to "UTF-8".
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.mb-strtolower.php
      * @return string
      */
-    public static function strtolower(string $string, string $encoding = null): string
+    public static function strtolower(string $string, string $encoding = 'UTF-8'): string
     {
-        return $encoding === null ? mb_strtolower($string) : mb_strtolower($string, $encoding);
+        return mb_strtolower($string, $encoding);
     }
 
     /**
      * Make a string uppercase.
      *
      * @param string $string String to process.
-     * @param string|null $encoding Optional, defaults to "UTF-8".
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.mb-strtoupper.php
      * @return string
      */
-    public static function strtoupper(string $string, string $encoding = null): string
+    public static function strtoupper(string $string, string $encoding = 'UTF-8'): string
     {
-        return $encoding === null ? mb_strtoupper($string) : mb_strtoupper($string, $encoding);
+        return mb_strtoupper($string, $encoding);
     }
 
     /**
@@ -494,12 +494,12 @@ final class StringHelper
      *
      * @param string $string String to process.
      * @param int $flags A bitmask of one or more flags.
-     * @param string|null $encoding Optional, defaults to "UTF-8".
      * @param bool $doubleEncode If set to false, method will not encode existing HTML entities.
+     * @param string|null $encoding The encoding to use, defaults to `ini_get('default_charset')`.
      * @return string
      * @see https://php.net/manual/en/function.htmlspecialchars.php
      */
-    public static function htmlspecialchars(string $string, int $flags, string $encoding = null, bool $doubleEncode = true): string
+    public static function htmlspecialchars(string $string, int $flags, bool $doubleEncode = true, string $encoding = null): string
     {
         return $encoding === null && $doubleEncode
             ? htmlspecialchars($string, $flags)

@@ -442,7 +442,7 @@ final class StringHelperTest extends TestCase
 
         $this->assertSame(
             '&lt;a href=&#039;test&#039;&gt;Тест&lt;/a&gt;&lt;br&gt;',
-            StringHelper::htmlspecialchars("<a href='test'>Тест</a>&lt;br&gt;", ENT_QUOTES, 'UTF-8', false)
+            StringHelper::htmlspecialchars("<a href='test'>Тест</a>&lt;br&gt;", ENT_QUOTES, false, 'UTF-8')
         );
     }
 }
