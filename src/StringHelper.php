@@ -12,34 +12,34 @@ use function mb_strtoupper;
 use function mb_substr;
 
 /**
- * The Yii string helper provides static methods allowing you to deal with strings more efficiently.
+ * Provides static methods allowing you to deal with strings more efficiently.
  */
 final class StringHelper
 {
     /**
      * Returns the number of bytes in the given string.
      * This method ensures the string is treated as a byte array by using `mb_strlen()`.
-     * @param string $string the string being measured for length
-     * @return int the number of bytes in the given string.
+     * @param string|null $input The string being measured for length.
+     * @return int The number of bytes in the given string.
      */
-    public static function byteLength(?string $string): int
+    public static function byteLength(?string $input): int
     {
-        return mb_strlen((string)$string, '8bit');
+        return mb_strlen((string)$input, '8bit');
     }
 
     /**
      * Returns the portion of string specified by the start and length parameters.
      * This method ensures the string is treated as a byte array by using `mb_substr()`.
-     * @param string $string the input string. Must be one character or longer.
-     * @param int $start the starting position
-     * @param int $length the desired portion length. If not specified or `null`, there will be
+     * @param string $input The input string. Must be one character or longer.
+     * @param int $start The starting position.
+     * @param int|null $length The desired portion length. If not specified or `null`, there will be
      * no limit on length i.e. the output will be until the end of the string.
-     * @return string the extracted part of string, or FALSE on failure or an empty string.
+     * @return string The extracted part of string, or FALSE on failure or an empty string.
      * @see http://www.php.net/manual/en/function.substr.php
      */
-    public static function byteSubstr(string $string, int $start, int $length = null): string
+    public static function byteSubstr(string $input, int $start, int $length = null): string
     {
-        return mb_substr($string, $start, $length ?? mb_strlen($string, '8bit'), '8bit');
+        return mb_substr($input, $start, $length ?? mb_strlen($input, '8bit'), '8bit');
     }
 
     /**
@@ -52,7 +52,7 @@ final class StringHelper
      *
      * @param string $path A path string.
      * @param string $suffix If the name component ends in suffix this will also be cut off.
-     * @return string the trailing name component of the given path.
+     * @return string The trailing name component of the given path.
      * @see http://www.php.net/manual/en/function.basename.php
      */
     public static function basename(string $path, string $suffix = ''): string
@@ -74,7 +74,7 @@ final class StringHelper
      * both \ and / as directory separators, independent of the operating system.
      *
      * @param string $path A path string.
-     * @return string the parent directory's path.
+     * @return string The parent directory's path.
      * @see http://www.php.net/manual/en/function.basename.php
      */
     public static function dirname(string $path): string
@@ -90,50 +90,50 @@ final class StringHelper
     /**
      * Truncates a string to the number of characters specified.
      *
-     * @param string $string The string to truncate.
+     * @param string $input The string to truncate.
      * @param int $length How many characters from original string to include into truncated string.
      * @param string $suffix String to append to the end of truncated string.
-     * @param string $encoding The charset to use, defaults to charset currently used by application.
-     * @return string the truncated string.
+     * @param string|null $encoding The charset to use, defaults to charset currently used by application.
+     * @return string The truncated string.
      */
-    public static function truncateCharacters(string $string, int $length, string $suffix = '…', string $encoding = null): string
+    public static function truncateCharacters(string $input, int $length, string $suffix = '…', string $encoding = null): string
     {
-        if (static::strlen($string, $encoding) > $length) {
-            return rtrim(static::substr($string, 0, $length, $encoding)) . $suffix;
+        if (static::strlen($input, $encoding) > $length) {
+            return rtrim(static::substr($input, 0, $length, $encoding)) . $suffix;
         }
 
-        return $string;
+        return $input;
     }
 
     /**
      * Truncates a string to the number of words specified.
      *
-     * @param string $string The string to truncate.
+     * @param string $input The string to truncate.
      * @param int $count How many words from original string to include into truncated string.
      * @param string $suffix String to append to the end of truncated string.
-     * @return string the truncated string.
+     * @return string The truncated string.
      */
-    public static function truncateWords(string $string, int $count, string $suffix = '…'): string
+    public static function truncateWords(string $input, int $count, string $suffix = '…'): string
     {
-        $words = preg_split('/(\s+)/u', trim($string), -1, PREG_SPLIT_DELIM_CAPTURE);
+        $words = preg_split('/(\s+)/u', trim($input), -1, PREG_SPLIT_DELIM_CAPTURE);
         if (count($words) / 2 > $count) {
             return implode('', array_slice($words, 0, ($count * 2) - 1)) . $suffix;
         }
 
-        return $string;
+        return $input;
     }
 
     /**
-     * Truncate the string from the beginning
+     * Truncate the string from the beginning.
      *
-     * @param string $string string to process
-     * @param int $length total of character to truncate
-     * @param string $suffix String to append to the beginning
+     * @param string $input String to process.
+     * @param int $length Total of character to truncate.
+     * @param string $suffix String to append to the beginning.
      * @return string
      */
-    public static function truncateBegin(string $string, int $length, string $suffix = '…'): string
+    public static function truncateBegin(string $input, int $length, string $suffix = '…'): string
     {
-        return substr_replace($string, $suffix, 0, $length);
+        return substr_replace($input, $suffix, 0, $length);
     }
 
     /**
@@ -142,23 +142,23 @@ final class StringHelper
      *
      * This method does not support HTML. It will strip all tags even if length is smaller than the string including tags.
      *
-     * @param string $string The string to truncate.
+     * @param string $input The string to truncate.
      * @param int $length How many characters from original string to include into truncated string.
      * @param string $separator String to append in the middle of truncated string.
      * @param string $encoding The charset to use, defaults to charset currently used by application.
-     * @return string the truncated string.
+     * @return string The truncated string.
      */
-    public static function truncateMiddle(string $string, int $length, string $separator = '...', string $encoding = 'UTF-8'): string
+    public static function truncateMiddle(string $input, int $length, string $separator = '...', string $encoding = 'UTF-8'): string
     {
-        $strLen = mb_strlen($string, $encoding);
+        $strLen = mb_strlen($input, $encoding);
 
         if ($strLen <= $length) {
-            return $string;
+            return $input;
         }
 
         $partLen = (int)(floor($length / 2));
-        $left = ltrim(mb_substr($string, 0, $partLen, $encoding));
-        $right = rtrim(mb_substr($string, -$partLen, $partLen, $encoding));
+        $left = ltrim(mb_substr($input, 0, $partLen, $encoding));
+        $right = rtrim(mb_substr($input, -$partLen, $partLen, $encoding));
 
         return $left . $separator . $right;
     }
@@ -167,53 +167,54 @@ final class StringHelper
      * Check if given string starts with specified substring.
      * Binary and multibyte safe.
      *
-     * @param string $string Input string
-     * @param string $with Part to search inside the $string
+     * @param string $input Input string.
+     * @param string|null $with Part to search inside the $string.
      * @param bool $caseSensitive Case sensitive search. Default is true. When case sensitive is enabled, $with must exactly match the starting of the string in order to get a true value.
-     * @return bool Returns true if first input starts with second input, false otherwise
+     * @return bool Returns true if first input starts with second input, false otherwise.
      */
-    public static function startsWith(string $string, ?string $with, bool $caseSensitive = true): bool
+    public static function startsWith(string $input, ?string $with, bool $caseSensitive = true): bool
     {
         if (!$bytes = static::byteLength($with)) {
             return true;
         }
         if ($caseSensitive) {
-            return strncmp($string, $with, $bytes) === 0;
+            return strncmp($input, $with, $bytes) === 0;
         }
 
-        return static::strtolower(static::substr($string, 0, $bytes, '8bit')) === static::strtolower($with);
+        return static::strtolower(static::substr($input, 0, $bytes, '8bit')) === static::strtolower($with);
     }
 
     /**
      * Check if given string ends with specified substring.
      * Binary and multibyte safe.
      *
-     * @param string $string Input string to check
-     * @param string $with Part to search inside of the $string.
-     * @param bool $caseSensitive Case sensitive search. Default is true. When case sensitive is enabled, $with must exactly match the ending of the string in order to get a true value.
-     * @return bool Returns true if first input ends with second input, false otherwise
+     * @param string $input Input string to check.
+     * @param string|null $with Part to search inside of the $string.
+     * @param bool $caseSensitive Case sensitive search. Default is true. When case sensitive is enabled, $with must
+     * exactly match the ending of the string in order to get a true value.
+     * @return bool Returns true if first input ends with second input, false otherwise.
      */
-    public static function endsWith(string $string, ?string $with, bool $caseSensitive = true): bool
+    public static function endsWith(string $input, ?string $with, bool $caseSensitive = true): bool
     {
         if (!$bytes = static::byteLength($with)) {
             return true;
         }
         if ($caseSensitive) {
             // Warning check, see http://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
-            if (static::byteLength($string) < $bytes) {
+            if (static::byteLength($input) < $bytes) {
                 return false;
             }
 
-            return substr_compare($string, $with, -$bytes, $bytes) === 0;
+            return substr_compare($input, $with, -$bytes, $bytes) === 0;
         }
 
-        return static::strtolower(mb_substr($string, -$bytes, mb_strlen($string, '8bit'), '8bit')) === static::strtolower($with);
+        return static::strtolower(mb_substr($input, -$bytes, mb_strlen($input, '8bit'), '8bit')) === static::strtolower($with);
     }
 
     /**
      * Explodes string into array, optionally trims values and skips empty ones.
      *
-     * @param string $string String to be exploded.
+     * @param string $input String to be exploded.
      * @param string $delimiter Delimiter. Default is ','.
      * @param mixed $trim Whether to trim each element. Can be:
      *   - boolean - to trim normally;
@@ -222,13 +223,13 @@ final class StringHelper
      * @param bool $skipEmpty Whether to skip empty strings between delimiters. Default is false.
      * @return array
      */
-    public static function explode(string $string, string $delimiter = ',', $trim = true, bool $skipEmpty = false): array
+    public static function explode(string $input, string $delimiter = ',', $trim = true, bool $skipEmpty = false): array
     {
-        $result = explode($delimiter, $string);
+        $result = explode($delimiter, $input);
         if ($trim !== false) {
             if ($trim === true) {
                 $trim = 'trim';
-            } elseif (!is_callable($trim)) {
+            } elseif (!\is_callable($trim)) {
                 $trim = static function ($v) use ($trim) {
                     return trim($v, $trim);
                 };
@@ -248,12 +249,12 @@ final class StringHelper
     /**
      * Counts words in a string.
      *
-     * @param string $string
+     * @param string $input
      * @return int
      */
-    public static function countWords(string $string): int
+    public static function countWords(string $input): int
     {
-        return count(preg_split('/\s+/u', $string, -1, PREG_SPLIT_NO_EMPTY));
+        return count(preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY));
     }
 
     /**
@@ -283,8 +284,8 @@ final class StringHelper
      * > `=` is not transparent to URL encoding.
      *
      * @see https://tools.ietf.org/html/rfc4648#page-7
-     * @param string $input the string to encode.
-     * @return string encoded string.
+     * @param string $input The string to encode.
+     * @return string Encoded string.
      */
     public static function base64UrlEncode(string $input): string
     {
@@ -295,8 +296,8 @@ final class StringHelper
      * Decodes "Base 64 Encoding with URL and Filename Safe Alphabet" (RFC 4648).
      *
      * @see https://tools.ietf.org/html/rfc4648#page-7
-     * @param string $input encoded string.
-     * @return string decoded string.
+     * @param string $input Encoded string.
+     * @return string Decoded string.
      */
     public static function base64UrlDecode(string $input): string
     {
@@ -307,8 +308,8 @@ final class StringHelper
      * Safely casts a float to string independent of the current locale.
      *
      * The decimal separator will always be `.`.
-     * @param float|int $number a floating point number or integer.
-     * @return string the string representation of the number.
+     * @param float|int $number A floating point number or integer.
+     * @return string The string representation of the number.
      */
     public static function floatToString($number): string
     {
@@ -319,16 +320,16 @@ final class StringHelper
 
     /**
      * Checks if the passed string would match the given shell wildcard pattern.
-     * This function emulates [[fnmatch()]], which may be unavailable at certain environment, using PCRE.
-     * @param string $pattern the shell wildcard pattern.
-     * @param string $string the tested string.
-     * @param array $options options for matching. Valid options are:
+     * This function emulates {@see fnmatch()}, which may be unavailable at certain environment, using PCRE.
+     * @param string $pattern The shell wildcard pattern.
+     * @param string $string The tested string.
+     * @param array $options Options for matching. Valid options are:
      *
      * - caseSensitive: bool, whether pattern should be case sensitive. Defaults to `true`.
      * - escape: bool, whether backslash escaping is enabled. Defaults to `true`.
      * - filePath: bool, whether slashes in string only matches slashes in the given pattern. Defaults to `false`.
      *
-     * @return bool whether the string matches pattern or not.
+     * @return bool Whether the string matches pattern or not.
      */
     public static function matchWildcard(string $pattern, string $string, array $options = []): bool
     {
@@ -370,8 +371,8 @@ final class StringHelper
     /**
      * This method provides a unicode-safe implementation of built-in PHP function `ucfirst()`.
      *
-     * @param string $string the string to be processed
-     * @param string $encoding Optional, defaults to "UTF-8"
+     * @param string $string The string to be processed.
+     * @param string|null $encoding Optional, defaults to "UTF-8".
      * @return string
      * @see https://php.net/manual/en/function.ucfirst.php
      */
@@ -386,8 +387,8 @@ final class StringHelper
     /**
      * This method provides a unicode-safe implementation of built-in PHP function `ucwords()`.
      *
-     * @param string $string the string to be processed
-     * @param string $encoding Optional, defaults to "UTF-8"
+     * @param string $string The string to be processed.
+     * @param string|null $encoding Optional, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.ucwords.php
      * @return string
      */
@@ -403,10 +404,10 @@ final class StringHelper
     }
 
     /**
-     * Get string length
+     * Get string length.
      *
-     * @param string $string string to calculate length for
-     * @param string|null $encoding Optional, defaults to "UTF-8"
+     * @param string $string String to calculate length for.
+     * @param string|null $encoding Optional, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.mb-strlen.php
      * @return int
      */
@@ -416,12 +417,12 @@ final class StringHelper
     }
 
     /**
-     * Get part of string
+     * Get part of string.
      *
-     * @param string $string to get substring from
-     * @param int $start character to start at
-     * @param int|null $length number of characters to get
-     * @param string|null $encoding Optional, defaults to "UTF-8"
+     * @param string $string To get substring from.
+     * @param int $start Character to start at.
+     * @param int|null $length Number of characters to get.
+     * @param string|null $encoding Optional, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.mb-substr.php
      * @return string
      */
@@ -431,10 +432,10 @@ final class StringHelper
     }
 
     /**
-     * Make a string lowercase
+     * Make a string lowercase.
      *
-     * @param string $string string to process
-     * @param string|null $encoding Optional, defaults to "UTF-8"
+     * @param string $string String to process.
+     * @param string|null $encoding Optional, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.mb-strtolower.php
      * @return string
      */
@@ -444,10 +445,10 @@ final class StringHelper
     }
 
     /**
-     * Make a string uppercase
+     * Make a string uppercase.
      *
-     * @param string $string string to process
-     * @param string|null $encoding Optional, defaults to "UTF-8"
+     * @param string $string String to process.
+     * @param string|null $encoding Optional, defaults to "UTF-8".
      * @see https://php.net/manual/en/function.mb-strtoupper.php
      * @return string
      */
@@ -457,19 +458,19 @@ final class StringHelper
     }
 
     /**
-     * Convert special characters to HTML entities
+     * Convert special characters to HTML entities.
      *
-     * @param string $string string to process
-     * @param int $flags A bitmask of one or more flags
-     * @param string|null $encoding Optional, defaults to "UTF-8"
-     * @param bool $double_encode if set to false, method will not encode existing HTML entities
-     * @see https://php.net/manual/en/function.htmlspecialchars.php
+     * @param string $string String to process.
+     * @param int $flags A bitmask of one or more flags.
+     * @param string|null $encoding Optional, defaults to "UTF-8".
+     * @param bool $doubleEncode If set to false, method will not encode existing HTML entities.
      * @return string
+     *@see https://php.net/manual/en/function.htmlspecialchars.php
      */
-    public static function htmlspecialchars(string $string, int $flags, string $encoding = null, bool $double_encode = true): string
+    public static function htmlspecialchars(string $string, int $flags, string $encoding = null, bool $doubleEncode = true): string
     {
-        return empty($encoding) && $double_encode
+        return empty($encoding) && $doubleEncode
             ? htmlspecialchars($string, $flags)
-            : htmlspecialchars($string, $flags, $encoding ?: ini_get('default_charset'), $double_encode);
+            : htmlspecialchars($string, $flags, $encoding ?: ini_get('default_charset'), $doubleEncode);
     }
 }
