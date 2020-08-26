@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Strings\Tests;
 
 use Yiisoft\Strings\StringHelper;

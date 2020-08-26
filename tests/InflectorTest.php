@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Strings\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -146,7 +148,7 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $result = call_user_func_array([$inflector, 'camel2id'], $arguments);
+        $result = \call_user_func_array([$inflector, 'camel2id'], $arguments);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -159,7 +161,7 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $result = call_user_func_array([$inflector, 'id2camel'], $arguments);
+        $result = \call_user_func_array([$inflector, 'id2camel'], $arguments);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -217,7 +219,7 @@ final class InflectorTest extends TestCase
     public function testSlugCommons(string $input, string $expected, string $replacement = '-'): void
     {
         $inflector = new Inflector();
-        if (extension_loaded('intl')) {
+        if (\extension_loaded('intl')) {
             $this->assertEquals($expected, $inflector->slug($input, $replacement));
         }
         $this->assertEquals($expected, $inflector->withoutIntl()->slug($input, $replacement));
@@ -225,7 +227,7 @@ final class InflectorTest extends TestCase
 
     public function testSlugIntl(): void
     {
-        if (!extension_loaded('intl')) {
+        if (!\extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -262,7 +264,7 @@ final class InflectorTest extends TestCase
 
     public function testTransliterateStrict(): void
     {
-        if (!extension_loaded('intl')) {
+        if (!\extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -307,7 +309,7 @@ final class InflectorTest extends TestCase
 
     public function testTransliterateMedium(): void
     {
-        if (!extension_loaded('intl')) {
+        if (!\extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -352,7 +354,7 @@ final class InflectorTest extends TestCase
 
     public function testTransliterateLoose(): void
     {
-        if (!extension_loaded('intl')) {
+        if (!\extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -397,7 +399,7 @@ final class InflectorTest extends TestCase
 
     public function testTransliterateWithTransliterator(): void
     {
-        if (!extension_loaded('intl')) {
+        if (!\extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -407,7 +409,7 @@ final class InflectorTest extends TestCase
 
     public function testTransliterateWithTransliterationMap(): void
     {
-        if (!extension_loaded('intl')) {
+        if (!\extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -445,13 +447,13 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('21st', $inflector->ordinalize('21'));
-        $this->assertEquals('22nd', $inflector->ordinalize('22'));
-        $this->assertEquals('23rd', $inflector->ordinalize('23'));
-        $this->assertEquals('24th', $inflector->ordinalize('24'));
-        $this->assertEquals('25th', $inflector->ordinalize('25'));
-        $this->assertEquals('111th', $inflector->ordinalize('111'));
-        $this->assertEquals('113th', $inflector->ordinalize('113'));
+        $this->assertEquals('21st', $inflector->ordinalize(21));
+        $this->assertEquals('22nd', $inflector->ordinalize(22));
+        $this->assertEquals('23rd', $inflector->ordinalize(23));
+        $this->assertEquals('24th', $inflector->ordinalize(24));
+        $this->assertEquals('25th', $inflector->ordinalize(25));
+        $this->assertEquals('111th', $inflector->ordinalize(111));
+        $this->assertEquals('113th', $inflector->ordinalize(113));
     }
 
     public function testSentence(): void
