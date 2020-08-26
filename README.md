@@ -6,7 +6,7 @@
     <br>
 </p>
 
-The Yii string helper provides:
+The package provides:
 
 - StringHelper that has static methods allowing dealing with strings more efficiently;
 - Inflector provides methods such as `pluralize()` or `slug()` that derive a new string based on the string given.
