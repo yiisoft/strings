@@ -91,21 +91,24 @@ final class StringHelper
     }
 
     /**
-     * Truncates a string to the number of characters specified.
+     * Truncates a string from the end to the number of characters specified.
      *
      * @param string $input The string to truncate.
-     * @param int $length How many characters from original string to include into truncated string.
-     * @param string $suffix String to append to the end of truncated string.
+     * @param int $length Maximum length of the truncated string including trim marker.
+     * @param string $trimMarker String to append to the end of truncated string.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @return string The truncated string.
      */
-    public static function truncateCharacters(string $input, int $length, string $suffix = '…', string $encoding = 'UTF-8'): string
+    public static function truncateEnd(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
-        if (static::strlen($input, $encoding) > $length) {
-            return rtrim(static::substr($input, 0, $length, $encoding)) . $suffix;
+        $inputLength = mb_strlen($input, $encoding);
+
+        if ($inputLength <= $length) {
+            return $input;
         }
 
-        return $input;
+        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
+        return rtrim(static::substr($input, 0, $length - $trimMarkerLength, $encoding)) . $trimMarker;
     }
 
     /**
@@ -113,57 +116,63 @@ final class StringHelper
      *
      * @param string $input The string to truncate.
      * @param int $count How many words from original string to include into truncated string.
-     * @param string $suffix String to append to the end of truncated string.
+     * @param string $trimMarker String to append to the end of truncated string.
      * @return string The truncated string.
      */
-    public static function truncateWords(string $input, int $count, string $suffix = '…'): string
+    public static function truncateWords(string $input, int $count, string $trimMarker = '…'): string
     {
         $words = preg_split('/(\s+)/u', trim($input), -1, PREG_SPLIT_DELIM_CAPTURE);
         if (count($words) / 2 > $count) {
-            return implode('', array_slice($words, 0, ($count * 2) - 1)) . $suffix;
+            return implode('', array_slice($words, 0, ($count * 2) - 1)) . $trimMarker;
         }
 
         return $input;
     }
 
     /**
-     * Truncate the string from the beginning.
+     * Truncates a string from the beginning to the number of characters specified.
      *
      * @param string $input String to process.
-     * @param int $length Total of character to truncate.
-     * @param string $suffix String to append to the beginning.
+     * @param int $length Maximum length of the truncated string including trim marker.
+     * @param string $trimMarker String to append to the beginning.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @return string
      */
-    public static function truncateBegin(string $input, int $length, string $suffix = '…'): string
+    public static function truncateBegin(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
-        return substr_replace($input, $suffix, 0, $length);
+        $inputLength = mb_strlen($input, $encoding);
+
+        if ($inputLength <= $length) {
+            return $input;
+        }
+
+        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
+        return self::substrReplace($input, $trimMarker, 0, -$length + $trimMarkerLength, $encoding);
     }
 
     /**
      * Truncates a string in the middle. Keeping start and end.
-     * `StringHelper::truncateMiddle('Hello world number 2', 8)` produces "Hell...er 2".
-     *
-     * This method does not support HTML. It will strip all tags even if length is smaller than the string including tags.
+     * `StringHelper::truncateMiddle('Hello world number 2', 8)` produces "Hell…r 2".
      *
      * @param string $input The string to truncate.
-     * @param int $length How many characters from original string to include into truncated string.
-     * @param string $separator String to append in the middle of truncated string.
+     * @param int $length Maximum length of the truncated string including trim marker.
+     * @param string $trimMarker String to append in the middle of truncated string.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @return string The truncated string.
      */
-    public static function truncateMiddle(string $input, int $length, string $separator = '...', string $encoding = 'UTF-8'): string
+    public static function truncateMiddle(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
-        $strLen = mb_strlen($input, $encoding);
+        $inputLength = mb_strlen($input, $encoding);
 
-        if ($strLen <= $length) {
+        if ($inputLength <= $length) {
             return $input;
         }
 
-        $partLen = (int)(floor($length / 2));
-        $left = ltrim(mb_substr($input, 0, $partLen, $encoding));
-        $right = rtrim(mb_substr($input, -$partLen, $partLen, $encoding));
+        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
+        $start = (int)ceil(($length - $trimMarkerLength) / 2);
+        $end = $length - $start - $trimMarkerLength;
 
-        return $left . $separator . $right;
+        return self::substrReplace($input, $trimMarker, $start, -$end, $encoding);
     }
 
     /**
@@ -487,6 +496,45 @@ final class StringHelper
     public static function strtoupper(string $string, string $encoding = 'UTF-8'): string
     {
         return mb_strtoupper($string, $encoding);
+    }
+
+    /**
+     * Replace text within a portion of a string.
+     *
+     * @param string $string The input string.
+     * @param string $replacement The replacement string.
+     * @param int $start Position to begin replacing substring at.
+     * If start is non-negative, the replacing will begin at the start'th offset into string.
+     * If start is negative, the replacing will begin at the start'th character from the end of string.
+     * @param int|null $length Length of the substring to be replaced.
+     * If given and is positive, it represents the length of the portion of string which is to be replaced.
+     * If it is negative, it represents the number of characters from the end of string at which to stop replacing.
+     * If it is not given, then it will default to the length of the string; i.e. end the replacing at the end of string.
+     * If length is zero then this function will have the effect of inserting replacement into string at the given start offset.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     * @return string
+     */
+    public static function substrReplace(string $string, string $replacement, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
+    {
+        $stringLength = mb_strlen($string, $encoding);
+
+        if ($start < 0) {
+            $start = \max(0, $stringLength + $start);
+        } elseif ($start > $stringLength) {
+            $start = $stringLength;
+        }
+
+        if ($length !== null && $length < 0) {
+            $length = \max(0, $stringLength - $start + $length);
+        } elseif ($length === null || $length > $stringLength) {
+            $length = $stringLength;
+        }
+
+        if (($start + $length) > $stringLength) {
+            $length = $stringLength - $start;
+        }
+
+        return mb_substr($string, 0, $start, $encoding) . $replacement . mb_substr($string, $start + $length, $stringLength - $start - $length, $encoding);
     }
 
     /**
