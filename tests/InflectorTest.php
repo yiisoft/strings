@@ -135,10 +135,10 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('Camel Case', $inflector->camel2words('camelCase'));
-        $this->assertEquals('Lower Case', $inflector->camel2words('lower_case'));
-        $this->assertEquals('Tricky Stuff It Is Testing', $inflector->camel2words(' tricky_stuff.it-is testing... '));
-        $this->assertEquals('І Це Дійсно Так!', $inflector->camel2words('ІЦеДійсноТак!'));
+        $this->assertEquals('camel case', $inflector->camel2words('camelCase'));
+        $this->assertEquals('lower case', $inflector->camel2words('lower_case'));
+        $this->assertEquals('tricky stuff it is testing', $inflector->camel2words(' tricky_stuff.it-is testing... '));
+        $this->assertEquals('і це дійсно так!', $inflector->camel2words('ІЦеДійсноТак!'));
     }
 
     /**
@@ -486,6 +486,17 @@ final class InflectorTest extends TestCase
 
         $array = ['Spain', 'France', 'Italy'];
         $this->assertEquals('Spain - France or Italy', $inflector->sentence($array, ' and ', ' or ', ' - '));
+    }
+
+    public function testImmutability(): void
+    {
+        $original = new Inflector();
+        $this->assertNotSame($original, $original->withoutIntl());
+        $this->assertNotSame($original, $original->withPluralizeRules([]));
+        $this->assertNotSame($original, $original->withSingularizeRules([]));
+        $this->assertNotSame($original, $original->withSpecialRules([]));
+        $this->assertNotSame($original, $original->withTransliterationMap([]));
+        $this->assertNotSame($original, $original->withTransliterator(Inflector::TRANSLITERATE_MEDIUM));
     }
 
     /** Asserts that value is one of expected values.
