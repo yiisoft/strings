@@ -105,7 +105,7 @@ final class StringHelperTest extends TestCase
         $this->assertEquals('это тестовая multibyte строка', StringHelper::truncateWords('это тестовая multibyte строка', 5));
         $this->assertEquals('это тестовая multibyte…', StringHelper::truncateWords('это тестовая multibyte строка', 3));
         $this->assertEquals('это тестовая multibyte!!!', StringHelper::truncateWords('это тестовая multibyte строка', 3, '!!!'));
-        $this->assertEquals('это строка с          неожиданными…', StringHelper::truncateWords('это строка с          неожиданными пробелами', 4));
+        $this->assertEquals('это строка с          неожиданными…', StringHelper::truncateWords(' это строка с          неожиданными пробелами ', 4));
     }
 
     /**
@@ -158,6 +158,7 @@ final class StringHelperTest extends TestCase
         $this->assertTrue(StringHelper::startsWithIgnoringCase('CaSe', 'cAs'));
         $this->assertTrue(StringHelper::startsWithIgnoringCase('HTTP://BÜrger.DE/', 'http://bürger.de'));
         $this->assertTrue(StringHelper::startsWithIgnoringCase('üЯйΨB', 'ÜяЙΨ'));
+        $this->assertTrue(StringHelper::startsWithIgnoringCase('anything', ''));
     }
 
     /**
@@ -207,6 +208,7 @@ final class StringHelperTest extends TestCase
         $this->assertTrue(StringHelper::endsWithIgnoringCase('sTrInG', 'StRiNg'));
         $this->assertTrue(StringHelper::endsWithIgnoringCase('string', 'nG'));
         $this->assertTrue(StringHelper::endsWithIgnoringCase('BüЯйΨ', 'ÜяЙΨ'));
+        $this->assertTrue(StringHelper::endsWithIgnoringCase('anything', ''));
     }
 
     public function testExplode(): void
@@ -444,5 +446,20 @@ final class StringHelperTest extends TestCase
             '&lt;a href=&#039;test&#039;&gt;Тест&lt;/a&gt;&lt;br&gt;',
             StringHelper::htmlspecialchars("<a href='test'>Тест</a>&lt;br&gt;", ENT_QUOTES, false, 'UTF-8')
         );
+    }
+
+    public function testStrToUpper(): void
+    {
+        $this->assertSame('UPPER', StringHelper::strtoupper('uPpEr'));
+    }
+
+    public function testStrToLower(): void
+    {
+        $this->assertSame('lower', StringHelper::strtolower('LoWeR'));
+    }
+
+    public function testStrLen(): void
+    {
+        $this->assertSame(8, StringHelper::strlen('a string'));
     }
 }
