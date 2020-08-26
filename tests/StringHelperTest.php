@@ -413,4 +413,44 @@ final class StringHelperTest extends TestCase
         $this->assertSame('Hell...er 2', StringHelper::truncateMiddle('Hello world number 2', 8));
         $this->assertSame('Hell*er 2', StringHelper::truncateMiddle('Hello world number 2', 8, '*'));
     }
+
+    public function testTruncateMiddleWithLengthGreaterThanString(): void
+    {
+        $this->assertSame('Hello world', StringHelper::truncateMiddle('Hello world', 11, '*'));
+    }
+
+    public function testDirname(): void
+    {
+        $this->assertSame('\App\Test', StringHelper::dirname('\App\Test\Class.php'));
+        $this->assertSame('', StringHelper::dirname('Class.php'));
+    }
+
+    public function testNormalizeNumber(): void
+    {
+        $setLocale = setlocale(LC_ALL, 'Norwegian');
+
+        if (!$setLocale) {
+            $this->markTestSkipped('Norwegian locale not found.');
+        }
+
+        $this->assertSame('10.000', StringHelper::normalizeNumber('10,000'));
+    }
+
+    public function testFloatToString(): void
+    {
+        $this->assertSame('10.111', StringHelper::floatToString('10,111'));
+    }
+
+    public function testHtmlSpecialChars(): void
+    {
+        $this->assertSame(
+            '&lt;a href=&#039;test&#039;&gt;Тест&lt;/a&gt;&amp;lt;br&amp;gt;',
+            StringHelper::htmlspecialchars("<a href='test'>Тест</a>&lt;br&gt;", ENT_QUOTES)
+        );
+
+        $this->assertSame(
+            '&lt;a href=&#039;test&#039;&gt;Тест&lt;/a&gt;&lt;br&gt;',
+            StringHelper::htmlspecialchars("<a href='test'>Тест</a>&lt;br&gt;", ENT_QUOTES, 'UTF-8', false)
+        );
+    }
 }
