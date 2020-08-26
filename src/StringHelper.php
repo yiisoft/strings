@@ -82,9 +82,9 @@ final class StringHelper
      */
     public static function dirname(string $path): string
     {
-        $pos = mb_strrpos(str_replace('\\', '/', $path), '/');
-        if ($pos !== false) {
-            return mb_substr($path, 0, $pos);
+        $position = mb_strrpos(str_replace('\\', '/', $path), '/');
+        if ($position !== false) {
+            return mb_substr($path, 0, $position);
         }
 
         return '';

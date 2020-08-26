@@ -517,14 +517,14 @@ final class Inflector
     /**
      * Returns a human-readable string from $word.
      * @param string $input The string to humanize.
-     * @param bool $ucAll Whether to set all words to uppercase or not.
+     * @param bool $uppercaseWords Whether to set all words to uppercase or not.
      * @return string
      */
-    public function humanize(string $input, bool $ucAll = false): string
+    public function humanize(string $input, bool $uppercaseWords = false): string
     {
         $input = str_replace('_', ' ', preg_replace('/_id$/', '', $input));
 
-        return $ucAll ? StringHelper::ucwords($input) : StringHelper::ucfirst($input);
+        return $uppercaseWords ? StringHelper::ucwords($input) : StringHelper::ucfirst($input);
     }
 
     /**
