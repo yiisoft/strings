@@ -456,38 +456,6 @@ final class InflectorTest extends TestCase
         $this->assertEquals('113th', $inflector->ordinalize(113));
     }
 
-    public function testSentence(): void
-    {
-        $inflector = new Inflector();
-
-        $array = [];
-        $this->assertEquals('', $inflector->sentence($array));
-
-        $array = ['Spain'];
-        $this->assertEquals('Spain', $inflector->sentence($array));
-
-        $array = ['Spain', 'France'];
-        $this->assertEquals('Spain and France', $inflector->sentence($array));
-
-        $array = ['Spain', 'France', 'Italy'];
-        $this->assertEquals('Spain, France and Italy', $inflector->sentence($array));
-
-        $array = ['Spain', 'France', 'Italy', 'Germany'];
-        $this->assertEquals('Spain, France, Italy and Germany', $inflector->sentence($array));
-
-        $array = ['Spain', 'France'];
-        $this->assertEquals('Spain or France', $inflector->sentence($array, ' or '));
-
-        $array = ['Spain', 'France', 'Italy'];
-        $this->assertEquals('Spain, France or Italy', $inflector->sentence($array, ' or '));
-
-        $array = ['Spain', 'France'];
-        $this->assertEquals('Spain and France', $inflector->sentence($array, ' and ', ' or ', ' - '));
-
-        $array = ['Spain', 'France', 'Italy'];
-        $this->assertEquals('Spain - France or Italy', $inflector->sentence($array, ' and ', ' or ', ' - '));
-    }
-
     public function testImmutability(): void
     {
         $original = new Inflector();

@@ -375,4 +375,34 @@ final class StringHelperTest extends TestCase
     {
         $this->assertSame(8, StringHelper::strlen('a string'));
     }
+
+    public function testSentence(): void
+    {
+        $array = [];
+        $this->assertEquals('', StringHelper::sentence($array));
+
+        $array = ['Spain'];
+        $this->assertEquals('Spain', StringHelper::sentence($array));
+
+        $array = ['Spain', 'France'];
+        $this->assertEquals('Spain and France', StringHelper::sentence($array));
+
+        $array = ['Spain', 'France', 'Italy'];
+        $this->assertEquals('Spain, France and Italy', StringHelper::sentence($array));
+
+        $array = ['Spain', 'France', 'Italy', 'Germany'];
+        $this->assertEquals('Spain, France, Italy and Germany', StringHelper::sentence($array));
+
+        $array = ['Spain', 'France'];
+        $this->assertEquals('Spain or France', StringHelper::sentence($array, ' or '));
+
+        $array = ['Spain', 'France', 'Italy'];
+        $this->assertEquals('Spain, France or Italy', StringHelper::sentence($array, ' or '));
+
+        $array = ['Spain', 'France'];
+        $this->assertEquals('Spain and France', StringHelper::sentence($array, ' and ', ' or ', ' - '));
+
+        $array = ['Spain', 'France', 'Italy'];
+        $this->assertEquals('Spain - France or Italy', StringHelper::sentence($array, ' and ', ' or ', ' - '));
+    }
 }
