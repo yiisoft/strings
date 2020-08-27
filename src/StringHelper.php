@@ -360,56 +360,6 @@ final class StringHelper
     }
 
     /**
-     * Checks if the passed string would match the given shell wildcard pattern.
-     * This function emulates {@see fnmatch()}, which may be unavailable at certain environment, using PCRE.
-     * @param string $pattern The shell wildcard pattern.
-     * @param string $string The tested string.
-     * @param array $options Options for matching. Valid options are:
-     *
-     * - caseSensitive: bool, whether pattern should be case sensitive. Defaults to `true`.
-     * - escape: bool, whether backslash escaping is enabled. Defaults to `true`.
-     * - filePath: bool, whether slashes in string only matches slashes in the given pattern. Defaults to `false`.
-     *
-     * @return bool Whether the string matches pattern or not.
-     */
-    public static function matchWildcard(string $pattern, string $string, array $options = []): bool
-    {
-        if ($pattern === '*' && empty($options['filePath'])) {
-            return true;
-        }
-
-        $replacements = [
-            '\\\\\\\\' => '\\\\',
-            '\\\\\\*' => '[*]',
-            '\\\\\\?' => '[?]',
-            '\*' => '.*',
-            '\?' => '.',
-            '\[\!' => '[^',
-            '\[' => '[',
-            '\]' => ']',
-            '\-' => '-',
-        ];
-
-        if (isset($options['escape']) && !$options['escape']) {
-            unset($replacements['\\\\\\\\'], $replacements['\\\\\\*'], $replacements['\\\\\\?']);
-        }
-
-        if (!empty($options['filePath'])) {
-            $replacements['\*'] = '[^/\\\\]*';
-            $replacements['\?'] = '[^/\\\\]';
-        }
-
-        $pattern = strtr(preg_quote($pattern, '#'), $replacements);
-        $pattern = '#^' . $pattern . '$#us';
-
-        if (isset($options['caseSensitive']) && !$options['caseSensitive']) {
-            $pattern .= 'i';
-        }
-
-        return preg_match($pattern, $string) === 1;
-    }
-
-    /**
      * This method provides a unicode-safe implementation of built-in PHP function `ucfirst()`.
      *
      * @param string $string The string to be processed.
