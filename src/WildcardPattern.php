@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Yiisoft\Strings;
@@ -44,7 +45,6 @@ final class WildcardPattern
      */
     public function match(string $string): bool
     {
-
         if ($this->pattern === '*' && !$this->matchSlashesExactly) {
             return true;
         }
@@ -78,8 +78,6 @@ final class WildcardPattern
         }
 
         return preg_match($pattern, $string) === 1;
-
-
     }
 
     /**

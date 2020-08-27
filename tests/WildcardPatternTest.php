@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Yiisoft\Strings\Tests;
-
 
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\WildcardPattern;
