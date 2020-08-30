@@ -95,7 +95,6 @@ final class WildcardPatternTest extends TestCase
         $this->assertSame($expectedResult, $wildcardPattern->match($string));
     }
 
-    // TODO: refactor
     private function getWildcardPattern(string $pattern, array $options): WildcardPattern
     {
         $wildcardPattern = new WildcardPattern($pattern);

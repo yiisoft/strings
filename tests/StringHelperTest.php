@@ -15,7 +15,7 @@ final class StringHelperTest extends TestCase
         $this->assertEquals(6, StringHelper::byteLength('это'));
     }
 
-    public function testSubstr(): void
+    public function testSubstring(): void
     {
         $this->assertEquals('th', StringHelper::byteSubstring('this', 0, 2));
         $this->assertEquals('э', StringHelper::byteSubstring('это', 0, 2));
@@ -49,7 +49,7 @@ final class StringHelperTest extends TestCase
         $this->assertEquals('', StringHelper::byteSubstring('это', -4, 0));
     }
 
-    public function testBasename(): void
+    public function testBaseName(): void
     {
         $this->assertEquals('', StringHelper::baseName(''));
 
@@ -203,7 +203,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    public function testEndsWithCaseInsensitive(): void
+    public function testEndsWithIgnoringCase(): void
     {
         $this->assertTrue(StringHelper::endsWithIgnoringCase('sTrInG', 'StRiNg'));
         $this->assertTrue(StringHelper::endsWithIgnoringCase('string', 'nG'));
@@ -226,7 +226,7 @@ final class StringHelperTest extends TestCase
         }));
     }
 
-    public function testWordCount(): void
+    public function testCountWords(): void
     {
         $this->assertEquals(3, StringHelper::countWords('china 中国 ㄍㄐㄋㄎㄌ'));
         $this->assertEquals(4, StringHelper::countWords('и много тут слов?'));
@@ -267,7 +267,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    public function dataProviderUcfirst(): array
+    public function uppercaseFirstCharacterProvider(): array
     {
         return [
             ['foo', 'Foo'],
@@ -281,14 +281,14 @@ final class StringHelperTest extends TestCase
     /**
      * @param string $string
      * @param string $expectedResult
-     * @dataProvider dataProviderUcfirst
+     * @dataProvider uppercaseFirstCharacterProvider
      */
-    public function testUcfirst(string $string, string $expectedResult): void
+    public function testUppercaseFirstCharacter(string $string, string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::uppercaseFirstCharacter($string));
     }
 
-    public function dataProviderUcwords(): array
+    public function uppercaseFirstCharacterInEachWordProvider(): array
     {
         return [
             'Single word' => ['foo', 'Foo'],
@@ -302,9 +302,9 @@ final class StringHelperTest extends TestCase
     /**
      * @param string $string
      * @param string $expectedResult
-     * @dataProvider dataProviderUcwords
+     * @dataProvider uppercaseFirstCharacterInEachWordProvider
      */
-    public function testUcwords(string $string, string $expectedResult): void
+    public function testUppercaseFirstCharacterInEachWord(string $string, string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::uppercaseFirstCharacterInEachWord($string));
     }
@@ -326,23 +326,23 @@ final class StringHelperTest extends TestCase
         $this->assertSame('Hello world', StringHelper::truncateMiddle('Hello world', 11, '*'));
     }
 
-    public function testDirname(): void
+    public function testDirectoryName(): void
     {
         $this->assertSame('\App\Test', StringHelper::directoryName('\App\Test\Class.php'));
         $this->assertSame('', StringHelper::directoryName('Class.php'));
     }
 
-    public function testStrToUpper(): void
+    public function testUppercase(): void
     {
         $this->assertSame('UPPER', StringHelper::uppercase('uPpEr'));
     }
 
-    public function testStrToLower(): void
+    public function testLowercase(): void
     {
         $this->assertSame('lower', StringHelper::lowercase('LoWeR'));
     }
 
-    public function testStrLen(): void
+    public function testLength(): void
     {
         $this->assertSame(8, StringHelper::length('a string'));
     }

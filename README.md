@@ -68,19 +68,19 @@ Overall the helper has the following method groups.
 - length
 - countWords
 
-## Lowercase and uppercase
+### Lowercase and uppercase
 
 - lowercase
 - uppercase
 - uppercaseFirstCharacter
 - uppercaseFirstCharacterInEachWord
 
-## URL friendly base64
+### URL friendly base64
 
 - base64UrlEncode
 - base64UrlDecode
 
-## Words and sentences
+### Words and sentences
 
 - explode
 - sentence
@@ -136,8 +136,6 @@ Overall the inflector has the following method groups.
 ### URLs
 
 - toSlug
-
-numberToOrdinal
 
 ## WildcardPattern usage
 
