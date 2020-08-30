@@ -127,10 +127,10 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('camel case', $inflector->pascalToSentence('camelCase'));
-        $this->assertEquals('lower case', $inflector->pascalToSentence('lower_case'));
-        $this->assertEquals('tricky stuff it is testing', $inflector->pascalToSentence(' tricky_stuff.it-is testing... '));
-        $this->assertEquals('і це дійсно так!', $inflector->pascalToSentence('ІЦеДійсноТак!'));
+        $this->assertEquals('camel case', $inflector->pascalToWords('camelCase'));
+        $this->assertEquals('lower case', $inflector->pascalToWords('lower_case'));
+        $this->assertEquals('tricky stuff it is testing', $inflector->pascalToWords(' tricky_stuff.it-is testing... '));
+        $this->assertEquals('і це дійсно так!', $inflector->pascalToWords('ІЦеДійсноТак!'));
     }
 
     /**

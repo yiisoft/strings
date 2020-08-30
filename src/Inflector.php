@@ -444,7 +444,7 @@ final class Inflector
      * @param string $input The string to be converted.
      * @return string The resulting words.
      */
-    public function pascalToSentence(string $input): string
+    public function pascalToWords(string $input): string
     {
         return mb_strtolower(trim(str_replace([
             '-',
