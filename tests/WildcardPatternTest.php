@@ -119,4 +119,13 @@ final class WildcardPatternTest extends TestCase
 
         return $wildcardPattern;
     }
+
+    public function testImmutability(): void
+    {
+        $original = new WildcardPattern('*');
+        $this->assertNotSame($original, $original->withExactLeadingPeriod());
+        $this->assertNotSame($original, $original->ignoreCase());
+        $this->assertNotSame($original, $original->withExactSlashes());
+        $this->assertNotSame($original, $original->withoutEscape());
+    }
 }

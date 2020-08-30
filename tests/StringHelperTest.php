@@ -96,7 +96,7 @@ final class StringHelperTest extends TestCase
     public function testTruncateEnd(): void
     {
         $this->assertEquals('привет, я multibyte…', StringHelper::truncateEnd('привет, я multibyte строка!', 20));
-        $this->assertEquals('Не трогаем строку', StringHelper::truncateEnd('Не трогаем строку', 20));
+        $this->assertEquals('Не трогаем строку', StringHelper::truncateEnd('Не трогаем строку', 17));
         $this->assertEquals('мы!!!', StringHelper::truncateEnd('мы используем восклицательные знаки', 6, '!!!'));
     }
 
@@ -154,6 +154,8 @@ final class StringHelperTest extends TestCase
 
     public function testStartsWithIgnoringCase(): void
     {
+        $this->assertTrue(StringHelper::startsWithIgnoringCase('', ''));
+        $this->assertFalse(StringHelper::startsWithIgnoringCase('', ' '));
         $this->assertTrue(StringHelper::startsWithIgnoringCase('sTrInG', 'StRiNg'));
         $this->assertTrue(StringHelper::startsWithIgnoringCase('CaSe', 'cAs'));
         $this->assertTrue(StringHelper::startsWithIgnoringCase('HTTP://BÜrger.DE/', 'http://bürger.de'));
@@ -205,6 +207,8 @@ final class StringHelperTest extends TestCase
 
     public function testEndsWithIgnoringCase(): void
     {
+        $this->assertTrue(StringHelper::endsWithIgnoringCase('', ''));
+        $this->assertFalse(StringHelper::endsWithIgnoringCase('', ' '));
         $this->assertTrue(StringHelper::endsWithIgnoringCase('sTrInG', 'StRiNg'));
         $this->assertTrue(StringHelper::endsWithIgnoringCase('string', 'nG'));
         $this->assertTrue(StringHelper::endsWithIgnoringCase('BüЯйΨ', 'ÜяЙΨ'));
@@ -299,12 +303,14 @@ final class StringHelperTest extends TestCase
         $this->assertSame('…56', StringHelper::truncateBegin('123456', 3));
         $this->assertSame('*456', StringHelper::truncateBegin('123456', 4, '*'));
         $this->assertSame('123456', StringHelper::truncateBegin('123456', 6));
+        $this->assertSame('…ет', StringHelper::truncateBegin('привет', 3));
     }
 
     public function testTruncateMiddle(): void
     {
         $this->assertSame('Hell…r 2', StringHelper::truncateMiddle('Hello world number 2', 8));
         $this->assertSame('Hell***r 2', StringHelper::truncateMiddle('Hello world number 2', 10, '***'));
+        $this->assertSame('Ответ на…о такого', StringHelper::truncateMiddle('Ответ на главный вопрос жизни, вселенной и всего такого', 17));
     }
 
     public function testTruncateMiddleWithLengthGreaterThanString(): void
@@ -321,18 +327,20 @@ final class StringHelperTest extends TestCase
     public function testUppercase(): void
     {
         $this->assertSame('UPPER', StringHelper::uppercase('uPpEr'));
+        $this->assertSame('ВЫШЕ', StringHelper::uppercase('вЫшЕ'));
     }
 
     public function testLowercase(): void
     {
         $this->assertSame('lower', StringHelper::lowercase('LoWeR'));
+        $this->assertSame('ниже', StringHelper::lowercase('НиЖе'));
     }
 
     public function testLength(): void
     {
         $this->assertSame(8, StringHelper::length('a string'));
+        $this->assertSame(3, StringHelper::length('три'));
     }
-
 
     /**
      * @see https://github.com/php/php-src/blob/master/ext/standard/tests/strings/substr_replace.phpt
@@ -344,7 +352,8 @@ final class StringHelperTest extends TestCase
             ['trbala his', ['try this', 'bala ', 2, 3]],
             ['trbala is', ['try this', 'bala ', 2, -2]],
             ['bala ', ['try this', 'bala ', -10]],
-            ['try thisbala ', ['try this', 'bala ', 100]],
+            ['try thisbala ', ['try this', 'bala ', 8]],
+            ['строфа', ['строка', 'офа', -3]],
         ];
     }
 

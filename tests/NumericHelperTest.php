@@ -9,6 +9,13 @@ final class NumericHelperTest extends TestCase
 {
     public function testToOrdinal(): void
     {
+        $this->assertEquals('1st', NumericHelper::toOrdinal(1));
+        $this->assertEquals('2nd', NumericHelper::toOrdinal(2));
+        $this->assertEquals('3rd', NumericHelper::toOrdinal(3));
+        $this->assertEquals('10th', NumericHelper::toOrdinal(10));
+        $this->assertEquals('11th', NumericHelper::toOrdinal(11));
+        $this->assertEquals('12th', NumericHelper::toOrdinal(12));
+        $this->assertEquals('13th', NumericHelper::toOrdinal(13));
         $this->assertEquals('21st', NumericHelper::toOrdinal(21));
         $this->assertEquals('22nd', NumericHelper::toOrdinal(22));
         $this->assertEquals('23rd', NumericHelper::toOrdinal(23));

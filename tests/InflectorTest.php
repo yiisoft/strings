@@ -479,6 +479,8 @@ final class InflectorTest extends TestCase
             ['foo_y_bar', ['fooYBar', '_', true]],
             ['невже_і_це_працює', ['НевжеІЦеПрацює', '_', true]],
 
+            ['t-e-s-t', ['TEST', '-', true]],
+            ['test', ['TEST', '-']],
         ];
     }
 }

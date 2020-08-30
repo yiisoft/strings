@@ -22,7 +22,7 @@ final class NumericHelper
             return $value;
         }
 
-        if (\in_array($value % 100, range(11, 13), false)) {
+        if (\in_array($value % 100, [11, 12, 13], true)) {
             return $value . 'th';
         }
         switch ($value % 10) {
@@ -47,8 +47,6 @@ final class NumericHelper
         if (!is_scalar($value)) {
             throw new \InvalidArgumentException('Value must be scalar.');
         }
-
-        $value = (string)$value;
         $value = str_replace([" ", ","], ["", "."], $value);
         return preg_replace('/\.(?=.*\.)/', '', $value);
     }
