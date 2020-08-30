@@ -484,7 +484,7 @@ final class Inflector
      * "who's online" will be converted to "WhoSOnline".
      * @param string $input The word to PascalCase.
      * @return string PascalCased string.
-     * @see variablize()
+     * @see toCamelCase()
      */
     public function toPascal(string $input): string
     {
@@ -505,7 +505,7 @@ final class Inflector
     }
 
     /**
-     * Same as camelize but first char is in lowercase.
+     * Returns given word as camelCased.
      *
      * Converts a word like "send_email" to "sendEmail". It
      * will remove non alphanumeric character from the word, so
@@ -513,7 +513,7 @@ final class Inflector
      * @param string $input The word to convert.
      * @return string
      */
-    public function variablize(string $input): string
+    public function toCamelCase(string $input): string
     {
         $input = $this->toPascal($input);
 

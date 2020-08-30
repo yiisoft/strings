@@ -158,8 +158,8 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('customerTable', $inflector->variablize('customer_table'));
-        $this->assertEquals('ひらがなHepimiz', $inflector->variablize('ひらがな_hepimiz'));
+        $this->assertEquals('customerTable', $inflector->toCamelCase('customer_table'));
+        $this->assertEquals('ひらがなHepimiz', $inflector->toCamelCase('ひらがな_hepimiz'));
     }
 
     public function testTableize(): void
