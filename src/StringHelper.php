@@ -361,7 +361,6 @@ final class StringHelper
 
     /**
      * Make a string's first character uppercase.
-     * This method provides a unicode-safe implementation of built-in PHP function `ucfirst()`.
      *
      * @param string $string The string to be processed.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
@@ -378,7 +377,6 @@ final class StringHelper
 
     /**
      * Uppercase the first character of each word in a string.
-     * This method provides a unicode-safe implementation of built-in PHP function `ucwords()`.
      *
      * @param string $string The string to be processed.
      * @param string $encoding The encoding to use, defaults to "UTF-8".

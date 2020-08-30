@@ -145,19 +145,6 @@ final class InflectorTest extends TestCase
         $this->assertEquals($expectedResult, $result);
     }
 
-
-    /**
-     * @dataProvider id2camelProvider()
-     */
-    public function testId2camel(string $expectedResult, array $arguments): void
-    {
-        $inflector = new Inflector();
-
-        $result = \call_user_func_array([$inflector, 'idToPascal'], $arguments);
-
-        $this->assertEquals($expectedResult, $result);
-    }
-
     public function testHumanize(): void
     {
         $inflector = new Inflector();
@@ -507,24 +494,6 @@ final class InflectorTest extends TestCase
             ['foo_y_bar', ['fooYBar', '_', true]],
             ['невже_і_це_працює', ['НевжеІЦеПрацює', '_', true]],
 
-        ];
-    }
-
-    public function id2camelProvider(): array
-    {
-        return [
-            ['PostTag', ['post-tag']],
-            ['PostTag', ['post_tag', '_']],
-            ['ЄдинийСвіт', ['єдиний_світ', '_']],
-
-            ['PostTag', ['post-tag']],
-            ['PostTag', ['post_tag', '_']],
-            ['НевжеІЦеПрацює', ['невже_і_це_працює', '_']],
-
-            ['ShouldNotBecomeLowercased', ['ShouldNotBecomeLowercased', '_']],
-
-            ['FooYBar', ['foo-y-bar']],
-            ['FooYBar', ['foo_y_bar', '_']],
         ];
     }
 }

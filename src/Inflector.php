@@ -492,19 +492,6 @@ final class Inflector
     }
 
     /**
-     * Converts an ID into a PascalCase name.
-     * Words in the ID separated by `$separator` (defaults to '-') will be concatenated into a PascalCase name.
-     * For example, 'post-tag' is converted to 'PostTag'.
-     * @param string $input The ID to be converted.
-     * @param string $separator The character used to separate the words in the ID.
-     * @return string The resulting PascalCase name.
-     */
-    public function idToPascal(string $input, string $separator = '-'): string
-    {
-        return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(str_replace($separator, ' ', $input)));
-    }
-
-    /**
      * Returns a human-readable string.
      * @param string $input The string to humanize.
      * @param bool $uppercaseWords Whether to set all words to uppercase or not.
