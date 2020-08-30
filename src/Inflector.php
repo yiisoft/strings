@@ -431,7 +431,7 @@ final class Inflector
      * @param bool $uppercaseAll Whether to set all words to uppercase.
      * @return string
      */
-    public function titleize(string $input, bool $uppercaseAll = false): string
+    public function toSentence(string $input, bool $uppercaseAll = false): string
     {
         $input = $this->humanize($this->pascalToUnderscore($input), $uppercaseAll);
 
@@ -459,7 +459,7 @@ final class Inflector
      * @param string $input The string to be converted.
      * @return string The resulting words.
      */
-    public function pascalToWords(string $input): string
+    public function pascalToSentence(string $input): string
     {
         return mb_strtolower(trim(str_replace([
             '-',

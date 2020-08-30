@@ -106,9 +106,9 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('Me my self and i', $inflector->titleize('MeMySelfAndI'));
-        $this->assertEquals('Me My Self And I', $inflector->titleize('MeMySelfAndI', true));
-        $this->assertEquals('Треба Більше Тестів!', $inflector->titleize('ТребаБільшеТестів!', true));
+        $this->assertEquals('Me my self and i', $inflector->toSentence('MeMySelfAndI'));
+        $this->assertEquals('Me My Self And I', $inflector->toSentence('MeMySelfAndI', true));
+        $this->assertEquals('Треба Більше Тестів!', $inflector->toSentence('ТребаБільшеТестів!', true));
     }
 
     public function testCamelize(): void
@@ -135,10 +135,10 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('camel case', $inflector->pascalToWords('camelCase'));
-        $this->assertEquals('lower case', $inflector->pascalToWords('lower_case'));
-        $this->assertEquals('tricky stuff it is testing', $inflector->pascalToWords(' tricky_stuff.it-is testing... '));
-        $this->assertEquals('і це дійсно так!', $inflector->pascalToWords('ІЦеДійсноТак!'));
+        $this->assertEquals('camel case', $inflector->pascalToSentence('camelCase'));
+        $this->assertEquals('lower case', $inflector->pascalToSentence('lower_case'));
+        $this->assertEquals('tricky stuff it is testing', $inflector->pascalToSentence(' tricky_stuff.it-is testing... '));
+        $this->assertEquals('і це дійсно так!', $inflector->pascalToSentence('ІЦеДійсноТак!'));
     }
 
     /**
