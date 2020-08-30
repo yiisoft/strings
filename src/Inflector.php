@@ -20,7 +20,7 @@ final class Inflector
      *
      * For detailed information see [unicode normalization forms](http://unicode.org/reports/tr15/#Normalization_Forms_Table)
      * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
-     * @see transliterate()
+     * @see toTransliterated()
      */
     public const TRANSLITERATE_STRICT = 'Any-Latin; NFKD';
 
@@ -33,7 +33,7 @@ final class Inflector
      * `huo qu dao dochira Ukrainsʹka: g,e, Srpska: d, n, d! ¿Espanol?`.
      *
      * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
-     * @see transliterate()
+     * @see toTransliterated()
      */
     public const TRANSLITERATE_MEDIUM = 'Any-Latin; Latin-ASCII';
 
@@ -47,7 +47,7 @@ final class Inflector
      * `huo qu dao dochira Ukrainska: g,e, Srpska: d, n, d! Espanol?`.
      *
      * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
-     * @see transliterate()
+     * @see toTransliterated()
      */
     public const TRANSLITERATE_LOOSE = 'Any-Latin; Latin-ASCII; [\u0080-\uffff] remove';
 
@@ -257,7 +257,7 @@ final class Inflector
     ];
 
     /**
-     * @var string[] Fallback map for transliteration used by {@see transliterate()} when intl isn't available or
+     * @var string[] Fallback map for transliteration used by {@see toTransliterated()} when intl isn't available or
      * turned off with {@see withoutIntl()}.
      */
     private array $transliterationMap = [
@@ -275,7 +275,7 @@ final class Inflector
 
     /**
      * @var string|\Transliterator Either a {@see \Transliterator}, or a string from which a {@see \Transliterator}
-     * can be built for transliteration. Used by {@see transliterate()} when intl is available.
+     * can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
@@ -348,10 +348,10 @@ final class Inflector
 
     /**
      * @param string|\Transliterator $transliterator Either a {@see \Transliterator}, or a string from which
-     * a {@see \Transliterator} can be built for transliteration. Used by {@see transliterate()} when intl is available.
+     * a {@see \Transliterator} can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
-     * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      * @return self
+     *@see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
     public function withTransliterator($transliterator): self
     {
@@ -361,7 +361,7 @@ final class Inflector
     }
 
     /**
-     * @param string[] $transliterationMap Fallback map for transliteration used by {@see transliterate()} when intl
+     * @param string[] $transliterationMap Fallback map for transliteration used by {@see toTransliterated()} when intl
      * isn't available or turned off with {@see withoutIntl()}.
      * @return $this
      */
@@ -373,7 +373,7 @@ final class Inflector
     }
 
     /**
-     * Disables usage of intl for {@see transliterate()}.
+     * Disables usage of intl for {@see toTransliterated()}.
      * @return self
      */
     public function withoutIntl(): self
@@ -390,7 +390,7 @@ final class Inflector
      * @param string $input The word to be pluralized.
      * @return string The pluralized word.
      */
-    public function pluralize(string $input): string
+    public function toPlural(string $input): string
     {
         if (isset($this->specialRules[$input])) {
             return $this->specialRules[$input];
@@ -409,7 +409,7 @@ final class Inflector
      * @param string $input The english word to singularize.
      * @return string Singular noun.
      */
-    public function singularize(string $input): string
+    public function toSingular(string $input): string
     {
         $result = array_search($input, $this->specialRules, true);
         if ($result !== false) {
@@ -433,7 +433,7 @@ final class Inflector
      */
     public function toSentence(string $input, bool $uppercaseAll = false): string
     {
-        $input = $this->humanize($this->pascalCaseToId($input, '_'), $uppercaseAll);
+        $input = $this->toHumanReadable($this->pascalCaseToId($input, '_'), $uppercaseAll);
 
         return $uppercaseAll ? StringHelper::uppercaseFirstCharacterInEachWord($input) : StringHelper::uppercaseFirstCharacter($input);
     }
@@ -497,7 +497,7 @@ final class Inflector
      * @param bool $uppercaseWords Whether to set all words to uppercase or not.
      * @return string
      */
-    public function humanize(string $input, bool $uppercaseWords = false): string
+    public function toHumanReadable(string $input, bool $uppercaseWords = false): string
     {
         $input = str_replace('_', ' ', preg_replace('/_id$/', '', $input));
 
@@ -529,7 +529,7 @@ final class Inflector
      */
     public function classToTable(string $className): string
     {
-        return $this->pluralize($this->pascalCaseToId($className, '_'));
+        return $this->toPlural($this->pascalCaseToId($className, '_'));
     }
 
     /**
@@ -541,7 +541,7 @@ final class Inflector
      */
     public function tableToClass(string $tableName): string
     {
-        return $this->toPascalCase($this->singularize($tableName));
+        return $this->toPascalCase($this->toSingular($tableName));
     }
 
     /**
@@ -560,7 +560,7 @@ final class Inflector
     public function toSlug(string $input, string $replacement = '-', bool $lowercase = true): string
     {
         // replace all non words character
-        $input = preg_replace('/[^a-zA-Z0-9]++/u', $replacement, $this->transliterate($input));
+        $input = preg_replace('/[^a-zA-Z0-9]++/u', $replacement, $this->toTransliterated($input));
         // remove first and last replacements
         $input = preg_replace('/^(?:' . preg_quote($replacement, '/') . ')++|(?:' . preg_quote($replacement, '/') . ')++$/u' . ($lowercase ? 'i' : ''), '', $input);
 
@@ -582,7 +582,7 @@ final class Inflector
      * or {@see TRANSLITERATE_LOOSE} is used.
      * @return string
      */
-    public function transliterate(string $input, $transliterator = null): string
+    public function toTransliterated(string $input, $transliterator = null): string
     {
         if ($this->useIntl()) {
             if ($transliterator === null) {

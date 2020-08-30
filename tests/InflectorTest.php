@@ -49,22 +49,22 @@ final class InflectorTest extends TestCase
         $inflector = new Inflector();
 
         foreach ($this->getTestDataForPluralize() as $testIn => $testOut) {
-            $this->assertEquals($testOut, $inflector->pluralize($testIn), 'Should be ' . $testIn . ' -> ' . $testOut);
-            $this->assertEquals(ucfirst($testOut), ucfirst($inflector->pluralize($testIn)));
+            $this->assertEquals($testOut, $inflector->toPlural($testIn), 'Should be ' . $testIn . ' -> ' . $testOut);
+            $this->assertEquals(ucfirst($testOut), ucfirst($inflector->toPlural($testIn)));
         }
     }
 
     public function testPluralizeWithEmptyRules(): void
     {
         $inflector = (new Inflector())->withPluralizeRules([]);
-        $this->assertEquals('access', $inflector->pluralize('access'));
+        $this->assertEquals('access', $inflector->toPlural('access'));
     }
 
     public function testPluralizeWithCustomRules(): void
     {
         $rules = ['/(t)est/i' => 'tests-result'];
         $inflector = (new Inflector())->withPluralizeRules($rules);
-        $this->assertEquals('tests-result', $inflector->pluralize('test'));
+        $this->assertEquals('tests-result', $inflector->toPlural('test'));
         $this->assertEquals($rules, $inflector->getPluralizeRules());
     }
 
@@ -72,7 +72,7 @@ final class InflectorTest extends TestCase
     {
         $rules = ['test' => 'tests-result'];
         $inflector = (new Inflector())->withSpecialRules($rules);
-        $this->assertEquals('tests-result', $inflector->pluralize('test'));
+        $this->assertEquals('tests-result', $inflector->toPlural('test'));
         $this->assertEquals($rules, $inflector->getSpecialRules());
     }
 
@@ -81,8 +81,8 @@ final class InflectorTest extends TestCase
         $inflector = new Inflector();
 
         foreach ($this->getTestDataForSignularize() as $testIn => $testOut) {
-            $this->assertEquals($testOut, $inflector->singularize($testIn), 'Should be ' . $testIn . ' -> ' . $testOut);
-            $this->assertEquals(ucfirst($testOut), ucfirst($inflector->singularize($testIn)));
+            $this->assertEquals($testOut, $inflector->toSingular($testIn), 'Should be ' . $testIn . ' -> ' . $testOut);
+            $this->assertEquals(ucfirst($testOut), ucfirst($inflector->toSingular($testIn)));
         }
     }
 
@@ -90,7 +90,7 @@ final class InflectorTest extends TestCase
     {
         $rules = ['/(t)ests$/i' => 'test-result'];
         $inflector = (new Inflector())->withSingularizeRules($rules);
-        $this->assertEquals('test-result', $inflector->singularize('tests'));
+        $this->assertEquals('test-result', $inflector->toSingular('tests'));
         $this->assertEquals($rules, $inflector->getSingularizeRules());
     }
 
@@ -98,7 +98,7 @@ final class InflectorTest extends TestCase
     {
         $rules = ['tests-result' => 'test'];
         $inflector = (new Inflector())->withSpecialRules($rules);
-        $this->assertEquals('tests-result', $inflector->singularize('test'));
+        $this->assertEquals('tests-result', $inflector->toSingular('test'));
         $this->assertEquals($rules, $inflector->getSpecialRules());
     }
 
@@ -149,9 +149,9 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('Me my self and i', $inflector->humanize('me_my_self_and_i'));
-        $this->assertEquals('Me My Self And I', $inflector->humanize('me_my_self_and_i', true));
-        $this->assertEquals('Але й веселі ці ваші тести', $inflector->humanize('але_й_веселі_ці_ваші_тести'));
+        $this->assertEquals('Me my self and i', $inflector->toHumanReadable('me_my_self_and_i'));
+        $this->assertEquals('Me My Self And I', $inflector->toHumanReadable('me_my_self_and_i', true));
+        $this->assertEquals('Але й веселі ці ваші тести', $inflector->toHumanReadable('але_й_веселі_ці_ваші_тести'));
     }
 
     public function testVariablize(): void
@@ -282,7 +282,7 @@ final class InflectorTest extends TestCase
         $inflector = new Inflector();
 
         foreach ($data as $source => $expected) {
-            $this->assertEquals($expected, $inflector->transliterate($source, Inflector::TRANSLITERATE_STRICT));
+            $this->assertEquals($expected, $inflector->toTransliterated($source, Inflector::TRANSLITERATE_STRICT));
         }
     }
 
@@ -327,7 +327,7 @@ final class InflectorTest extends TestCase
         $inflector = new Inflector();
 
         foreach ($data as $source => $allowed) {
-            $this->assertIsOneOf($inflector->transliterate($source, Inflector::TRANSLITERATE_MEDIUM), $allowed);
+            $this->assertIsOneOf($inflector->toTransliterated($source, Inflector::TRANSLITERATE_MEDIUM), $allowed);
         }
     }
 
@@ -372,7 +372,7 @@ final class InflectorTest extends TestCase
         $inflector = new Inflector();
 
         foreach ($data as $source => $allowed) {
-            $this->assertIsOneOf($inflector->transliterate($source, Inflector::TRANSLITERATE_LOOSE), $allowed);
+            $this->assertIsOneOf($inflector->toTransliterated($source, Inflector::TRANSLITERATE_LOOSE), $allowed);
         }
     }
 
@@ -383,7 +383,7 @@ final class InflectorTest extends TestCase
         }
 
         $inflector = (new Inflector())->withTransliterator(Inflector::TRANSLITERATE_STRICT);
-        $this->assertEquals('žestʹ', $inflector->transliterate('жесть'));
+        $this->assertEquals('žestʹ', $inflector->toTransliterated('жесть'));
     }
 
     public function testTransliterateWithTransliterationMap(): void
@@ -399,7 +399,7 @@ final class InflectorTest extends TestCase
                 'E' => 'O'
             ]
         );
-        $this->assertEquals('ENO', $inflector->transliterate('ONE'));
+        $this->assertEquals('ENO', $inflector->toTransliterated('ONE'));
     }
 
     public function testSlugPhp(): void
