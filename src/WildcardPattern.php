@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 /**
- * The shell wildcard pattern to match strings against.
+ * A shell wildcard pattern to match strings against.
  *
  * - `\` escapes other special characters if usage of escape character is not turned off.
- * - `*` matches matches any string, including the empty string.
+ * - `*` matches any string, including the empty string.
  * - `?` matches any single character.
  * - `[seq]` matches any character in seq.
  * - `[a-z]` matches any character from a to z.
