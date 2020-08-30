@@ -1,6 +1,6 @@
 <?php
-namespace Yiisoft\Strings;
 
+namespace Yiisoft\Strings;
 
 /**
  * Provides static methods to work with numeric strings.
