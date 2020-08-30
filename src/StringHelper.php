@@ -108,7 +108,7 @@ final class StringHelper
         }
 
         $trimMarkerLength = mb_strlen($trimMarker, $encoding);
-        return rtrim(static::substr($input, 0, $length - $trimMarkerLength, $encoding)) . $trimMarker;
+        return rtrim(mb_substr($input, 0, $length - $trimMarkerLength, $encoding)) . $trimMarker;
     }
 
     /**
@@ -147,7 +147,7 @@ final class StringHelper
         }
 
         $trimMarkerLength = mb_strlen($trimMarker, $encoding);
-        return self::substrReplace($input, $trimMarker, 0, -$length + $trimMarkerLength, $encoding);
+        return self::replaceSubstring($input, $trimMarker, 0, -$length + $trimMarkerLength, $encoding);
     }
 
     /**
@@ -172,7 +172,7 @@ final class StringHelper
         $start = (int)ceil(($length - $trimMarkerLength) / 2);
         $end = $length - $start - $trimMarkerLength;
 
-        return self::substrReplace($input, $trimMarker, $start, -$end, $encoding);
+        return self::replaceSubstring($input, $trimMarker, $start, -$end, $encoding);
     }
 
     /**
@@ -208,7 +208,7 @@ final class StringHelper
             return true;
         }
 
-        return static::strtolower(static::substr($input, 0, $bytes, '8bit')) === static::strtolower($with);
+        return static::lowercase(static::substring($input, 0, $bytes, '8bit')) === static::lowercase($with);
     }
 
     /**
@@ -249,7 +249,7 @@ final class StringHelper
             return true;
         }
 
-        return static::strtolower(mb_substr($input, -$bytes, mb_strlen($input, '8bit'), '8bit')) === static::strtolower($with);
+        return static::lowercase(mb_substr($input, -$bytes, mb_strlen($input, '8bit'), '8bit')) === static::lowercase($with);
     }
 
     /**
@@ -360,6 +360,7 @@ final class StringHelper
     }
 
     /**
+     * Make a string's first character uppercase.
      * This method provides a unicode-safe implementation of built-in PHP function `ucfirst()`.
      *
      * @param string $string The string to be processed.
@@ -367,15 +368,16 @@ final class StringHelper
      * @return string
      * @see https://php.net/manual/en/function.ucfirst.php
      */
-    public static function ucfirst(string $string, string $encoding = 'UTF-8'): string
+    public static function uppercaseFirstCharacter(string $string, string $encoding = 'UTF-8'): string
     {
-        $firstChar = static::substr($string, 0, 1, $encoding);
-        $rest = static::substr($string, 1, null, $encoding);
+        $firstCharacter = static::substring($string, 0, 1, $encoding);
+        $rest = static::substring($string, 1, null, $encoding);
 
-        return static::strtoupper($firstChar, $encoding) . $rest;
+        return static::uppercase($firstCharacter, $encoding) . $rest;
     }
 
     /**
+     * Uppercase the first character of each word in a string.
      * This method provides a unicode-safe implementation of built-in PHP function `ucwords()`.
      *
      * @param string $string The string to be processed.
@@ -383,15 +385,15 @@ final class StringHelper
      * @see https://php.net/manual/en/function.ucwords.php
      * @return string
      */
-    public static function ucwords(string $string, string $encoding = 'UTF-8'): string
+    public static function uppercaseFirstCharacterInEachWord(string $string, string $encoding = 'UTF-8'): string
     {
         $words = preg_split("/\s/u", $string, -1, PREG_SPLIT_NO_EMPTY);
 
-        $ucfirst = array_map(static function ($word) use ($encoding) {
-            return static::ucfirst($word, $encoding);
+        $wordsWithUppercaseFirstCharacter = array_map(static function ($word) use ($encoding) {
+            return static::uppercaseFirstCharacter($word, $encoding);
         }, $words);
 
-        return implode(' ', $ucfirst);
+        return implode(' ', $wordsWithUppercaseFirstCharacter);
     }
 
     /**
@@ -402,7 +404,7 @@ final class StringHelper
      * @see https://php.net/manual/en/function.mb-strlen.php
      * @return int
      */
-    public static function strlen(string $string, string $encoding = 'UTF-8'): int
+    public static function length(string $string, string $encoding = 'UTF-8'): int
     {
         return mb_strlen($string, $encoding);
     }
@@ -417,7 +419,7 @@ final class StringHelper
      * @see https://php.net/manual/en/function.mb-substr.php
      * @return string
      */
-    public static function substr(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
+    public static function substring(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
     {
         return mb_substr($string, $start, $length, $encoding);
     }
@@ -430,7 +432,7 @@ final class StringHelper
      * @see https://php.net/manual/en/function.mb-strtolower.php
      * @return string
      */
-    public static function strtolower(string $string, string $encoding = 'UTF-8'): string
+    public static function lowercase(string $string, string $encoding = 'UTF-8'): string
     {
         return mb_strtolower($string, $encoding);
     }
@@ -443,7 +445,7 @@ final class StringHelper
      * @see https://php.net/manual/en/function.mb-strtoupper.php
      * @return string
      */
-    public static function strtoupper(string $string, string $encoding = 'UTF-8'): string
+    public static function uppercase(string $string, string $encoding = 'UTF-8'): string
     {
         return mb_strtoupper($string, $encoding);
     }
@@ -464,7 +466,7 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      * @return string
      */
-    public static function substrReplace(string $string, string $replacement, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
+    public static function replaceSubstring(string $string, string $replacement, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
     {
         $stringLength = mb_strlen($string, $encoding);
 

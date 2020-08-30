@@ -435,7 +435,7 @@ final class Inflector
     {
         $input = $this->humanize($this->underscore($input), $uppercaseAll);
 
-        return $uppercaseAll ? StringHelper::ucwords($input) : StringHelper::ucfirst($input);
+        return $uppercaseAll ? StringHelper::uppercaseFirstCharacterInEachWord($input) : StringHelper::uppercaseFirstCharacter($input);
     }
 
     /**
@@ -450,7 +450,7 @@ final class Inflector
      */
     public function camelize(string $input): string
     {
-        return str_replace(' ', '', StringHelper::ucwords(preg_replace('/[^\pL\pN]+/u', ' ', $input)));
+        return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(preg_replace('/[^\pL\pN]+/u', ' ', $input)));
     }
 
     /**
@@ -501,7 +501,7 @@ final class Inflector
      */
     public function id2camel(string $input, string $separator = '-'): string
     {
-        return str_replace(' ', '', StringHelper::ucwords(str_replace($separator, ' ', $input)));
+        return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(str_replace($separator, ' ', $input)));
     }
 
     /**
@@ -524,7 +524,7 @@ final class Inflector
     {
         $input = str_replace('_', ' ', preg_replace('/_id$/', '', $input));
 
-        return $uppercaseWords ? StringHelper::ucwords($input) : StringHelper::ucfirst($input);
+        return $uppercaseWords ? StringHelper::uppercaseFirstCharacterInEachWord($input) : StringHelper::uppercaseFirstCharacter($input);
     }
 
     /**

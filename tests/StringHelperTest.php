@@ -285,7 +285,7 @@ final class StringHelperTest extends TestCase
      */
     public function testUcfirst(string $string, string $expectedResult): void
     {
-        $this->assertSame($expectedResult, StringHelper::ucfirst($string));
+        $this->assertSame($expectedResult, StringHelper::uppercaseFirstCharacter($string));
     }
 
     public function dataProviderUcwords(): array
@@ -306,7 +306,7 @@ final class StringHelperTest extends TestCase
      */
     public function testUcwords(string $string, string $expectedResult): void
     {
-        $this->assertSame($expectedResult, StringHelper::ucwords($string));
+        $this->assertSame($expectedResult, StringHelper::uppercaseFirstCharacterInEachWord($string));
     }
 
     public function testTruncateBegin(): void
@@ -363,17 +363,17 @@ final class StringHelperTest extends TestCase
 
     public function testStrToUpper(): void
     {
-        $this->assertSame('UPPER', StringHelper::strtoupper('uPpEr'));
+        $this->assertSame('UPPER', StringHelper::uppercase('uPpEr'));
     }
 
     public function testStrToLower(): void
     {
-        $this->assertSame('lower', StringHelper::strtolower('LoWeR'));
+        $this->assertSame('lower', StringHelper::lowercase('LoWeR'));
     }
 
     public function testStrLen(): void
     {
-        $this->assertSame(8, StringHelper::strlen('a string'));
+        $this->assertSame(8, StringHelper::length('a string'));
     }
 
     public function testSentence(): void
