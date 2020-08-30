@@ -332,22 +332,6 @@ final class StringHelperTest extends TestCase
         $this->assertSame('', StringHelper::directoryName('Class.php'));
     }
 
-    public function testNormalizeNumber(): void
-    {
-        $setLocale = setlocale(LC_ALL, 'Norwegian');
-
-        if (!$setLocale) {
-            $this->markTestSkipped('Norwegian locale not found.');
-        }
-
-        $this->assertSame('10.000', StringHelper::normalizeNumber('10,000'));
-    }
-
-    public function testFloatToString(): void
-    {
-        $this->assertSame('10.111', StringHelper::floatToString('10,111'));
-    }
-
     public function testStrToUpper(): void
     {
         $this->assertSame('UPPER', StringHelper::uppercase('uPpEr'));
