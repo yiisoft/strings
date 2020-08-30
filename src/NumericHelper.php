@@ -30,36 +30,14 @@ final class NumericHelper
     }
 
     /**
-     * Returns string representation of number value with replaced commas to dots, if decimal point
-     * of current locale is comma.
+     * Returns string representation of a number value without thousands separators and with dot as decimal separator.
      * @param int|float|string $value
      * @return string
      */
-    public static function normalizeNumber($value): string
+    public static function normalize($value): string
     {
         $value = (string)$value;
-
-        $localeInfo = localeconv();
-        $decimalSeparator = $localeInfo['decimal_point'] ?? null;
-
-        if ($decimalSeparator !== null && $decimalSeparator !== '.') {
-            $value = str_replace($decimalSeparator, '.', $value);
-        }
-
-        return $value;
-    }
-
-    /**
-     * Safely casts a float to string independent of the current locale.
-     *
-     * The decimal separator will always be `.`.
-     * @param float|int $number A floating point number or integer.
-     * @return string The string representation of the number.
-     */
-    public static function floatToString($number): string
-    {
-        // . and , are the only decimal separators known in ICU data,
-        // so its safe to call str_replace here
-        return str_replace(',', '.', (string)$number);
+        $value = str_replace([" ", ","], ["", "."], $value);
+        return preg_replace('/\.(?=.*\.)/', '', $value);
     }
 }

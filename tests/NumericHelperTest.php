@@ -18,19 +18,23 @@ final class NumericHelperTest extends TestCase
         $this->assertEquals('113th', NumericHelper::toOrdinal(113));
     }
 
-    public function testFloatToString(): void
+    public function normalizeNumberDataProvider(): array
     {
-        $this->assertSame('10.111', NumericHelper::floatToString('10,111'));
+        return [
+
+            'French' => ['4 294 967 295,000', '4294967295.000'],
+            'German' => ['4 294 967.295,000', '4294967295.000'],
+            'Spanish' => ['4.294.967.295,000', '4294967295.000'],
+            'English' => ['4,294,967,295.000', '4294967295.000'],
+            'Smaller' => ['10,111', '10.111'],
+        ];
     }
 
-    public function testNormalizeNumber(): void
+    /**
+     * @dataProvider normalizeNumberDataProvider
+     */
+    public function testNormalizeNumber(string $input, string $expected): void
     {
-        $setLocale = setlocale(LC_ALL, 'Norwegian');
-
-        if (!$setLocale) {
-            $this->markTestSkipped('Norwegian locale not found.');
-        }
-
-        $this->assertSame('10.000', NumericHelper::normalizeNumber('10,000'));
+        $this->assertSame($expected, NumericHelper::normalize($input));
     }
 }

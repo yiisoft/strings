@@ -96,8 +96,7 @@ echo \Yiisoft\Strings\NumericHelper::toOrdinal(3); // 3rd
 The following methods are available:
 
 - toOrdinal
-- normalizeNumber
-- floatToString
+- normalize
 
 ## Inflector usage
 
