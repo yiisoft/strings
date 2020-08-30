@@ -253,6 +253,19 @@ final class StringHelper
     }
 
     /**
+     * Get string length.
+     *
+     * @param string $string String to calculate length for.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     * @see https://php.net/manual/en/function.mb-strlen.php
+     * @return int
+     */
+    public static function length(string $string, string $encoding = 'UTF-8'): int
+    {
+        return mb_strlen($string, $encoding);
+    }
+
+    /**
      * Counts words in a string.
      *
      * @param string $input
@@ -264,99 +277,29 @@ final class StringHelper
     }
 
     /**
-     * Explodes string into array, optionally trims values and skips empty ones.
+     * Make a string lowercase.
      *
-     * @param string $input String to be exploded.
-     * @param string $delimiter Delimiter. Default is ','.
-     * @param mixed $trim Whether to trim each element. Can be:
-     *   - boolean - to trim normally;
-     *   - string - custom characters to trim. Will be passed as a second argument to `trim()` function.
-     *   - callable - will be called for each value instead of trim. Takes the only argument - value.
-     * @param bool $skipEmpty Whether to skip empty strings between delimiters. Default is false.
-     * @return array
-     */
-    public static function explode(string $input, string $delimiter = ',', $trim = true, bool $skipEmpty = false): array
-    {
-        $result = explode($delimiter, $input);
-        if ($trim !== false) {
-            if ($trim === true) {
-                $trim = 'trim';
-            } elseif (!\is_callable($trim)) {
-                $trim = static function ($v) use ($trim) {
-                    return trim($v, $trim);
-                };
-            }
-            $result = array_map($trim, $result);
-        }
-        if ($skipEmpty) {
-            // Wrapped with array_values to make array keys sequential after empty values removing
-            $result = array_values(array_filter($result, static function ($value) {
-                return $value !== '';
-            }));
-        }
-
-        return $result;
-    }
-
-    /**
-     * Encodes string into "Base 64 Encoding with URL and Filename Safe Alphabet" (RFC 4648).
-     *
-     * > Note: Base 64 padding `=` may be at the end of the returned string.
-     * > `=` is not transparent to URL encoding.
-     *
-     * @see https://tools.ietf.org/html/rfc4648#page-7
-     * @param string $input The string to encode.
-     * @return string Encoded string.
-     */
-    public static function base64UrlEncode(string $input): string
-    {
-        return strtr(base64_encode($input), '+/', '-_');
-    }
-
-    /**
-     * Decodes "Base 64 Encoding with URL and Filename Safe Alphabet" (RFC 4648).
-     *
-     * @see https://tools.ietf.org/html/rfc4648#page-7
-     * @param string $input Encoded string.
-     * @return string Decoded string.
-     */
-    public static function base64UrlDecode(string $input): string
-    {
-        return base64_decode(strtr($input, '-_', '+/'));
-    }
-
-    /**
-     * Returns string representation of number value with replaced commas to dots, if decimal point
-     * of current locale is comma.
-     * @param int|float|string $value
+     * @param string $string String to process.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     * @see https://php.net/manual/en/function.mb-strtolower.php
      * @return string
      */
-    public static function normalizeNumber($value): string
+    public static function lowercase(string $string, string $encoding = 'UTF-8'): string
     {
-        $value = (string)$value;
-
-        $localeInfo = localeconv();
-        $decimalSeparator = $localeInfo['decimal_point'] ?? null;
-
-        if ($decimalSeparator !== null && $decimalSeparator !== '.') {
-            $value = str_replace($decimalSeparator, '.', $value);
-        }
-
-        return $value;
+        return mb_strtolower($string, $encoding);
     }
 
     /**
-     * Safely casts a float to string independent of the current locale.
+     * Make a string uppercase.
      *
-     * The decimal separator will always be `.`.
-     * @param float|int $number A floating point number or integer.
-     * @return string The string representation of the number.
+     * @param string $string String to process.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     * @see https://php.net/manual/en/function.mb-strtoupper.php
+     * @return string
      */
-    public static function floatToString($number): string
+    public static function uppercase(string $string, string $encoding = 'UTF-8'): string
     {
-        // . and , are the only decimal separators known in ICU data,
-        // so its safe to call str_replace here
-        return str_replace(',', '.', (string) $number);
+        return mb_strtoupper($string, $encoding);
     }
 
     /**
@@ -395,16 +338,99 @@ final class StringHelper
     }
 
     /**
-     * Get string length.
+     * Encodes string into "Base 64 Encoding with URL and Filename Safe Alphabet" (RFC 4648).
      *
-     * @param string $string String to calculate length for.
-     * @param string $encoding The encoding to use, defaults to "UTF-8".
-     * @see https://php.net/manual/en/function.mb-strlen.php
-     * @return int
+     * > Note: Base 64 padding `=` may be at the end of the returned string.
+     * > `=` is not transparent to URL encoding.
+     *
+     * @see https://tools.ietf.org/html/rfc4648#page-7
+     * @param string $input The string to encode.
+     * @return string Encoded string.
      */
-    public static function length(string $string, string $encoding = 'UTF-8'): int
+    public static function base64UrlEncode(string $input): string
     {
-        return mb_strlen($string, $encoding);
+        return strtr(base64_encode($input), '+/', '-_');
+    }
+
+    /**
+     * Decodes "Base 64 Encoding with URL and Filename Safe Alphabet" (RFC 4648).
+     *
+     * @see https://tools.ietf.org/html/rfc4648#page-7
+     * @param string $input Encoded string.
+     * @return string Decoded string.
+     */
+    public static function base64UrlDecode(string $input): string
+    {
+        return base64_decode(strtr($input, '-_', '+/'));
+    }
+
+    /**
+     * Explodes string into array, optionally trims values and skips empty ones.
+     *
+     * @param string $input String to be exploded.
+     * @param string $delimiter Delimiter. Default is ','.
+     * @param mixed $trim Whether to trim each element. Can be:
+     *   - boolean - to trim normally;
+     *   - string - custom characters to trim. Will be passed as a second argument to `trim()` function.
+     *   - callable - will be called for each value instead of trim. Takes the only argument - value.
+     * @param bool $skipEmpty Whether to skip empty strings between delimiters. Default is false.
+     * @return array
+     */
+    public static function explode(string $input, string $delimiter = ',', $trim = true, bool $skipEmpty = false): array
+    {
+        $result = explode($delimiter, $input);
+        if ($trim !== false) {
+            if ($trim === true) {
+                $trim = 'trim';
+            } elseif (!\is_callable($trim)) {
+                $trim = static function ($v) use ($trim) {
+                    return trim($v, $trim);
+                };
+            }
+            $result = array_map($trim, $result);
+        }
+        if ($skipEmpty) {
+            // Wrapped with array_values to make array keys sequential after empty values removing
+            $result = array_values(array_filter($result, static function ($value) {
+                return $value !== '';
+            }));
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns string representation of number value with replaced commas to dots, if decimal point
+     * of current locale is comma.
+     * @param int|float|string $value
+     * @return string
+     */
+    public static function normalizeNumber($value): string
+    {
+        $value = (string)$value;
+
+        $localeInfo = localeconv();
+        $decimalSeparator = $localeInfo['decimal_point'] ?? null;
+
+        if ($decimalSeparator !== null && $decimalSeparator !== '.') {
+            $value = str_replace($decimalSeparator, '.', $value);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Safely casts a float to string independent of the current locale.
+     *
+     * The decimal separator will always be `.`.
+     * @param float|int $number A floating point number or integer.
+     * @return string The string representation of the number.
+     */
+    public static function floatToString($number): string
+    {
+        // . and , are the only decimal separators known in ICU data,
+        // so its safe to call str_replace here
+        return str_replace(',', '.', (string) $number);
     }
 
     /**
@@ -420,32 +446,6 @@ final class StringHelper
     public static function substring(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
     {
         return mb_substr($string, $start, $length, $encoding);
-    }
-
-    /**
-     * Make a string lowercase.
-     *
-     * @param string $string String to process.
-     * @param string $encoding The encoding to use, defaults to "UTF-8".
-     * @see https://php.net/manual/en/function.mb-strtolower.php
-     * @return string
-     */
-    public static function lowercase(string $string, string $encoding = 'UTF-8'): string
-    {
-        return mb_strtolower($string, $encoding);
-    }
-
-    /**
-     * Make a string uppercase.
-     *
-     * @param string $string String to process.
-     * @param string $encoding The encoding to use, defaults to "UTF-8".
-     * @see https://php.net/manual/en/function.mb-strtoupper.php
-     * @return string
-     */
-    public static function uppercase(string $string, string $encoding = 'UTF-8'): string
-    {
-        return mb_strtoupper($string, $encoding);
     }
 
     /**
