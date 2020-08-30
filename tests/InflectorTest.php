@@ -422,19 +422,6 @@ final class InflectorTest extends TestCase
         $this->assertEquals('CustomerTable', $inflector->tableToClass('customer_tables'));
     }
 
-    public function testOrdinalize(): void
-    {
-        $inflector = new Inflector();
-
-        $this->assertEquals('21st', $inflector->numberToOrdinal(21));
-        $this->assertEquals('22nd', $inflector->numberToOrdinal(22));
-        $this->assertEquals('23rd', $inflector->numberToOrdinal(23));
-        $this->assertEquals('24th', $inflector->numberToOrdinal(24));
-        $this->assertEquals('25th', $inflector->numberToOrdinal(25));
-        $this->assertEquals('111th', $inflector->numberToOrdinal(111));
-        $this->assertEquals('113th', $inflector->numberToOrdinal(113));
-    }
-
     public function testImmutability(): void
     {
         $original = new Inflector();
