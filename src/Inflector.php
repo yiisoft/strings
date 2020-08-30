@@ -439,21 +439,6 @@ final class Inflector
     }
 
     /**
-     * Returns given word as PascalCased.
-     *
-     * Converts a word like "send_email" to "SendEmail". It
-     * will remove non alphanumeric character from the word, so
-     * "who's online" will be converted to "WhoSOnline".
-     * @param string $input The word to PascalCase.
-     * @return string PascalCased string.
-     * @see variablize()
-     */
-    public function toPascal(string $input): string
-    {
-        return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(preg_replace('/[^\pL\pN]+/u', ' ', $input)));
-    }
-
-    /**
      * Converts a PascalCase name into space-separated words.
      * For example, 'PostTag' will be converted to 'Post Tag'.
      * @param string $input The string to be converted.
@@ -492,6 +477,31 @@ final class Inflector
     }
 
     /**
+     * Converts any "PascalCased" into an "underscored_word".
+     * @param string $input The word(s) to underscore.
+     * @return string
+     */
+    public function pascalToUnderscore(string $input): string
+    {
+        return mb_strtolower(preg_replace('/(?<=\\pL)(\\p{Lu})/u', '_\\1', $input));
+    }
+
+    /**
+     * Returns given word as PascalCased.
+     *
+     * Converts a word like "send_email" to "SendEmail". It
+     * will remove non alphanumeric character from the word, so
+     * "who's online" will be converted to "WhoSOnline".
+     * @param string $input The word to PascalCase.
+     * @return string PascalCased string.
+     * @see variablize()
+     */
+    public function toPascal(string $input): string
+    {
+        return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(preg_replace('/[^\pL\pN]+/u', ' ', $input)));
+    }
+
+    /**
      * Converts an ID into a PascalCase name.
      * Words in the ID separated by `$separator` (defaults to '-') will be concatenated into a PascalCase name.
      * For example, 'post-tag' is converted to 'PostTag'.
@@ -502,16 +512,6 @@ final class Inflector
     public function idToPascal(string $input, string $separator = '-'): string
     {
         return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(str_replace($separator, ' ', $input)));
-    }
-
-    /**
-     * Converts any "PascalCased" into an "underscored_word".
-     * @param string $input The word(s) to underscore.
-     * @return string
-     */
-    public function pascalToUnderscore(string $input): string
-    {
-        return mb_strtolower(preg_replace('/(?<=\\pL)(\\p{Lu})/u', '_\\1', $input));
     }
 
     /**
@@ -608,14 +608,6 @@ final class Inflector
     }
 
     /**
-     * @return bool If intl extension should be used.
-     */
-    private function useIntl(): bool
-    {
-        return $this->withoutIntl === false && \extension_loaded('intl');
-    }
-
-    /**
      * Converts a table name to its class name.
      *
      * For example, converts "people" to "Person".
@@ -647,5 +639,13 @@ final class Inflector
             default:
                 return $number . 'th';
         }
+    }
+
+    /**
+     * @return bool If intl extension should be used.
+     */
+    private function useIntl(): bool
+    {
+        return $this->withoutIntl === false && \extension_loaded('intl');
     }
 }
