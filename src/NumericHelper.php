@@ -1,12 +1,9 @@
 <?php
 
-
 namespace Yiisoft\Strings;
-
 
 final class NumericHelper
 {
-
     /**
      * Converts number to its ordinal English form. For example, converts 13 to 13th, 2 to 2nd ...
      * @param int $number The number to get its ordinal value.
