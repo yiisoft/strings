@@ -433,7 +433,7 @@ final class Inflector
      */
     public function toSentence(string $input, bool $uppercaseAll = false): string
     {
-        $input = $this->humanize($this->pascalToUnderscore($input), $uppercaseAll);
+        $input = $this->humanize($this->pascalToId($input, '_'), $uppercaseAll);
 
         return $uppercaseAll ? StringHelper::uppercaseFirstCharacterInEachWord($input) : StringHelper::uppercaseFirstCharacter($input);
     }
@@ -474,16 +474,6 @@ final class Inflector
         }
 
         return mb_strtolower(trim($result, $separator));
-    }
-
-    /**
-     * Converts any "PascalCased" into an "underscored_word".
-     * @param string $input The word(s) to underscore.
-     * @return string
-     */
-    public function pascalToUnderscore(string $input): string
-    {
-        return mb_strtolower(preg_replace('/(?<=\\pL)(\\p{Lu})/u', '_\\1', $input));
     }
 
     /**
@@ -552,7 +542,7 @@ final class Inflector
      */
     public function tableize(string $className): string
     {
-        return $this->pluralize($this->pascalToUnderscore($className));
+        return $this->pluralize($this->pascalToId($className, '_'));
     }
 
     /**

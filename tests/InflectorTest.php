@@ -123,14 +123,6 @@ final class InflectorTest extends TestCase
         );
     }
 
-    public function testUnderscore(): void
-    {
-        $inflector = new Inflector();
-
-        $this->assertEquals('me_my_self_and_i', $inflector->pascalToUnderscore('MeMySelfAndI'));
-        $this->assertEquals('кожний_тест_особливий', $inflector->pascalToUnderscore('КожнийТестОсобливий'));
-    }
-
     public function testCamel2words(): void
     {
         $inflector = new Inflector();
