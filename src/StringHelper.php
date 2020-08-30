@@ -490,23 +490,6 @@ final class StringHelper
     }
 
     /**
-     * Convert special characters to HTML entities.
-     *
-     * @param string $string String to process.
-     * @param int $flags A bitmask of one or more flags.
-     * @param bool $doubleEncode If set to false, method will not encode existing HTML entities.
-     * @param string|null $encoding The encoding to use, defaults to `ini_get('default_charset')`.
-     * @return string
-     * @see https://php.net/manual/en/function.htmlspecialchars.php
-     */
-    public static function htmlspecialchars(string $string, int $flags, bool $doubleEncode = true, string $encoding = null): string
-    {
-        return $encoding === null && $doubleEncode
-            ? htmlspecialchars($string, $flags)
-            : htmlspecialchars($string, $flags, $encoding ?: ini_get('default_charset'), $doubleEncode);
-    }
-
-    /**
      * Converts a list of words into a sentence.
      *
      * Special treatment is done for the last few words. For example,

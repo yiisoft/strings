@@ -348,19 +348,6 @@ final class StringHelperTest extends TestCase
         $this->assertSame('10.111', StringHelper::floatToString('10,111'));
     }
 
-    public function testHtmlSpecialChars(): void
-    {
-        $this->assertSame(
-            '&lt;a href=&#039;test&#039;&gt;Тест&lt;/a&gt;&amp;lt;br&amp;gt;',
-            StringHelper::htmlspecialchars("<a href='test'>Тест</a>&lt;br&gt;", ENT_QUOTES)
-        );
-
-        $this->assertSame(
-            '&lt;a href=&#039;test&#039;&gt;Тест&lt;/a&gt;&lt;br&gt;',
-            StringHelper::htmlspecialchars("<a href='test'>Тест</a>&lt;br&gt;", ENT_QUOTES, false, 'UTF-8')
-        );
-    }
-
     public function testStrToUpper(): void
     {
         $this->assertSame('UPPER', StringHelper::uppercase('uPpEr'));
