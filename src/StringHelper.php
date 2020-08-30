@@ -38,7 +38,7 @@ final class StringHelper
      * @return string The extracted part of string, or FALSE on failure or an empty string.
      * @see http://www.php.net/manual/en/function.substr.php
      */
-    public static function byteSubstr(string $input, int $start, int $length = null): string
+    public static function byteSubstring(string $input, int $start, int $length = null): string
     {
         return mb_substr($input, $start, $length ?? mb_strlen($input, '8bit'), '8bit');
     }
@@ -56,7 +56,7 @@ final class StringHelper
      * @return string The trailing name component of the given path.
      * @see http://www.php.net/manual/en/function.basename.php
      */
-    public static function basename(string $path, string $suffix = ''): string
+    public static function baseName(string $path, string $suffix = ''): string
     {
         $length = mb_strlen($suffix);
         if ($length > 0 && mb_substr($path, -$length) === $suffix) {
@@ -80,7 +80,7 @@ final class StringHelper
      * @return string The parent directory's path.
      * @see http://www.php.net/manual/en/function.basename.php
      */
-    public static function dirname(string $path): string
+    public static function directoryName(string $path): string
     {
         $position = mb_strrpos(str_replace('\\', '/', $path), '/');
         if ($position !== false) {
@@ -88,91 +88,6 @@ final class StringHelper
         }
 
         return '';
-    }
-
-    /**
-     * Truncates a string from the end to the number of characters specified.
-     *
-     * @param string $input The string to truncate.
-     * @param int $length Maximum length of the truncated string including trim marker.
-     * @param string $trimMarker String to append to the end of truncated string.
-     * @param string $encoding The encoding to use, defaults to "UTF-8".
-     * @return string The truncated string.
-     */
-    public static function truncateEnd(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
-    {
-        $inputLength = mb_strlen($input, $encoding);
-
-        if ($inputLength <= $length) {
-            return $input;
-        }
-
-        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
-        return rtrim(mb_substr($input, 0, $length - $trimMarkerLength, $encoding)) . $trimMarker;
-    }
-
-    /**
-     * Truncates a string to the number of words specified.
-     *
-     * @param string $input The string to truncate.
-     * @param int $count How many words from original string to include into truncated string.
-     * @param string $trimMarker String to append to the end of truncated string.
-     * @return string The truncated string.
-     */
-    public static function truncateWords(string $input, int $count, string $trimMarker = '…'): string
-    {
-        $words = preg_split('/(\s+)/u', trim($input), -1, PREG_SPLIT_DELIM_CAPTURE);
-        if (count($words) / 2 > $count) {
-            return implode('', array_slice($words, 0, ($count * 2) - 1)) . $trimMarker;
-        }
-
-        return $input;
-    }
-
-    /**
-     * Truncates a string from the beginning to the number of characters specified.
-     *
-     * @param string $input String to process.
-     * @param int $length Maximum length of the truncated string including trim marker.
-     * @param string $trimMarker String to append to the beginning.
-     * @param string $encoding The encoding to use, defaults to "UTF-8".
-     * @return string
-     */
-    public static function truncateBegin(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
-    {
-        $inputLength = mb_strlen($input, $encoding);
-
-        if ($inputLength <= $length) {
-            return $input;
-        }
-
-        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
-        return self::replaceSubstring($input, $trimMarker, 0, -$length + $trimMarkerLength, $encoding);
-    }
-
-    /**
-     * Truncates a string in the middle. Keeping start and end.
-     * `StringHelper::truncateMiddle('Hello world number 2', 8)` produces "Hell…r 2".
-     *
-     * @param string $input The string to truncate.
-     * @param int $length Maximum length of the truncated string including trim marker.
-     * @param string $trimMarker String to append in the middle of truncated string.
-     * @param string $encoding The encoding to use, defaults to "UTF-8".
-     * @return string The truncated string.
-     */
-    public static function truncateMiddle(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
-    {
-        $inputLength = mb_strlen($input, $encoding);
-
-        if ($inputLength <= $length) {
-            return $input;
-        }
-
-        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
-        $start = (int)ceil(($length - $trimMarkerLength) / 2);
-        $end = $length - $start - $trimMarkerLength;
-
-        return self::replaceSubstring($input, $trimMarker, $start, -$end, $encoding);
     }
 
     /**
@@ -253,6 +168,102 @@ final class StringHelper
     }
 
     /**
+     * Truncates a string from the beginning to the number of characters specified.
+     *
+     * @param string $input String to process.
+     * @param int $length Maximum length of the truncated string including trim marker.
+     * @param string $trimMarker String to append to the beginning.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     * @return string
+     */
+    public static function truncateBegin(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
+    {
+        $inputLength = mb_strlen($input, $encoding);
+
+        if ($inputLength <= $length) {
+            return $input;
+        }
+
+        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
+        return self::replaceSubstring($input, $trimMarker, 0, -$length + $trimMarkerLength, $encoding);
+    }
+
+    /**
+     * Truncates a string in the middle. Keeping start and end.
+     * `StringHelper::truncateMiddle('Hello world number 2', 8)` produces "Hell…r 2".
+     *
+     * @param string $input The string to truncate.
+     * @param int $length Maximum length of the truncated string including trim marker.
+     * @param string $trimMarker String to append in the middle of truncated string.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     * @return string The truncated string.
+     */
+    public static function truncateMiddle(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
+    {
+        $inputLength = mb_strlen($input, $encoding);
+
+        if ($inputLength <= $length) {
+            return $input;
+        }
+
+        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
+        $start = (int)ceil(($length - $trimMarkerLength) / 2);
+        $end = $length - $start - $trimMarkerLength;
+
+        return self::replaceSubstring($input, $trimMarker, $start, -$end, $encoding);
+    }
+
+    /**
+     * Truncates a string from the end to the number of characters specified.
+     *
+     * @param string $input The string to truncate.
+     * @param int $length Maximum length of the truncated string including trim marker.
+     * @param string $trimMarker String to append to the end of truncated string.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     * @return string The truncated string.
+     */
+    public static function truncateEnd(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
+    {
+        $inputLength = mb_strlen($input, $encoding);
+
+        if ($inputLength <= $length) {
+            return $input;
+        }
+
+        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
+        return rtrim(mb_substr($input, 0, $length - $trimMarkerLength, $encoding)) . $trimMarker;
+    }
+
+    /**
+     * Truncates a string to the number of words specified.
+     *
+     * @param string $input The string to truncate.
+     * @param int $count How many words from original string to include into truncated string.
+     * @param string $trimMarker String to append to the end of truncated string.
+     * @return string The truncated string.
+     */
+    public static function truncateWords(string $input, int $count, string $trimMarker = '…'): string
+    {
+        $words = preg_split('/(\s+)/u', trim($input), -1, PREG_SPLIT_DELIM_CAPTURE);
+        if (count($words) / 2 > $count) {
+            return implode('', array_slice($words, 0, ($count * 2) - 1)) . $trimMarker;
+        }
+
+        return $input;
+    }
+
+    /**
+     * Counts words in a string.
+     *
+     * @param string $input
+     * @return int
+     */
+    public static function countWords(string $input): int
+    {
+        return count(preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY));
+    }
+
+    /**
      * Explodes string into array, optionally trims values and skips empty ones.
      *
      * @param string $input String to be exploded.
@@ -288,37 +299,6 @@ final class StringHelper
     }
 
     /**
-     * Counts words in a string.
-     *
-     * @param string $input
-     * @return int
-     */
-    public static function countWords(string $input): int
-    {
-        return count(preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY));
-    }
-
-    /**
-     * Returns string representation of number value with replaced commas to dots, if decimal point
-     * of current locale is comma.
-     * @param int|float|string $value
-     * @return string
-     */
-    public static function normalizeNumber($value): string
-    {
-        $value = (string)$value;
-
-        $localeInfo = localeconv();
-        $decimalSeparator = $localeInfo['decimal_point'] ?? null;
-
-        if ($decimalSeparator !== null && $decimalSeparator !== '.') {
-            $value = str_replace($decimalSeparator, '.', $value);
-        }
-
-        return $value;
-    }
-
-    /**
      * Encodes string into "Base 64 Encoding with URL and Filename Safe Alphabet" (RFC 4648).
      *
      * > Note: Base 64 padding `=` may be at the end of the returned string.
@@ -343,6 +323,26 @@ final class StringHelper
     public static function base64UrlDecode(string $input): string
     {
         return base64_decode(strtr($input, '-_', '+/'));
+    }
+
+    /**
+     * Returns string representation of number value with replaced commas to dots, if decimal point
+     * of current locale is comma.
+     * @param int|float|string $value
+     * @return string
+     */
+    public static function normalizeNumber($value): string
+    {
+        $value = (string)$value;
+
+        $localeInfo = localeconv();
+        $decimalSeparator = $localeInfo['decimal_point'] ?? null;
+
+        if ($decimalSeparator !== null && $decimalSeparator !== '.') {
+            $value = str_replace($decimalSeparator, '.', $value);
+        }
+
+        return $value;
     }
 
     /**

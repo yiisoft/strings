@@ -17,80 +17,80 @@ final class StringHelperTest extends TestCase
 
     public function testSubstr(): void
     {
-        $this->assertEquals('th', StringHelper::byteSubstr('this', 0, 2));
-        $this->assertEquals('э', StringHelper::byteSubstr('это', 0, 2));
+        $this->assertEquals('th', StringHelper::byteSubstring('this', 0, 2));
+        $this->assertEquals('э', StringHelper::byteSubstring('это', 0, 2));
 
-        $this->assertEquals('abcdef', StringHelper::byteSubstr('abcdef', 0));
-        $this->assertEquals('abcdef', StringHelper::byteSubstr('abcdef', 0, null));
+        $this->assertEquals('abcdef', StringHelper::byteSubstring('abcdef', 0));
+        $this->assertEquals('abcdef', StringHelper::byteSubstring('abcdef', 0, null));
 
-        $this->assertEquals('de', StringHelper::byteSubstr('abcdef', 3, 2));
-        $this->assertEquals('def', StringHelper::byteSubstr('abcdef', 3));
-        $this->assertEquals('def', StringHelper::byteSubstr('abcdef', 3, null));
+        $this->assertEquals('de', StringHelper::byteSubstring('abcdef', 3, 2));
+        $this->assertEquals('def', StringHelper::byteSubstring('abcdef', 3));
+        $this->assertEquals('def', StringHelper::byteSubstring('abcdef', 3, null));
 
-        $this->assertEquals('cd', StringHelper::byteSubstr('abcdef', -4, 2));
-        $this->assertEquals('cdef', StringHelper::byteSubstr('abcdef', -4));
-        $this->assertEquals('cdef', StringHelper::byteSubstr('abcdef', -4, null));
+        $this->assertEquals('cd', StringHelper::byteSubstring('abcdef', -4, 2));
+        $this->assertEquals('cdef', StringHelper::byteSubstring('abcdef', -4));
+        $this->assertEquals('cdef', StringHelper::byteSubstring('abcdef', -4, null));
 
-        $this->assertEquals('', StringHelper::byteSubstr('abcdef', 4, 0));
-        $this->assertEquals('', StringHelper::byteSubstr('abcdef', -4, 0));
+        $this->assertEquals('', StringHelper::byteSubstring('abcdef', 4, 0));
+        $this->assertEquals('', StringHelper::byteSubstring('abcdef', -4, 0));
 
-        $this->assertEquals('это', StringHelper::byteSubstr('это', 0));
-        $this->assertEquals('это', StringHelper::byteSubstr('это', 0, null));
+        $this->assertEquals('это', StringHelper::byteSubstring('это', 0));
+        $this->assertEquals('это', StringHelper::byteSubstring('это', 0, null));
 
-        $this->assertEquals('т', StringHelper::byteSubstr('это', 2, 2));
-        $this->assertEquals('то', StringHelper::byteSubstr('это', 2));
-        $this->assertEquals('то', StringHelper::byteSubstr('это', 2, null));
+        $this->assertEquals('т', StringHelper::byteSubstring('это', 2, 2));
+        $this->assertEquals('то', StringHelper::byteSubstring('это', 2));
+        $this->assertEquals('то', StringHelper::byteSubstring('это', 2, null));
 
-        $this->assertEquals('т', StringHelper::byteSubstr('это', -4, 2));
-        $this->assertEquals('то', StringHelper::byteSubstr('это', -4));
-        $this->assertEquals('то', StringHelper::byteSubstr('это', -4, null));
+        $this->assertEquals('т', StringHelper::byteSubstring('это', -4, 2));
+        $this->assertEquals('то', StringHelper::byteSubstring('это', -4));
+        $this->assertEquals('то', StringHelper::byteSubstring('это', -4, null));
 
-        $this->assertEquals('', StringHelper::byteSubstr('это', 4, 0));
-        $this->assertEquals('', StringHelper::byteSubstr('это', -4, 0));
+        $this->assertEquals('', StringHelper::byteSubstring('это', 4, 0));
+        $this->assertEquals('', StringHelper::byteSubstring('это', -4, 0));
     }
 
     public function testBasename(): void
     {
-        $this->assertEquals('', StringHelper::basename(''));
+        $this->assertEquals('', StringHelper::baseName(''));
 
-        $this->assertEquals('file', StringHelper::basename('file'));
-        $this->assertEquals('file.test', StringHelper::basename('file.test', '.test2'));
-        $this->assertEquals('file', StringHelper::basename('file.test', '.test'));
+        $this->assertEquals('file', StringHelper::baseName('file'));
+        $this->assertEquals('file.test', StringHelper::baseName('file.test', '.test2'));
+        $this->assertEquals('file', StringHelper::baseName('file.test', '.test'));
 
-        $this->assertEquals('file', StringHelper::basename('/file'));
-        $this->assertEquals('file.test', StringHelper::basename('/file.test', '.test2'));
-        $this->assertEquals('file', StringHelper::basename('/file.test', '.test'));
+        $this->assertEquals('file', StringHelper::baseName('/file'));
+        $this->assertEquals('file.test', StringHelper::baseName('/file.test', '.test2'));
+        $this->assertEquals('file', StringHelper::baseName('/file.test', '.test'));
 
-        $this->assertEquals('file', StringHelper::basename('/path/to/file'));
-        $this->assertEquals('file.test', StringHelper::basename('/path/to/file.test', '.test2'));
-        $this->assertEquals('file', StringHelper::basename('/path/to/file.test', '.test'));
+        $this->assertEquals('file', StringHelper::baseName('/path/to/file'));
+        $this->assertEquals('file.test', StringHelper::baseName('/path/to/file.test', '.test2'));
+        $this->assertEquals('file', StringHelper::baseName('/path/to/file.test', '.test'));
 
-        $this->assertEquals('file', StringHelper::basename('\file'));
-        $this->assertEquals('file.test', StringHelper::basename('\file.test', '.test2'));
-        $this->assertEquals('file', StringHelper::basename('\file.test', '.test'));
+        $this->assertEquals('file', StringHelper::baseName('\file'));
+        $this->assertEquals('file.test', StringHelper::baseName('\file.test', '.test2'));
+        $this->assertEquals('file', StringHelper::baseName('\file.test', '.test'));
 
-        $this->assertEquals('file', StringHelper::basename('C:\file'));
-        $this->assertEquals('file.test', StringHelper::basename('C:\file.test', '.test2'));
-        $this->assertEquals('file', StringHelper::basename('C:\file.test', '.test'));
+        $this->assertEquals('file', StringHelper::baseName('C:\file'));
+        $this->assertEquals('file.test', StringHelper::baseName('C:\file.test', '.test2'));
+        $this->assertEquals('file', StringHelper::baseName('C:\file.test', '.test'));
 
-        $this->assertEquals('file', StringHelper::basename('C:\path\to\file'));
-        $this->assertEquals('file.test', StringHelper::basename('C:\path\to\file.test', '.test2'));
-        $this->assertEquals('file', StringHelper::basename('C:\path\to\file.test', '.test'));
+        $this->assertEquals('file', StringHelper::baseName('C:\path\to\file'));
+        $this->assertEquals('file.test', StringHelper::baseName('C:\path\to\file.test', '.test2'));
+        $this->assertEquals('file', StringHelper::baseName('C:\path\to\file.test', '.test'));
 
         // mixed paths
-        $this->assertEquals('file.test', StringHelper::basename('/path\to/file.test'));
-        $this->assertEquals('file.test', StringHelper::basename('/path/to\file.test'));
-        $this->assertEquals('file.test', StringHelper::basename('\path/to\file.test'));
+        $this->assertEquals('file.test', StringHelper::baseName('/path\to/file.test'));
+        $this->assertEquals('file.test', StringHelper::baseName('/path/to\file.test'));
+        $this->assertEquals('file.test', StringHelper::baseName('\path/to\file.test'));
 
         // \ and / in suffix
-        $this->assertEquals('file', StringHelper::basename('/path/to/filete/st', 'te/st'));
-        $this->assertEquals('st', StringHelper::basename('/path/to/filete/st', 'te\st'));
-        $this->assertEquals('file', StringHelper::basename('/path/to/filete\st', 'te\st'));
-        $this->assertEquals('st', StringHelper::basename('/path/to/filete\st', 'te/st'));
+        $this->assertEquals('file', StringHelper::baseName('/path/to/filete/st', 'te/st'));
+        $this->assertEquals('st', StringHelper::baseName('/path/to/filete/st', 'te\st'));
+        $this->assertEquals('file', StringHelper::baseName('/path/to/filete\st', 'te\st'));
+        $this->assertEquals('st', StringHelper::baseName('/path/to/filete\st', 'te/st'));
 
         // http://www.php.net/manual/en/function.basename.php#72254
-        $this->assertEquals('foo', StringHelper::basename('/bar/foo/'));
-        $this->assertEquals('foo', StringHelper::basename('\\bar\\foo\\'));
+        $this->assertEquals('foo', StringHelper::baseName('/bar/foo/'));
+        $this->assertEquals('foo', StringHelper::baseName('\\bar\\foo\\'));
     }
 
     public function testTruncateEnd(): void
@@ -328,8 +328,8 @@ final class StringHelperTest extends TestCase
 
     public function testDirname(): void
     {
-        $this->assertSame('\App\Test', StringHelper::dirname('\App\Test\Class.php'));
-        $this->assertSame('', StringHelper::dirname('Class.php'));
+        $this->assertSame('\App\Test', StringHelper::directoryName('\App\Test\Class.php'));
+        $this->assertSame('', StringHelper::directoryName('Class.php'));
     }
 
     public function testNormalizeNumber(): void
