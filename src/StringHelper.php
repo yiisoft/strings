@@ -90,6 +90,60 @@ final class StringHelper
     }
 
     /**
+     * Get part of string.
+     *
+     * @param string $string To get substring from.
+     * @param int $start Character to start at.
+     * @param int|null $length Number of characters to get.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     * @see https://php.net/manual/en/function.mb-substr.php
+     * @return string
+     */
+    public static function substring(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
+    {
+        return mb_substr($string, $start, $length, $encoding);
+    }
+
+    /**
+     * Replace text within a portion of a string.
+     *
+     * @param string $string The input string.
+     * @param string $replacement The replacement string.
+     * @param int $start Position to begin replacing substring at.
+     * If start is non-negative, the replacing will begin at the start'th offset into string.
+     * If start is negative, the replacing will begin at the start'th character from the end of string.
+     * @param int|null $length Length of the substring to be replaced.
+     * If given and is positive, it represents the length of the portion of string which is to be replaced.
+     * If it is negative, it represents the number of characters from the end of string at which to stop replacing.
+     * If it is not given, then it will default to the length of the string; i.e. end the replacing at the end of string.
+     * If length is zero then this function will have the effect of inserting replacement into string at the given start offset.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     * @return string
+     */
+    public static function replaceSubstring(string $string, string $replacement, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
+    {
+        $stringLength = mb_strlen($string, $encoding);
+
+        if ($start < 0) {
+            $start = \max(0, $stringLength + $start);
+        } elseif ($start > $stringLength) {
+            $start = $stringLength;
+        }
+
+        if ($length !== null && $length < 0) {
+            $length = \max(0, $stringLength - $start + $length);
+        } elseif ($length === null || $length > $stringLength) {
+            $length = $stringLength;
+        }
+
+        if (($start + $length) > $stringLength) {
+            $length = $stringLength - $start;
+        }
+
+        return mb_substr($string, 0, $start, $encoding) . $replacement . mb_substr($string, $start + $length, $stringLength - $start - $length, $encoding);
+    }
+
+    /**
      * Check if given string starts with specified substring.
      * Binary and multibyte safe.
      *
@@ -396,60 +450,6 @@ final class StringHelper
         }
 
         return $result;
-    }
-
-    /**
-     * Get part of string.
-     *
-     * @param string $string To get substring from.
-     * @param int $start Character to start at.
-     * @param int|null $length Number of characters to get.
-     * @param string $encoding The encoding to use, defaults to "UTF-8".
-     * @see https://php.net/manual/en/function.mb-substr.php
-     * @return string
-     */
-    public static function substring(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
-    {
-        return mb_substr($string, $start, $length, $encoding);
-    }
-
-    /**
-     * Replace text within a portion of a string.
-     *
-     * @param string $string The input string.
-     * @param string $replacement The replacement string.
-     * @param int $start Position to begin replacing substring at.
-     * If start is non-negative, the replacing will begin at the start'th offset into string.
-     * If start is negative, the replacing will begin at the start'th character from the end of string.
-     * @param int|null $length Length of the substring to be replaced.
-     * If given and is positive, it represents the length of the portion of string which is to be replaced.
-     * If it is negative, it represents the number of characters from the end of string at which to stop replacing.
-     * If it is not given, then it will default to the length of the string; i.e. end the replacing at the end of string.
-     * If length is zero then this function will have the effect of inserting replacement into string at the given start offset.
-     * @param string $encoding The encoding to use, defaults to "UTF-8".
-     * @return string
-     */
-    public static function replaceSubstring(string $string, string $replacement, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
-    {
-        $stringLength = mb_strlen($string, $encoding);
-
-        if ($start < 0) {
-            $start = \max(0, $stringLength + $start);
-        } elseif ($start > $stringLength) {
-            $start = $stringLength;
-        }
-
-        if ($length !== null && $length < 0) {
-            $length = \max(0, $stringLength - $start + $length);
-        } elseif ($length === null || $length > $stringLength) {
-            $length = $stringLength;
-        }
-
-        if (($start + $length) > $stringLength) {
-            $length = $stringLength - $start;
-        }
-
-        return mb_substr($string, 0, $start, $encoding) . $replacement . mb_substr($string, $start + $length, $stringLength - $start - $length, $encoding);
     }
 
     /**
