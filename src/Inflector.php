@@ -425,7 +425,7 @@ final class Inflector
     }
 
     /**
-     * Converts an underscored or CamelCase word into a English
+     * Converts an underscored or PascalCase word into a English
      * sentence.
      * @param string $input The string to titleize.
      * @param bool $uppercaseAll Whether to set all words to uppercase.
@@ -433,33 +433,33 @@ final class Inflector
      */
     public function titleize(string $input, bool $uppercaseAll = false): string
     {
-        $input = $this->humanize($this->underscore($input), $uppercaseAll);
+        $input = $this->humanize($this->pascalToUnderscore($input), $uppercaseAll);
 
         return $uppercaseAll ? StringHelper::uppercaseFirstCharacterInEachWord($input) : StringHelper::uppercaseFirstCharacter($input);
     }
 
     /**
-     * Returns given word as CamelCased.
+     * Returns given word as PascalCased.
      *
      * Converts a word like "send_email" to "SendEmail". It
      * will remove non alphanumeric character from the word, so
      * "who's online" will be converted to "WhoSOnline".
-     * @param string $input The word to CamelCase.
-     * @return string CamelCased string.
+     * @param string $input The word to PascalCase.
+     * @return string PascalCased string.
      * @see variablize()
      */
-    public function camelize(string $input): string
+    public function toPascal(string $input): string
     {
         return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(preg_replace('/[^\pL\pN]+/u', ' ', $input)));
     }
 
     /**
-     * Converts a CamelCase name into space-separated words.
+     * Converts a PascalCase name into space-separated words.
      * For example, 'PostTag' will be converted to 'Post Tag'.
      * @param string $input The string to be converted.
      * @return string The resulting words.
      */
-    public function camel2words(string $input): string
+    public function pascalToWords(string $input): string
     {
         return mb_strtolower(trim(str_replace([
             '-',
@@ -469,7 +469,7 @@ final class Inflector
     }
 
     /**
-     * Converts a CamelCase name into an ID in lowercase.
+     * Converts a PascalCase name into an ID in lowercase.
      * Words in the ID may be concatenated using the specified character (defaults to '-').
      * For example, 'PostTag' will be converted to 'post-tag'.
      * @param string $input The string to be converted.
@@ -477,7 +477,7 @@ final class Inflector
      * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to false.
      * @return string The resulting ID.
      */
-    public function camel2id(string $input, string $separator = '-', bool $strict = false): string
+    public function pascalToId(string $input, string $separator = '-', bool $strict = false): string
     {
         $regex = $strict
             ? '/(?<=\p{L})(\p{Lu})/u'
@@ -492,30 +492,30 @@ final class Inflector
     }
 
     /**
-     * Converts an ID into a CamelCase name.
-     * Words in the ID separated by `$separator` (defaults to '-') will be concatenated into a CamelCase name.
+     * Converts an ID into a PascalCase name.
+     * Words in the ID separated by `$separator` (defaults to '-') will be concatenated into a PascalCase name.
      * For example, 'post-tag' is converted to 'PostTag'.
      * @param string $input The ID to be converted.
      * @param string $separator The character used to separate the words in the ID.
-     * @return string The resulting CamelCase name.
+     * @return string The resulting PascalCase name.
      */
-    public function id2camel(string $input, string $separator = '-'): string
+    public function idToPascal(string $input, string $separator = '-'): string
     {
         return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(str_replace($separator, ' ', $input)));
     }
 
     /**
-     * Converts any "CamelCased" into an "underscored_word".
+     * Converts any "PascalCased" into an "underscored_word".
      * @param string $input The word(s) to underscore.
      * @return string
      */
-    public function underscore(string $input): string
+    public function pascalToUnderscore(string $input): string
     {
         return mb_strtolower(preg_replace('/(?<=\\pL)(\\p{Lu})/u', '_\\1', $input));
     }
 
     /**
-     * Returns a human-readable string from $word.
+     * Returns a human-readable string.
      * @param string $input The string to humanize.
      * @param bool $uppercaseWords Whether to set all words to uppercase or not.
      * @return string
@@ -538,7 +538,7 @@ final class Inflector
      */
     public function variablize(string $input): string
     {
-        $input = $this->camelize($input);
+        $input = $this->toPascal($input);
 
         return mb_strtolower(mb_substr($input, 0, 1)) . mb_substr($input, 1, null);
     }
@@ -552,7 +552,7 @@ final class Inflector
      */
     public function tableize(string $className): string
     {
-        return $this->pluralize($this->underscore($className));
+        return $this->pluralize($this->pascalToUnderscore($className));
     }
 
     /**
@@ -622,9 +622,9 @@ final class Inflector
      * @param string $tableName
      * @return string
      */
-    public function classify(string $tableName): string
+    public function tableToClass(string $tableName): string
     {
-        return $this->camelize($this->singularize($tableName));
+        return $this->toPascal($this->singularize($tableName));
     }
 
     /**
@@ -632,7 +632,7 @@ final class Inflector
      * @param int $number The number to get its ordinal value.
      * @return string
      */
-    public function ordinalize(int $number): ?string
+    public function numberToOrdinal(int $number): ?string
     {
         if (\in_array($number % 100, range(11, 13), true)) {
             return $number . 'th';

@@ -115,11 +115,11 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('MeMySelfAndI', $inflector->camelize('me my_self-andI'));
-        $this->assertEquals('QweQweEwq', $inflector->camelize('qwe qwe^ewq'));
+        $this->assertEquals('MeMySelfAndI', $inflector->toPascal('me my_self-andI'));
+        $this->assertEquals('QweQweEwq', $inflector->toPascal('qwe qwe^ewq'));
         $this->assertEquals(
             'ВідомоЩоТестиЗберігатьНашіНЕРВИ',
-            $inflector->camelize('Відомо, що тести зберігать наші НЕРВИ! 🙃')
+            $inflector->toPascal('Відомо, що тести зберігать наші НЕРВИ! 🙃')
         );
     }
 
@@ -127,18 +127,18 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('me_my_self_and_i', $inflector->underscore('MeMySelfAndI'));
-        $this->assertEquals('кожний_тест_особливий', $inflector->underscore('КожнийТестОсобливий'));
+        $this->assertEquals('me_my_self_and_i', $inflector->pascalToUnderscore('MeMySelfAndI'));
+        $this->assertEquals('кожний_тест_особливий', $inflector->pascalToUnderscore('КожнийТестОсобливий'));
     }
 
     public function testCamel2words(): void
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('camel case', $inflector->camel2words('camelCase'));
-        $this->assertEquals('lower case', $inflector->camel2words('lower_case'));
-        $this->assertEquals('tricky stuff it is testing', $inflector->camel2words(' tricky_stuff.it-is testing... '));
-        $this->assertEquals('і це дійсно так!', $inflector->camel2words('ІЦеДійсноТак!'));
+        $this->assertEquals('camel case', $inflector->pascalToWords('camelCase'));
+        $this->assertEquals('lower case', $inflector->pascalToWords('lower_case'));
+        $this->assertEquals('tricky stuff it is testing', $inflector->pascalToWords(' tricky_stuff.it-is testing... '));
+        $this->assertEquals('і це дійсно так!', $inflector->pascalToWords('ІЦеДійсноТак!'));
     }
 
     /**
@@ -148,7 +148,7 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $result = \call_user_func_array([$inflector, 'camel2id'], $arguments);
+        $result = \call_user_func_array([$inflector, 'pascalToId'], $arguments);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -161,7 +161,7 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $result = \call_user_func_array([$inflector, 'id2camel'], $arguments);
+        $result = \call_user_func_array([$inflector, 'idToPascal'], $arguments);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -440,20 +440,20 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('CustomerTable', $inflector->classify('customer_tables'));
+        $this->assertEquals('CustomerTable', $inflector->tableToClass('customer_tables'));
     }
 
     public function testOrdinalize(): void
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('21st', $inflector->ordinalize(21));
-        $this->assertEquals('22nd', $inflector->ordinalize(22));
-        $this->assertEquals('23rd', $inflector->ordinalize(23));
-        $this->assertEquals('24th', $inflector->ordinalize(24));
-        $this->assertEquals('25th', $inflector->ordinalize(25));
-        $this->assertEquals('111th', $inflector->ordinalize(111));
-        $this->assertEquals('113th', $inflector->ordinalize(113));
+        $this->assertEquals('21st', $inflector->numberToOrdinal(21));
+        $this->assertEquals('22nd', $inflector->numberToOrdinal(22));
+        $this->assertEquals('23rd', $inflector->numberToOrdinal(23));
+        $this->assertEquals('24th', $inflector->numberToOrdinal(24));
+        $this->assertEquals('25th', $inflector->numberToOrdinal(25));
+        $this->assertEquals('111th', $inflector->numberToOrdinal(111));
+        $this->assertEquals('113th', $inflector->numberToOrdinal(113));
     }
 
     public function testImmutability(): void
