@@ -9,27 +9,31 @@ final class NumericHelper
 {
     /**
      * Converts number to its ordinal English form. For example, converts 13 to 13th, 2 to 2nd etc.
-     * @param int|float|string $number The number to get its ordinal value.
+     * @param int|float|string $value The number to get its ordinal value.
      * @return string
      */
-    public static function toOrdinal($number): ?string
+    public static function toOrdinal($value): ?string
     {
-        if (fmod($number, 1) !== 0.00) {
-            return $number;
+        if (!is_numeric($value)) {
+            throw new \InvalidArgumentException('Value must be numeric.');
         }
 
-        if (\in_array($number % 100, range(11, 13), false)) {
-            return $number . 'th';
+        if (fmod($value, 1) !== 0.00) {
+            return $value;
         }
-        switch ($number % 10) {
+
+        if (\in_array($value % 100, range(11, 13), false)) {
+            return $value . 'th';
+        }
+        switch ($value % 10) {
             case 1:
-                return $number . 'st';
+                return $value . 'st';
             case 2:
-                return $number . 'nd';
+                return $value . 'nd';
             case 3:
-                return $number . 'rd';
+                return $value . 'rd';
             default:
-                return $number . 'th';
+                return $value . 'th';
         }
     }
 
@@ -40,6 +44,10 @@ final class NumericHelper
      */
     public static function normalize($value): string
     {
+        if (!is_scalar($value)) {
+            throw new \InvalidArgumentException('Value must be scalar.');
+        }
+
         $value = (string)$value;
         $value = str_replace([" ", ","], ["", "."], $value);
         return preg_replace('/\.(?=.*\.)/', '', $value);

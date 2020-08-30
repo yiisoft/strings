@@ -21,6 +21,12 @@ final class NumericHelperTest extends TestCase
         $this->assertEquals('3.1415926', NumericHelper::toOrdinal('3.1415926'));
     }
 
+    public function testToOrdinalWithIncorrectType(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        NumericHelper::toOrdinal('bla-bla');
+    }
+
     public function normalizeNumberDataProvider(): array
     {
         return [
@@ -39,5 +45,11 @@ final class NumericHelperTest extends TestCase
     public function testNormalizeNumber(string $input, string $expected): void
     {
         $this->assertSame($expected, NumericHelper::normalize($input));
+    }
+
+    public function testNormalizeNumberWithIncorrectType(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        NumericHelper::normalize([]);
     }
 }
