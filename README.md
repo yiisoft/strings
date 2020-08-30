@@ -36,7 +36,7 @@ echo \Yiisoft\Strings\StringHelper::countWords('Strings are cool!'); // 3
 Inflector usage is the following:
 
 ```php
-echo (new \Yiisoft\Strings\Inflector())->withoutIntl()->slug('Strings are cool!'); // strings-are-cool
+echo (new \Yiisoft\Strings\Inflector())->withoutIntl()->toSlug('Strings are cool!'); // strings-are-cool
 ```
 
 Check both classes to find out about the methods available.

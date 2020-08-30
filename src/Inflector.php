@@ -433,18 +433,18 @@ final class Inflector
      */
     public function toSentence(string $input, bool $uppercaseAll = false): string
     {
-        $input = $this->humanize($this->pascalToId($input, '_'), $uppercaseAll);
+        $input = $this->humanize($this->pascalCaseToId($input, '_'), $uppercaseAll);
 
         return $uppercaseAll ? StringHelper::uppercaseFirstCharacterInEachWord($input) : StringHelper::uppercaseFirstCharacter($input);
     }
 
     /**
-     * Converts a PascalCase name into space-separated words.
+     * Converts a string into space-separated words.
      * For example, 'PostTag' will be converted to 'Post Tag'.
      * @param string $input The string to be converted.
      * @return string The resulting words.
      */
-    public function pascalToWords(string $input): string
+    public function toWords(string $input): string
     {
         return mb_strtolower(trim(str_replace([
             '-',
@@ -462,7 +462,7 @@ final class Inflector
      * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to false.
      * @return string The resulting ID.
      */
-    public function pascalToId(string $input, string $separator = '-', bool $strict = false): string
+    public function pascalCaseToId(string $input, string $separator = '-', bool $strict = false): string
     {
         $regex = $strict
             ? '/(?<=\p{L})(\p{Lu})/u'
@@ -486,7 +486,7 @@ final class Inflector
      * @return string PascalCased string.
      * @see toCamelCase()
      */
-    public function toPascal(string $input): string
+    public function toPascalCase(string $input): string
     {
         return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(preg_replace('/[^\pL\pN]+/u', ' ', $input)));
     }
@@ -515,7 +515,7 @@ final class Inflector
      */
     public function toCamelCase(string $input): string
     {
-        $input = $this->toPascal($input);
+        $input = $this->toPascalCase($input);
 
         return mb_strtolower(mb_substr($input, 0, 1)) . mb_substr($input, 1, null);
     }
@@ -527,9 +527,21 @@ final class Inflector
      * @param string $className the class name for getting related table_name.
      * @return string
      */
-    public function tableize(string $className): string
+    public function classToTable(string $className): string
     {
-        return $this->pluralize($this->pascalToId($className, '_'));
+        return $this->pluralize($this->pascalCaseToId($className, '_'));
+    }
+
+    /**
+     * Converts a table name to its class name.
+     *
+     * For example, converts "people" to "Person".
+     * @param string $tableName
+     * @return string
+     */
+    public function tableToClass(string $tableName): string
+    {
+        return $this->toPascalCase($this->singularize($tableName));
     }
 
     /**
@@ -545,7 +557,7 @@ final class Inflector
      * @param bool $lowercase whether to return the string in lowercase or not. Defaults to `true`.
      * @return string The converted string.
      */
-    public function slug(string $input, string $replacement = '-', bool $lowercase = true): string
+    public function toSlug(string $input, string $replacement = '-', bool $lowercase = true): string
     {
         // replace all non words character
         $input = preg_replace('/[^a-zA-Z0-9]++/u', $replacement, $this->transliterate($input));
@@ -582,18 +594,6 @@ final class Inflector
         }
 
         return strtr($input, $this->transliterationMap);
-    }
-
-    /**
-     * Converts a table name to its class name.
-     *
-     * For example, converts "people" to "Person".
-     * @param string $tableName
-     * @return string
-     */
-    public function tableToClass(string $tableName): string
-    {
-        return $this->toPascal($this->singularize($tableName));
     }
 
     /**

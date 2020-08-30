@@ -115,11 +115,11 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('MeMySelfAndI', $inflector->toPascal('me my_self-andI'));
-        $this->assertEquals('QweQweEwq', $inflector->toPascal('qwe qwe^ewq'));
+        $this->assertEquals('MeMySelfAndI', $inflector->toPascalCase('me my_self-andI'));
+        $this->assertEquals('QweQweEwq', $inflector->toPascalCase('qwe qwe^ewq'));
         $this->assertEquals(
             'ВідомоЩоТестиЗберігатьНашіНЕРВИ',
-            $inflector->toPascal('Відомо, що тести зберігать наші НЕРВИ! 🙃')
+            $inflector->toPascalCase('Відомо, що тести зберігать наші НЕРВИ! 🙃')
         );
     }
 
@@ -127,10 +127,10 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('camel case', $inflector->pascalToWords('camelCase'));
-        $this->assertEquals('lower case', $inflector->pascalToWords('lower_case'));
-        $this->assertEquals('tricky stuff it is testing', $inflector->pascalToWords(' tricky_stuff.it-is testing... '));
-        $this->assertEquals('і це дійсно так!', $inflector->pascalToWords('ІЦеДійсноТак!'));
+        $this->assertEquals('camel case', $inflector->toWords('camelCase'));
+        $this->assertEquals('lower case', $inflector->toWords('lower_case'));
+        $this->assertEquals('tricky stuff it is testing', $inflector->toWords(' tricky_stuff.it-is testing... '));
+        $this->assertEquals('і це дійсно так!', $inflector->toWords('ІЦеДійсноТак!'));
     }
 
     /**
@@ -140,7 +140,7 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $result = \call_user_func_array([$inflector, 'pascalToId'], $arguments);
+        $result = \call_user_func_array([$inflector, 'pascalCaseToId'], $arguments);
 
         $this->assertEquals($expectedResult, $result);
     }
@@ -166,7 +166,7 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('customer_tables', $inflector->tableize('customerTable'));
+        $this->assertEquals('customer_tables', $inflector->classToTable('customerTable'));
     }
 
     public function slugCommonsDataProvider(): array
@@ -199,9 +199,9 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
         if (\extension_loaded('intl')) {
-            $this->assertEquals($expected, $inflector->slug($input, $replacement));
+            $this->assertEquals($expected, $inflector->toSlug($input, $replacement));
         }
-        $this->assertEquals($expected, $inflector->withoutIntl()->slug($input, $replacement));
+        $this->assertEquals($expected, $inflector->withoutIntl()->toSlug($input, $replacement));
     }
 
     public function testSlugIntl(): void
@@ -237,7 +237,7 @@ final class InflectorTest extends TestCase
         $inflector = new Inflector();
 
         foreach ($data as $source => $expected) {
-            $this->assertEquals($expected, $inflector->slug($source));
+            $this->assertEquals($expected, $inflector->toSlug($source));
         }
     }
 
@@ -411,7 +411,7 @@ final class InflectorTest extends TestCase
         $inflector = (new Inflector())->withoutIntl();
 
         foreach ($data as $source => $expected) {
-            $this->assertEquals($expected, $inflector->slug($source));
+            $this->assertEquals($expected, $inflector->toSlug($source));
         }
     }
 
