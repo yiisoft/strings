@@ -45,8 +45,14 @@ final class WildcardPattern
      */
     public function match(string $string): bool
     {
-        if ($this->pattern === '*' && !$this->matchSlashesExactly) {
+        if ($this->pattern === '*' && !$this->matchSlashesExactly && !$this->matchLeadingPeriodExactly) {
             return true;
+        }
+
+        $pattern = $this->pattern;
+
+        if ($this->matchLeadingPeriodExactly) {
+            $pattern = preg_replace('/^[*?]/', '[!.]', $pattern);
         }
 
         $replacements = [
@@ -70,7 +76,7 @@ final class WildcardPattern
             $replacements['\?'] = '[^/\\\\]';
         }
 
-        $pattern = strtr(preg_quote($this->pattern, '#'), $replacements);
+        $pattern = strtr(preg_quote($pattern, '#'), $replacements);
         $pattern = '#^' . $pattern . '$#us';
 
         if ($this->ignoreCase) {

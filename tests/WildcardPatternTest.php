@@ -58,6 +58,12 @@ final class WildcardPatternTest extends TestCase
             ['begin.*.end', 'begin.middle.end', true],
             ['begin.*.end', 'begin.two.steps.end', true],
             ['begin.*.end', 'begin.end', false],
+            // leading period
+            ['.test', '.test', true],
+            ['*test', '.test', true],
+            ['.test', '.test', true, ['leadingPeriod' => true]],
+            ['*test', '.test', false, ['leadingPeriod' => true]],
+            ['*', '.test', false, ['leadingPeriod' => true]],
             // case
             ['begin*end', 'BEGIN-middle-END', false],
             ['begin*end', 'BEGIN-middle-END', true, ['caseSensitive' => false]],
@@ -106,6 +112,9 @@ final class WildcardPatternTest extends TestCase
         }
         if (isset($options['escape']) && $options['escape'] === false) {
             $wildcardPattern = $wildcardPattern->withoutEscape();
+        }
+        if (isset($options['leadingPeriod']) && $options['leadingPeriod'] === true) {
+            $wildcardPattern = $wildcardPattern->withExactLeadingPeriod();
         }
 
         return $wildcardPattern;

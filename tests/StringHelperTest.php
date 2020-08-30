@@ -298,6 +298,7 @@ final class StringHelperTest extends TestCase
     {
         $this->assertSame('…56', StringHelper::truncateBegin('123456', 3));
         $this->assertSame('*456', StringHelper::truncateBegin('123456', 4, '*'));
+        $this->assertSame('123456', StringHelper::truncateBegin('123456', 6));
     }
 
     public function testTruncateMiddle(): void
@@ -330,5 +331,28 @@ final class StringHelperTest extends TestCase
     public function testLength(): void
     {
         $this->assertSame(8, StringHelper::length('a string'));
+    }
+
+
+    /**
+     * @see https://github.com/php/php-src/blob/master/ext/standard/tests/strings/substr_replace.phpt
+     */
+    public function replaceSubstringProvider(): array
+    {
+        return [
+            ['trbala ', ['try this', 'bala ', 2]],
+            ['trbala his', ['try this', 'bala ', 2, 3]],
+            ['trbala is', ['try this', 'bala ', 2, -2]],
+            ['bala ', ['try this', 'bala ', -10]],
+            ['try thisbala ', ['try this', 'bala ', 100]],
+        ];
+    }
+
+    /**
+     * @dataProvider replaceSubstringProvider
+     */
+    public function testReplaceSubstring(string $expected, array $arguments): void
+    {
+        $this->assertSame($expected, StringHelper::replaceSubstring(...$arguments));
     }
 }
