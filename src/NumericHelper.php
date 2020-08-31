@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Strings;
 
 /**
@@ -19,7 +21,7 @@ final class NumericHelper
             throw new \InvalidArgumentException("Value must be numeric. $type given.");
         }
 
-        if (fmod($value, 1) !== 0.00) {
+        if (fmod((float)$value, 1) !== 0.00) {
             return $value;
         }
 
@@ -49,7 +51,7 @@ final class NumericHelper
             $type = gettype($value);
             throw new \InvalidArgumentException("Value must be scalar. $type given.");
         }
-        $value = str_replace([" ", ","], ["", "."], $value);
+        $value = str_replace([' ', ','], ['', '.'], $value);
         return preg_replace('/\.(?=.*\.)/', '', $value);
     }
 }
