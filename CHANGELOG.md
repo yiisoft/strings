@@ -1,5 +1,5 @@
-Yii - String Helper Change Log
-==============================
+# Yii String Change Log
 
-3.0.0 under development
------------------------
+## 1.0.0 August 31, 2020
+
+- Initial release.
