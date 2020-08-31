@@ -15,7 +15,8 @@ final class NumericHelper
     public static function toOrdinal($value): string
     {
         if (!is_numeric($value)) {
-            throw new \InvalidArgumentException('Value must be numeric.');
+            $type = gettype($value);
+            throw new \InvalidArgumentException("Value must be numeric. $type given.");
         }
 
         if (fmod($value, 1) !== 0.00) {
@@ -45,7 +46,8 @@ final class NumericHelper
     public static function normalize($value): string
     {
         if (!is_scalar($value)) {
-            throw new \InvalidArgumentException('Value must be scalar.');
+            $type = gettype($value);
+            throw new \InvalidArgumentException("Value must be scalar. $type given.");
         }
         $value = str_replace([" ", ","], ["", "."], $value);
         return preg_replace('/\.(?=.*\.)/', '', $value);
