@@ -523,7 +523,7 @@ final class Inflector
     /**
      * Converts a class name to its table name (pluralized) naming conventions.
      *
-     * For example, converts "Person" to "people" or "ActionLog" to "action_log".
+     * For example, converts "Car" to "cars", "Person" to "people", and "ActionLog" to "action_log".
      * @param string $className the class name for getting related table_name.
      * @return string
      */
@@ -535,7 +535,7 @@ final class Inflector
     /**
      * Converts a table name to its class name.
      *
-     * For example, converts "people" to "Person" or "action_log" to "ActionLog".
+     * For example, converts "cars" to "Car", "people" to "Person", and "action_log" to "ActionLog".
      * @param string $tableName
      * @return string
      */
