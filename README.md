@@ -6,13 +6,6 @@
     <br>
 </p>
 
-The package provides:
-
-- `StringHelper` that has static methods to work with strings;
-- `NumericHelper` that has static methods to work with numeric strings;
-- `Inflector` provides methods such as `toPlural()` or `toSlug()` that derive a new string based on the string given;
-- `WildcardPattern` is a shell wildcard pattern to match strings against.
-
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/strings/v/stable.png)](https://packagist.org/packages/yiisoft/strings)
 [![Total Downloads](https://poser.pugx.org/yiisoft/strings/downloads.png)](https://packagist.org/packages/yiisoft/strings)
 [![Build Status](https://github.com/yiisoft/strings/workflows/build/badge.svg)](https://github.com/yiisoft/strings/actions)
@@ -20,6 +13,13 @@ The package provides:
 [![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/strings/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/strings/?branch=master)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fyiisoft%2Fstrings%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/yiisoft/strings/master)
 [![static analysis](https://github.com/yiisoft/strings/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/strings/actions?query=workflow%3A%22static+analysis%22)
+
+The package provides:
+
+- `StringHelper` that has static methods to work with strings;
+- `NumericHelper` that has static methods to work with numeric strings;
+- `Inflector` provides methods such as `toPlural()` or `toSlug()` that derive a new string based on the string given;
+- `WildcardPattern` is a shell wildcard pattern to match strings against.
 
 ## Installation
 
