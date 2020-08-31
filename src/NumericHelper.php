@@ -12,7 +12,7 @@ final class NumericHelper
      * @param int|float|string $value The number to get its ordinal value.
      * @return string
      */
-    public static function toOrdinal($value): ?string
+    public static function toOrdinal($value): string
     {
         if (!is_numeric($value)) {
             throw new \InvalidArgumentException('Value must be numeric.');
