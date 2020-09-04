@@ -116,10 +116,19 @@ final class StringHelperTest extends TestCase
      */
     public function testStartsWith(bool $result, string $string, ?string $with): void
     {
-        // case sensitive version check
         $this->assertSame($result, StringHelper::startsWith($string, $with));
-        // case insensitive version check
-        $this->assertSame($result, StringHelper::startsWith($string, $with, false));
+    }
+
+    /**
+     * @dataProvider providerStartsWith
+     * @param bool $result
+     * @param string $string
+     * @param string|null $with
+     */
+    public function testStartsWithCaseInsensitive(bool $result, string $string, ?string $with): void
+    {
+        $this->markTestIncomplete('Need to change data provider');
+        $this->assertSame($result, StringHelper::startsWithIgnoringCase($string, $with));
     }
 
     /**
