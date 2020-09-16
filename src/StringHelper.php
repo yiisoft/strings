@@ -157,8 +157,8 @@ final class StringHelper
             return true;
         }
 
-        if (function_exists('str_starts_with')) {
-            return str_starts_with($input, $with);
+        if (function_exists('\str_starts_with')) {
+            return \str_starts_with($input, $with);
         }
 
         $bytes = static::byteLength($with);
