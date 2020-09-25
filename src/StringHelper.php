@@ -197,6 +197,14 @@ final class StringHelper
      */
     public static function endsWith(string $input, ?string $with): bool
     {
+        if ($with === null) {
+        return true;
+    }
+
+        if (function_exists('\str_ends_with')) {
+            return \str_ends_with($input, $with);
+        }
+
         $bytes = static::byteLength($with);
         if ($bytes === 0) {
             return true;
