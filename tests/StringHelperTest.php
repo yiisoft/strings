@@ -116,10 +116,7 @@ final class StringHelperTest extends TestCase
      */
     public function testStartsWith(bool $result, string $string, ?string $with): void
     {
-        // case sensitive version check
         $this->assertSame($result, StringHelper::startsWith($string, $with));
-        // case insensitive version check
-        $this->assertSame($result, StringHelper::startsWith($string, $with, false));
     }
 
     /**
@@ -129,26 +126,26 @@ final class StringHelperTest extends TestCase
     {
         return [
             // positive check
-            [true, '', ''],
-            [true, '', null],
-            [true, 'string', ''],
-            [true, ' string', ' '],
-            [true, 'abc', 'abc'],
-            [true, 'Bürger', 'Bürger'],
-            [true, '我Я multibyte', '我Я'],
-            [true, 'Qנטשופ צרכנות', 'Qנ'],
-            [true, 'ไทย.idn.icann.org', 'ไ'],
-            [true, '!?+', "\x21\x3F"],
-            [true, "\x21?+", '!?'],
+            'empty strings' => [true, '', ''],
+            'starts with null' => [true, '', null],
+            'starts with empty string' => [true, 'string', ''],
+            'starts with a space' => [true, ' string', ' '],
+            'fully identical strings' => [true, 'abc', 'abc'],
+            'fully identical multibyte strings' => [true, 'Bürger', 'Bürger'],
+            'starts with multibyte symbols' => [true, '我Я multibyte', '我Я'],
+            'starts with ascii and multibyte symbols' => [true, 'Qנטשופ צרכנות', 'Qנ'],
+            'starts with multibyte symbol ไ' => [true, 'ไทย.idn.icann.org', 'ไ'],
+            'starts with hex code' => [true, '!?+', "\x21\x3F"],
+            'hex code starts with ascii symbols' => [true, "\x21?+", '!?'],
             // false-positive check
-            [false, '', ' '],
-            [false, ' ', '  '],
-            [false, 'Abc', 'a'],
-            [false, 'Abc', 'Abcde'],
-            [false, 'abc', 'abe'],
-            [false, 'abc', 'b'],
-            [false, 'abc', 'c'],
-            [false, 'üЯ multibyte', 'Üя multibyte'],
+            'empty string and a space' => [false, '', ' '],
+            'a space and two spaces' => [false, ' ', '  '],
+            'case-sensitive check' => [false, 'Abc', 'a'],
+            'needle is longer' => [false, 'Abc', 'Abcde'],
+            'one of the symbols of the needle is not equal' => [false, 'abc', 'abe'],
+            'contains, but not starts with' => [false, 'abc', 'b'],
+            'contains, but not starts with again' => [false, 'abc', 'c'],
+            'case-sensitive check with multibyte symbol' => [false, 'üЯ multibyte', 'Üя multibyte'],
         ];
     }
 
