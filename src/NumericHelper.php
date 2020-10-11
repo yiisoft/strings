@@ -51,7 +51,7 @@ final class NumericHelper
             $type = gettype($value);
             throw new \InvalidArgumentException("Value must be scalar. $type given.");
         }
-        $value = str_replace([' ', ','], ['', '.'], $value);
+        $value = str_replace([' ', ','], ['', '.'], (string)$value);
         return preg_replace('/\.(?=.*\.)/', '', $value);
     }
 }
