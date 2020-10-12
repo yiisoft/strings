@@ -1,6 +1,6 @@
 # Yii String Change Log
 
-## 1.1.1 under development
+## 1.0.1 October 12, 2020
 
 - Enh #40: Use `str_starts_with()` and `str_ends_with()` if available (viktorprogger)
 - Bug #43: `NumericHelper::normalize` throws an error for `float` or `int` values in PHP 8 (vjik)
