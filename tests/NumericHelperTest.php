@@ -37,19 +37,22 @@ final class NumericHelperTest extends TestCase
     public function normalizeNumberDataProvider(): array
     {
         return [
-
             'French' => ['4 294 967 295,000', '4294967295.000'],
             'German' => ['4 294 967.295,000', '4294967295.000'],
             'Spanish' => ['4.294.967.295,000', '4294967295.000'],
             'English' => ['4,294,967,295.000', '4294967295.000'],
             'Smaller' => ['10,111', '10.111'],
+            'Float' => [10.01, '10.01'],
+            'Int' => [10, '10'],
         ];
     }
 
     /**
      * @dataProvider normalizeNumberDataProvider
+     * @param string|float|int $input
+     * @param string $expected
      */
-    public function testNormalizeNumber(string $input, string $expected): void
+    public function testNormalizeNumber($input, string $expected): void
     {
         $this->assertSame($expected, NumericHelper::normalize($input));
     }
