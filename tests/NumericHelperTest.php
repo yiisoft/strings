@@ -23,6 +23,7 @@ final class NumericHelperTest extends TestCase
         $this->assertEquals('25th', NumericHelper::toOrdinal(25));
         $this->assertEquals('111th', NumericHelper::toOrdinal(111));
         $this->assertEquals('113th', NumericHelper::toOrdinal(113));
+        $this->assertEquals('2.01', NumericHelper::toOrdinal(2.01));
 
         $this->assertEquals('42nd', NumericHelper::toOrdinal('42'));
         $this->assertEquals('3.1415926', NumericHelper::toOrdinal('3.1415926'));

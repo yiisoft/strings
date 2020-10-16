@@ -22,7 +22,7 @@ final class NumericHelper
         }
 
         if (fmod((float)$value, 1) !== 0.00) {
-            return $value;
+            return (string)$value;
         }
 
         if (\in_array($value % 100, [11, 12, 13], true)) {
