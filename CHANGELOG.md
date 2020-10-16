@@ -1,4 +1,4 @@
-# Yii String Change Log
+# Yii Strings Change Log
 
 ## 1.0.2 under development
 
