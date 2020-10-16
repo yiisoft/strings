@@ -29,7 +29,3 @@ phpunit.phar
 /phpunit.xml
 # phpunit cache
 .phpunit.result.cache
-
-# Phan
-analysis.txt
-
