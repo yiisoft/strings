@@ -21,9 +21,9 @@
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "infection/infection": "^0.17.0",
-        "phan/phan": "^3.0",
-        "phpunit/phpunit": "^9.3"
+        "infection/infection": "^0.16.6 || ^0.17.7",
+        "phpunit/phpunit": "^9.4",
+        "vimeo/psalm": "^3.17"
     },
     "autoload": {
         "psr-4": {

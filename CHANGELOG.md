@@ -1,4 +1,8 @@
-# Yii String Change Log
+# Yii Strings Change Log
+
+## 1.0.2 under development
+
+- Bug #44: `NumericHelper::toOrdinal` throws an error for numbers with fractional part (vjik)
 
 ## 1.0.1 October 12, 2020
 
