@@ -7,8 +7,6 @@ name: static analysis
 jobs:
   mutation:
     name: PHP ${{ matrix.php }}-${{ matrix.os }}
-    env:
-      extensions: ast
 
     runs-on: ${{ matrix.os }}
 
@@ -28,7 +26,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "${{ matrix.php }}"
-          extensions: ${{ env.extensions }}
           tools: composer:v2, cs2pr
           coverage: none
 
