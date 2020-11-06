@@ -47,6 +47,9 @@ final class NumericHelper
      */
     public static function normalize($value): string
     {
+        /**
+         * @psalm-suppress DocblockTypeContradiction
+         */
         if (!is_scalar($value)) {
             $type = gettype($value);
             throw new \InvalidArgumentException("Value must be scalar. $type given.");

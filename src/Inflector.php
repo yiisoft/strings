@@ -53,6 +53,7 @@ final class Inflector
 
     /**
      * @var string[] The rules for converting a word into its plural form.
+     * @psalm-var array<string,string>
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $pluralizeRules = [
@@ -91,6 +92,7 @@ final class Inflector
 
     /**
      * @var string[] The rules for converting a word into its singular form.
+     * @psalm-var array<string, string>
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $singularizeRules = [
@@ -138,6 +140,7 @@ final class Inflector
     ];
 
     /**
+     * @psalm-var array<string, string>
      * @var string[] The special rules for converting a word between its plural form and singular form.
      * The keys are the special words in singular form, and the values are the corresponding plural form.
      */
@@ -285,6 +288,7 @@ final class Inflector
 
     /**
      * @param string[] $rules The rules for converting a word into its plural form.
+     * @psalm-param array<string, string> $rules
      * The keys are the regular expressions and the values are the corresponding replacements.
      * @return self
      */
@@ -307,6 +311,7 @@ final class Inflector
     /**
      * @param string[] $rules The rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
+     * @psalm-param array<string, string> $rules
      * @return self
      */
     public function withSingularizeRules(array $rules): self
@@ -327,6 +332,7 @@ final class Inflector
 
     /**
      * @param string[] $rules The special rules for converting a word between its plural form and singular form.
+     * @psalm-param array<string, string> $rules
      * The keys are the special words in singular form, and the values are the corresponding plural form.
      * @return self
      */
@@ -351,7 +357,7 @@ final class Inflector
      * a {@see \Transliterator} can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
      * @return self
-     *@see https://secure.php.net/manual/en/transliterator.transliterate.php
+     * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
     public function withTransliterator($transliterator): self
     {

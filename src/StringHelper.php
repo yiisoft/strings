@@ -184,6 +184,9 @@ final class StringHelper
             return true;
         }
 
+        /**
+         * @psalm-suppress PossiblyNullArgument
+         */
         return static::lowercase(static::substring($input, 0, $bytes, '8bit')) === static::lowercase($with);
     }
 
@@ -233,6 +236,9 @@ final class StringHelper
             return true;
         }
 
+        /**
+         * @psalm-suppress PossiblyNullArgument
+         */
         return static::lowercase(mb_substr($input, -$bytes, mb_strlen($input, '8bit'), '8bit')) === static::lowercase($with);
     }
 
