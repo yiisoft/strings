@@ -158,6 +158,7 @@ final class StringHelperTest extends TestCase
         $this->assertTrue(StringHelper::startsWithIgnoringCase('HTTP://BÜrger.DE/', 'http://bürger.de'));
         $this->assertTrue(StringHelper::startsWithIgnoringCase('üЯйΨB', 'ÜяЙΨ'));
         $this->assertTrue(StringHelper::startsWithIgnoringCase('anything', ''));
+        $this->assertTrue(StringHelper::startsWithIgnoringCase('anything', null));
     }
 
     /**
@@ -210,6 +211,7 @@ final class StringHelperTest extends TestCase
         $this->assertTrue(StringHelper::endsWithIgnoringCase('string', 'nG'));
         $this->assertTrue(StringHelper::endsWithIgnoringCase('BüЯйΨ', 'ÜяЙΨ'));
         $this->assertTrue(StringHelper::endsWithIgnoringCase('anything', ''));
+        $this->assertTrue(StringHelper::endsWithIgnoringCase('anything', null));
     }
 
     public function testCountWords(): void
