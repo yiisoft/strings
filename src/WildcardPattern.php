@@ -27,6 +27,7 @@ final class WildcardPattern
     private bool $matchSlashesExactly = false;
     private bool $matchLeadingPeriodExactly = false;
     private bool $ignoreCase = false;
+    private bool $matchEnding = false;
     private string $pattern;
 
     /**
@@ -77,7 +78,7 @@ final class WildcardPattern
         }
 
         $pattern = strtr(preg_quote($pattern, '#'), $replacements);
-        $pattern = '#^' . $pattern . '$#us';
+        $pattern = '#' . ($this->matchEnding ? '' : '^') . $pattern . '$#us';
 
         if ($this->ignoreCase) {
             $pattern .= 'i';
@@ -129,6 +130,17 @@ final class WildcardPattern
     {
         $new = clone $this;
         $new->matchLeadingPeriodExactly = true;
+        return $new;
+    }
+
+    /**
+     * Match ending
+     * @return self
+     */
+    public function withEnding(): self
+    {
+        $new = clone $this;
+        $new->matchEnding = true;
         return $new;
     }
 }
