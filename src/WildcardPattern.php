@@ -135,12 +135,13 @@ final class WildcardPattern
 
     /**
      * Match ending
+     * @param bool $flag
      * @return self
      */
-    public function withEnding(): self
+    public function withEnding(bool $flag = true): self
     {
         $new = clone $this;
-        $new->matchEnding = true;
+        $new->matchEnding = $flag;
         return $new;
     }
 }

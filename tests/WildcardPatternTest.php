@@ -132,6 +132,14 @@ final class WildcardPatternTest extends TestCase
         return $wildcardPattern;
     }
 
+    public function testDisableOptions(): void
+    {
+        $wildcardPattern = (new WildcardPattern('abc'))
+            ->withEnding()
+            ->withEnding(false);
+        $this->assertFalse($wildcardPattern->match('42abc'));
+    }
+
     public function testImmutability(): void
     {
         $original = new WildcardPattern('*');
