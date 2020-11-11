@@ -88,47 +88,51 @@ final class WildcardPattern
 
     /**
      * Disables using `\` to escape following special character. `\` becomes regular character.
+     * @param bool $flag
      * @return self
      */
-    public function withoutEscape(): self
+    public function withoutEscape(bool $flag = true): self
     {
         $new = clone $this;
-        $new->withoutEscape = true;
+        $new->withoutEscape = $flag;
         return $new;
     }
 
     /**
      * Do not match `/` character with wildcards. The only way to match `/` is with an explicit `/` in pattern.
      * Useful for matching file paths. Use with {@see withExactLeadingPeriod()}.
+     * @param bool $flag
      * @return self
      */
-    public function withExactSlashes(): self
+    public function withExactSlashes(bool $flag = true): self
     {
         $new = clone $this;
-        $new->matchSlashesExactly = true;
+        $new->matchSlashesExactly = $flag;
         return $new;
     }
 
     /**
      * Make pattern case insensitive.
+     * @param bool $flag
      * @return self
      */
-    public function ignoreCase(): self
+    public function ignoreCase(bool $flag = true): self
     {
         $new = clone $this;
-        $new->ignoreCase = true;
+        $new->ignoreCase = $flag;
         return $new;
     }
 
     /**
      * Do not match `.` character at the beginning of string with wildcards.
      * Useful for matching file paths. Use with {@see withExactSlashes()}.
+     * @param bool $flag
      * @return self
      */
-    public function withExactLeadingPeriod(): self
+    public function withExactLeadingPeriod(bool $flag = true): self
     {
         $new = clone $this;
-        $new->matchLeadingPeriodExactly = true;
+        $new->matchLeadingPeriodExactly = $flag;
         return $new;
     }
 }
