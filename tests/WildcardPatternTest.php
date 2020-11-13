@@ -86,6 +86,13 @@ final class WildcardPatternTest extends TestCase
             ['begin\*\end', 'begin\end', false, ['escape' => false]],
             ['begin\*\end', 'begin\middle\end', true, ['filePath' => true, 'escape' => false]],
             ['begin\*\end', 'begin\two\steps\end', false, ['filePath' => true, 'escape' => false]],
+            // ending
+            ['i/*.jpg', 'i/hello.jpg', true, ['ending' => true]],
+            ['i/*.jpg', 'i/hello.jpg', true, ['ending' => true, 'filePath' => true]],
+            ['i/*.jpg', 'i/h/hello.jpg', true, ['ending' => true]],
+            ['i/*.jpg', 'i/h/hello.jpg', false, ['ending' => true, 'filePath' => true]],
+            ['i/*.jpg', 'path/to/i/hello.jpg', true, ['ending' => true]],
+            ['i/*.jpg', 'path/to/i/hello.jpg', true, ['ending' => true, 'filePath' => true]],
         ];
     }
 
@@ -118,12 +125,20 @@ final class WildcardPatternTest extends TestCase
         if (isset($options['leadingPeriod']) && $options['leadingPeriod'] === true) {
             $wildcardPattern = $wildcardPattern->withExactLeadingPeriod();
         }
+        if (isset($options['ending']) && $options['ending'] === true) {
+            $wildcardPattern = $wildcardPattern->withEnding();
+        }
 
         return $wildcardPattern;
     }
 
     public function testDisableOptions(): void
     {
+        $wildcardPattern = (new WildcardPattern('abc'))
+            ->withEnding()
+            ->withEnding(false);
+        $this->assertFalse($wildcardPattern->match('42abc'));
+
         $wildcardPattern = (new WildcardPattern('\*42'))
             ->withoutEscape()
             ->withoutEscape(false);
@@ -152,5 +167,6 @@ final class WildcardPatternTest extends TestCase
         $this->assertNotSame($original, $original->ignoreCase());
         $this->assertNotSame($original, $original->withExactSlashes());
         $this->assertNotSame($original, $original->withoutEscape());
+        $this->assertNotSame($original, $original->withEnding());
     }
 }

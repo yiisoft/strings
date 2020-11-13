@@ -161,6 +161,7 @@ Several options are available. Call these before doing a `match()`:
 - `withExactSlashes()` - makes `\` in a string to match `\` only in a pattern. 
 - `ignoreCase()` - case-insensitive match.
 - `withExactLeadingPeriod()` - makes first `.` in a string match only `.` in a pattern.
+- `withEnding()` - match ending of testing string.
 
 When matching file paths, it is advised to use both `withExactSlashes()` and `withExactLeadingPeriod()`:
 
