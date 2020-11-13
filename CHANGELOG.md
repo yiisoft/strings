@@ -1,5 +1,10 @@
 # Yii Strings Change Log
 
+
+## 1.1.1 under development
+
+- no changes in this release.
+
 ## 1.1.0 November 13, 2020
 
 - Enh #52: Allow turning off options in `WildcardPattern` (vjik)
