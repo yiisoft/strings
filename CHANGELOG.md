@@ -2,6 +2,7 @@
 
 ## 1.0.2 under development
 
+- Enh #52: Allow turning off options in `WildcardPattern` (vjik)
 - Enh #51: Add an option `withEnding()` to `WildcardPattern` for match ending of testing string (vjik)
 - Bug #44: `NumericHelper::toOrdinal` throws an error for numbers with fractional part (vjik)
 
