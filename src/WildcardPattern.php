@@ -134,7 +134,8 @@ final class WildcardPattern
     }
 
     /**
-     * Match ending
+     * Match ending only.
+     * By default wildcard pattern matches string exactly. By using this mode, beginning of the string could be anything.
      * @param bool $flag
      * @return self
      */
