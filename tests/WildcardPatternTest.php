@@ -138,6 +138,26 @@ final class WildcardPatternTest extends TestCase
             ->withEnding()
             ->withEnding(false);
         $this->assertFalse($wildcardPattern->match('42abc'));
+
+        $wildcardPattern = (new WildcardPattern('\*42'))
+            ->withoutEscape()
+            ->withoutEscape(false);
+        $this->assertTrue($wildcardPattern->match('*42'));
+
+        $wildcardPattern = (new WildcardPattern('/*/42'))
+            ->withExactSlashes()
+            ->withExactSlashes(false);
+        $this->assertTrue($wildcardPattern->match('/a/b/c/42'));
+
+        $wildcardPattern = (new WildcardPattern('*/42'))
+            ->withExactLeadingPeriod()
+            ->withExactLeadingPeriod(false);
+        $this->assertTrue($wildcardPattern->match('abc/42'));
+
+        $wildcardPattern = (new WildcardPattern('abc42'))
+            ->ignoreCase()
+            ->ignoreCase(false);
+        $this->assertFalse($wildcardPattern->match('ABC42'));
     }
 
     public function testImmutability(): void
