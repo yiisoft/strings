@@ -1,6 +1,6 @@
 # Yii Strings Change Log
 
-## 1.0.2 under development
+## 1.1.0 November 13, 2020
 
 - Enh #52: Allow turning off options in `WildcardPattern` (vjik)
 - Enh #51: Add an option `withEnding()` to `WildcardPattern` for match ending of testing string (vjik)
@@ -14,3 +14,6 @@
 ## 1.0.0 August 31, 2020
 
 - Initial release.
+
+
+
