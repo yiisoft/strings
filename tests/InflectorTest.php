@@ -394,7 +394,7 @@ final class InflectorTest extends TestCase
             [
                 'O' => 'E',
                 'N' => 'N',
-                'E' => 'O'
+                'E' => 'O',
             ]
         );
         $this->assertEquals('ENO', $inflector->toTransliterated('ONE'));

@@ -52,7 +52,8 @@ final class NumericHelperTest extends TestCase
 
     /**
      * @dataProvider normalizeNumberDataProvider
-     * @param string|float|int $input
+     *
+     * @param float|int|string $input
      * @param string $expected
      */
     public function testNormalizeNumber($input, string $expected): void

@@ -11,6 +11,7 @@ final class WildcardPatternTest extends TestCase
 {
     /**
      * Data provider for [[testMatchWildcard()]]
+     *
      * @return array test data.
      */
     public function dataProviderMatchWildcard(): array

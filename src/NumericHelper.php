@@ -11,7 +11,9 @@ final class NumericHelper
 {
     /**
      * Converts number to its ordinal English form. For example, converts 13 to 13th, 2 to 2nd etc.
-     * @param int|float|string $value The number to get its ordinal value.
+     *
+     * @param float|int|string $value The number to get its ordinal value.
+     *
      * @return string
      */
     public static function toOrdinal($value): string
@@ -42,7 +44,9 @@ final class NumericHelper
 
     /**
      * Returns string representation of a number value without thousands separators and with dot as decimal separator.
-     * @param int|float|string $value
+     *
+     * @param float|int|string $value
+     *
      * @return string
      */
     public static function normalize($value): string
