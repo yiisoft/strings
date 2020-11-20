@@ -19,6 +19,7 @@ final class Inflector
      * `huò qǔ dào dochira Ukraí̈nsʹka: g̀,ê, Srpska: đ, n̂, d̂! ¿Español?`.
      *
      * For detailed information see [unicode normalization forms](http://unicode.org/reports/tr15/#Normalization_Forms_Table)
+     *
      * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
@@ -141,6 +142,7 @@ final class Inflector
 
     /**
      * @psalm-var array<string, string>
+     *
      * @var string[] The special rules for converting a word between its plural form and singular form.
      * The keys are the special words in singular form, and the values are the corresponding plural form.
      */
@@ -280,6 +282,7 @@ final class Inflector
      * @var string|\Transliterator Either a {@see \Transliterator}, or a string from which a {@see \Transliterator}
      * can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
+     *
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
     private $transliterator = self::TRANSLITERATE_LOOSE;
@@ -290,6 +293,7 @@ final class Inflector
      * @param string[] $rules The rules for converting a word into its plural form.
      * @psalm-param array<string, string> $rules
      * The keys are the regular expressions and the values are the corresponding replacements.
+     *
      * @return self
      */
     public function withPluralizeRules(array $rules): self
@@ -312,6 +316,7 @@ final class Inflector
      * @param string[] $rules The rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      * @psalm-param array<string, string> $rules
+     *
      * @return self
      */
     public function withSingularizeRules(array $rules): self
@@ -334,6 +339,7 @@ final class Inflector
      * @param string[] $rules The special rules for converting a word between its plural form and singular form.
      * @psalm-param array<string, string> $rules
      * The keys are the special words in singular form, and the values are the corresponding plural form.
+     *
      * @return self
      */
     public function withSpecialRules(array $rules): self
@@ -356,7 +362,9 @@ final class Inflector
      * @param string|\Transliterator $transliterator Either a {@see \Transliterator}, or a string from which
      * a {@see \Transliterator} can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
+     *
      * @return self
+     *
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
     public function withTransliterator($transliterator): self
@@ -369,6 +377,7 @@ final class Inflector
     /**
      * @param string[] $transliterationMap Fallback map for transliteration used by {@see toTransliterated()} when intl
      * isn't available or turned off with {@see withoutIntl()}.
+     *
      * @return $this
      */
     public function withTransliterationMap(array $transliterationMap): self
@@ -380,6 +389,7 @@ final class Inflector
 
     /**
      * Disables usage of intl for {@see toTransliterated()}.
+     *
      * @return self
      */
     public function withoutIntl(): self
@@ -393,7 +403,9 @@ final class Inflector
      * Converts a word to its plural form.
      * Note that this is for English only!
      * For example, "apple" will become "apples", and "child" will become "children".
+     *
      * @param string $input The word to be pluralized.
+     *
      * @return string The pluralized word.
      */
     public function toPlural(string $input): string
@@ -412,7 +424,9 @@ final class Inflector
 
     /**
      * Returns the singular of the $word.
+     *
      * @param string $input The english word to singularize.
+     *
      * @return string Singular noun.
      */
     public function toSingular(string $input): string
@@ -433,8 +447,10 @@ final class Inflector
     /**
      * Converts an underscored or PascalCase word into a English
      * sentence.
+     *
      * @param string $input The string to titleize.
      * @param bool $uppercaseAll Whether to set all words to uppercase.
+     *
      * @return string
      */
     public function toSentence(string $input, bool $uppercaseAll = false): string
@@ -447,7 +463,9 @@ final class Inflector
     /**
      * Converts a string into space-separated words.
      * For example, 'PostTag' will be converted to 'Post Tag'.
+     *
      * @param string $input The string to be converted.
+     *
      * @return string The resulting words.
      */
     public function toWords(string $input): string
@@ -463,9 +481,11 @@ final class Inflector
      * Converts a PascalCase name into an ID in lowercase.
      * Words in the ID may be concatenated using the specified character (defaults to '-').
      * For example, 'PostTag' will be converted to 'post-tag'.
+     *
      * @param string $input The string to be converted.
      * @param string $separator The character used to concatenate the words in the ID.
      * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to false.
+     *
      * @return string The resulting ID.
      */
     public function pascalCaseToId(string $input, string $separator = '-', bool $strict = false): string
@@ -488,8 +508,11 @@ final class Inflector
      * Converts a word like "send_email" to "SendEmail". It
      * will remove non alphanumeric character from the word, so
      * "who's online" will be converted to "WhoSOnline".
+     *
      * @param string $input The word to PascalCase.
+     *
      * @return string PascalCased string.
+     *
      * @see toCamelCase()
      */
     public function toPascalCase(string $input): string
@@ -499,8 +522,10 @@ final class Inflector
 
     /**
      * Returns a human-readable string.
+     *
      * @param string $input The string to humanize.
      * @param bool $uppercaseWords Whether to set all words to uppercase or not.
+     *
      * @return string
      */
     public function toHumanReadable(string $input, bool $uppercaseWords = false): string
@@ -516,7 +541,9 @@ final class Inflector
      * Converts a word like "send_email" to "sendEmail". It
      * will remove non alphanumeric character from the word, so
      * "who's online" will be converted to "whoSOnline".
+     *
      * @param string $input The word to convert.
+     *
      * @return string
      */
     public function toCamelCase(string $input): string
@@ -530,7 +557,9 @@ final class Inflector
      * Converts a class name to its table name (pluralized) naming conventions.
      *
      * For example, converts "Car" to "cars", "Person" to "people", and "ActionLog" to "action_log".
+     *
      * @param string $className the class name for getting related table_name.
+     *
      * @return string
      */
     public function classToTable(string $className): string
@@ -542,7 +571,9 @@ final class Inflector
      * Converts a table name to its class name.
      *
      * For example, converts "cars" to "Car", "people" to "Person", and "action_log" to "ActionLog".
+     *
      * @param string $tableName
+     *
      * @return string
      */
     public function tableToClass(string $tableName): string
@@ -561,6 +592,7 @@ final class Inflector
      * @param string $input An arbitrary string to convert.
      * @param string $replacement The replacement to use for spaces.
      * @param bool $lowercase whether to return the string in lowercase or not. Defaults to `true`.
+     *
      * @return string The converted string.
      */
     public function toSlug(string $input, string $replacement = '-', bool $lowercase = true): string
@@ -586,6 +618,7 @@ final class Inflector
      * @param string|\Transliterator|null $transliterator either a {@see \Transliterator} or a string
      * from which a {@see \Transliterator} can be built. If null, value set with {@see withTransliterator()}
      * or {@see TRANSLITERATE_LOOSE} is used.
+     *
      * @return string
      */
     public function toTransliterated(string $input, $transliterator = null): string

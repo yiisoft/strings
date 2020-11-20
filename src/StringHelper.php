@@ -19,7 +19,9 @@ final class StringHelper
      * Returns the number of bytes in the given string.
      * This method ensures the string is treated as a byte array even if `mbstring.func_overload` is turned on
      * by using {@see mb_strlen()}.
+     *
      * @param string|null $input The string being measured for length.
+     *
      * @return int The number of bytes in the given string.
      */
     public static function byteLength(?string $input): int
@@ -30,11 +32,14 @@ final class StringHelper
     /**
      * Returns the portion of string specified by the start and length parameters.
      * This method ensures the string is treated as a byte array by using `mb_substr()`.
+     *
      * @param string $input The input string. Must be one character or longer.
      * @param int $start The starting position.
      * @param int|null $length The desired portion length. If not specified or `null`, there will be
      * no limit on length i.e. the output will be until the end of the string.
+     *
      * @return string The extracted part of string, or FALSE on failure or an empty string.
+     *
      * @see http://www.php.net/manual/en/function.substr.php
      */
     public static function byteSubstring(string $input, int $start, int $length = null): string
@@ -52,7 +57,9 @@ final class StringHelper
      *
      * @param string $path A path string.
      * @param string $suffix If the name component ends in suffix this will also be cut off.
+     *
      * @return string The trailing name component of the given path.
+     *
      * @see http://www.php.net/manual/en/function.basename.php
      */
     public static function baseName(string $path, string $suffix = ''): string
@@ -76,7 +83,9 @@ final class StringHelper
      * both \ and / as directory separators, independent of the operating system.
      *
      * @param string $path A path string.
+     *
      * @return string The parent directory's path.
+     *
      * @see http://www.php.net/manual/en/function.basename.php
      */
     public static function directoryName(string $path): string
@@ -96,7 +105,9 @@ final class StringHelper
      * @param int $start Character to start at.
      * @param int|null $length Number of characters to get.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @see https://php.net/manual/en/function.mb-substr.php
+     *
      * @return string
      */
     public static function substring(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
@@ -118,6 +129,7 @@ final class StringHelper
      * If it is not given, then it will default to the length of the string; i.e. end the replacing at the end of string.
      * If length is zero then this function will have the effect of inserting replacement into string at the given start offset.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @return string
      */
     public static function replaceSubstring(string $string, string $replacement, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
@@ -149,6 +161,7 @@ final class StringHelper
      *
      * @param string $input Input string.
      * @param string|null $with Part to search inside the $string.
+     *
      * @return bool Returns true if first input starts with second input, false otherwise.
      */
     public static function startsWith(string $input, ?string $with): bool
@@ -161,7 +174,7 @@ final class StringHelper
             return \str_starts_with($input, $with);
         }
 
-        $bytes = static::byteLength($with);
+        $bytes = self::byteLength($with);
         if ($bytes === 0) {
             return true;
         }
@@ -175,11 +188,12 @@ final class StringHelper
      *
      * @param string $input Input string.
      * @param string|null $with Part to search inside the $string.
+     *
      * @return bool Returns true if first input starts with second input, false otherwise.
      */
     public static function startsWithIgnoringCase(string $input, ?string $with): bool
     {
-        $bytes = static::byteLength($with);
+        $bytes = self::byteLength($with);
         if ($bytes === 0) {
             return true;
         }
@@ -187,7 +201,7 @@ final class StringHelper
         /**
          * @psalm-suppress PossiblyNullArgument
          */
-        return static::lowercase(static::substring($input, 0, $bytes, '8bit')) === static::lowercase($with);
+        return self::lowercase(self::substring($input, 0, $bytes, '8bit')) === self::lowercase($with);
     }
 
     /**
@@ -196,6 +210,7 @@ final class StringHelper
      *
      * @param string $input Input string to check.
      * @param string|null $with Part to search inside of the $string.
+     *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
     public static function endsWith(string $input, ?string $with): bool
@@ -208,13 +223,13 @@ final class StringHelper
             return \str_ends_with($input, $with);
         }
 
-        $bytes = static::byteLength($with);
+        $bytes = self::byteLength($with);
         if ($bytes === 0) {
             return true;
         }
 
         // Warning check, see http://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
-        if (static::byteLength($input) < $bytes) {
+        if (self::byteLength($input) < $bytes) {
             return false;
         }
 
@@ -227,11 +242,12 @@ final class StringHelper
      *
      * @param string $input Input string to check.
      * @param string|null $with Part to search inside of the $string.
+     *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
     public static function endsWithIgnoringCase(string $input, ?string $with): bool
     {
-        $bytes = static::byteLength($with);
+        $bytes = self::byteLength($with);
         if ($bytes === 0) {
             return true;
         }
@@ -239,7 +255,7 @@ final class StringHelper
         /**
          * @psalm-suppress PossiblyNullArgument
          */
-        return static::lowercase(mb_substr($input, -$bytes, mb_strlen($input, '8bit'), '8bit')) === static::lowercase($with);
+        return self::lowercase(mb_substr($input, -$bytes, mb_strlen($input, '8bit'), '8bit')) === self::lowercase($with);
     }
 
     /**
@@ -249,6 +265,7 @@ final class StringHelper
      * @param int $length Maximum length of the truncated string including trim marker.
      * @param string $trimMarker String to append to the beginning.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @return string
      */
     public static function truncateBegin(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
@@ -271,6 +288,7 @@ final class StringHelper
      * @param int $length Maximum length of the truncated string including trim marker.
      * @param string $trimMarker String to append in the middle of truncated string.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @return string The truncated string.
      */
     public static function truncateMiddle(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
@@ -295,6 +313,7 @@ final class StringHelper
      * @param int $length Maximum length of the truncated string including trim marker.
      * @param string $trimMarker String to append to the end of truncated string.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @return string The truncated string.
      */
     public static function truncateEnd(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
@@ -315,6 +334,7 @@ final class StringHelper
      * @param string $input The string to truncate.
      * @param int $count How many words from original string to include into truncated string.
      * @param string $trimMarker String to append to the end of truncated string.
+     *
      * @return string The truncated string.
      */
     public static function truncateWords(string $input, int $count, string $trimMarker = '…'): string
@@ -332,7 +352,9 @@ final class StringHelper
      *
      * @param string $string String to calculate length for.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @see https://php.net/manual/en/function.mb-strlen.php
+     *
      * @return int
      */
     public static function length(string $string, string $encoding = 'UTF-8'): int
@@ -344,6 +366,7 @@ final class StringHelper
      * Counts words in a string.
      *
      * @param string $input
+     *
      * @return int
      */
     public static function countWords(string $input): int
@@ -356,7 +379,9 @@ final class StringHelper
      *
      * @param string $string String to process.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @see https://php.net/manual/en/function.mb-strtolower.php
+     *
      * @return string
      */
     public static function lowercase(string $string, string $encoding = 'UTF-8'): string
@@ -369,7 +394,9 @@ final class StringHelper
      *
      * @param string $string String to process.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @see https://php.net/manual/en/function.mb-strtoupper.php
+     *
      * @return string
      */
     public static function uppercase(string $string, string $encoding = 'UTF-8'): string
@@ -382,15 +409,17 @@ final class StringHelper
      *
      * @param string $string The string to be processed.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @return string
+     *
      * @see https://php.net/manual/en/function.ucfirst.php
      */
     public static function uppercaseFirstCharacter(string $string, string $encoding = 'UTF-8'): string
     {
-        $firstCharacter = static::substring($string, 0, 1, $encoding);
-        $rest = static::substring($string, 1, null, $encoding);
+        $firstCharacter = self::substring($string, 0, 1, $encoding);
+        $rest = self::substring($string, 1, null, $encoding);
 
-        return static::uppercase($firstCharacter, $encoding) . $rest;
+        return self::uppercase($firstCharacter, $encoding) . $rest;
     }
 
     /**
@@ -398,7 +427,9 @@ final class StringHelper
      *
      * @param string $string The string to be processed.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
      * @see https://php.net/manual/en/function.ucwords.php
+     *
      * @return string
      */
     public static function uppercaseFirstCharacterInEachWord(string $string, string $encoding = 'UTF-8'): string
@@ -406,7 +437,7 @@ final class StringHelper
         $words = preg_split("/\s/u", $string, -1, PREG_SPLIT_NO_EMPTY);
 
         $wordsWithUppercaseFirstCharacter = array_map(static function ($word) use ($encoding) {
-            return static::uppercaseFirstCharacter($word, $encoding);
+            return self::uppercaseFirstCharacter($word, $encoding);
         }, $words);
 
         return implode(' ', $wordsWithUppercaseFirstCharacter);
@@ -419,7 +450,9 @@ final class StringHelper
      * > `=` is not transparent to URL encoding.
      *
      * @see https://tools.ietf.org/html/rfc4648#page-7
+     *
      * @param string $input The string to encode.
+     *
      * @return string Encoded string.
      */
     public static function base64UrlEncode(string $input): string
@@ -431,7 +464,9 @@ final class StringHelper
      * Decodes "Base 64 Encoding with URL and Filename Safe Alphabet" (RFC 4648).
      *
      * @see https://tools.ietf.org/html/rfc4648#page-7
+     *
      * @param string $input Encoded string.
+     *
      * @return string Decoded string.
      */
     public static function base64UrlDecode(string $input): string

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests;
 
-use Yiisoft\Strings\StringHelper;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Strings\StringHelper;
 
 final class StringHelperTest extends TestCase
 {
@@ -110,6 +110,7 @@ final class StringHelperTest extends TestCase
 
     /**
      * @dataProvider providerStartsWith
+     *
      * @param bool $result
      * @param string $string
      * @param string|null $with
@@ -163,6 +164,7 @@ final class StringHelperTest extends TestCase
 
     /**
      * @dataProvider providerEndsWith
+     *
      * @param bool $result
      * @param string $string
      * @param string|null $with
@@ -225,6 +227,7 @@ final class StringHelperTest extends TestCase
 
     /**
      * @dataProvider base64UrlEncodedStringsProvider
+     *
      * @param string $input
      * @param string $base64UrlEncoded
      */
@@ -236,6 +239,7 @@ final class StringHelperTest extends TestCase
 
     /**
      * @dataProvider base64UrlEncodedStringsProvider
+     *
      * @param $output
      * @param $base64UrlEncoded
      */

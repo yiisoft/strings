@@ -42,6 +42,7 @@ final class WildcardPattern
      * Checks if the passed string would match the given shell wildcard pattern.
      *
      * @param string $string The tested string.
+     *
      * @return bool Whether the string matches pattern or not.
      */
     public function match(string $string): bool
@@ -89,7 +90,9 @@ final class WildcardPattern
 
     /**
      * Disables using `\` to escape following special character. `\` becomes regular character.
+     *
      * @param bool $flag
+     *
      * @return self
      */
     public function withoutEscape(bool $flag = true): self
@@ -102,7 +105,9 @@ final class WildcardPattern
     /**
      * Do not match `/` character with wildcards. The only way to match `/` is with an explicit `/` in pattern.
      * Useful for matching file paths. Use with {@see withExactLeadingPeriod()}.
+     *
      * @param bool $flag
+     *
      * @return self
      */
     public function withExactSlashes(bool $flag = true): self
@@ -114,7 +119,9 @@ final class WildcardPattern
 
     /**
      * Make pattern case insensitive.
+     *
      * @param bool $flag
+     *
      * @return self
      */
     public function ignoreCase(bool $flag = true): self
@@ -127,7 +134,9 @@ final class WildcardPattern
     /**
      * Do not match `.` character at the beginning of string with wildcards.
      * Useful for matching file paths. Use with {@see withExactSlashes()}.
+     *
      * @param bool $flag
+     *
      * @return self
      */
     public function withExactLeadingPeriod(bool $flag = true): self
@@ -140,7 +149,9 @@ final class WildcardPattern
     /**
      * Match ending only.
      * By default wildcard pattern matches string exactly. By using this mode, beginning of the string could be anything.
+     *
      * @param bool $flag
+     *
      * @return self
      */
     public function withEnding(bool $flag = true): self
