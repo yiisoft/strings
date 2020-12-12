@@ -3,7 +3,7 @@
 
 ## 1.1.1 under development
 
-- no changes in this release.
+- Enh #62: Add method `StringHelper::extractLines` that split a string to array with non-empty lines.
 
 ## 1.1.0 November 13, 2020
 

@@ -81,6 +81,10 @@ Overall the helper has the following method groups.
 - base64UrlEncode
 - base64UrlDecode
 
+### Other
+
+- extractLines
+
 ## NumericHelper usage
 
 Numeric helper methods are static so usage is like the following:
