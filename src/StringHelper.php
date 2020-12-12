@@ -475,7 +475,7 @@ final class StringHelper
     }
 
     /**
-     * Split a string to array with non empty lines.
+     * Split a string to array with non-empty lines.
      * Whitespace from the beginning and end of a each line will be stripped by using {@see trim()}.
      *
      * @param string $string The input string.
