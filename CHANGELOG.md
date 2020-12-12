@@ -3,7 +3,7 @@
 
 ## 1.1.1 under development
 
-- Enh #62: Add method `StringHelper::extractLines` that split a string to array with non-empty lines (vjik)
+- Enh #62: Add method `StringHelper::split` that split a string to array with non-empty lines (vjik)
 
 ## 1.1.0 November 13, 2020
 

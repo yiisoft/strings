@@ -368,11 +368,17 @@ final class StringHelperTest extends TestCase
         $this->assertSame($expected, StringHelper::replaceSubstring(...$arguments));
     }
 
-    public function dataExtractLines(): array
+    public function dataSplit(): array
     {
         return [
             ['', []],
             [' ', []],
+            [" \n\n \n ", []],
+            [' A B', ['A B']],
+            ['A B ', ['A B']],
+            ['A B', ['A B']],
+            ['Home', ['Home']],
+            [' Hello World! ', ['Hello World!']],
             [
                 "A \r B \r\r \r C",
                 ['A', 'B', 'C'],
@@ -382,24 +388,24 @@ final class StringHelperTest extends TestCase
                 ['A', 'B', 'C'],
             ],
             [
-                "A \n\r B \n\r\n\r \n\r C",
+                "A \r\n B \r\n\r\n \r\n C",
                 ['A', 'B', 'C'],
             ],
             [
-                "A \r\n B \r\n\r\n \r\n C",
-                ['A', 'B', 'C'],
+                "A \n Hello World! \n \n C",
+                ['A', 'Hello World!', 'C'],
             ],
         ];
     }
 
     /**
-     * @dataProvider dataExtractLines
+     * @dataProvider dataSplit
      *
      * @param string $string
      * @param array $expected
      */
-    public function testExtractLines(string $string, array $expected): void
+    public function testSplit(string $string, array $expected): void
     {
-        $this->assertSame($expected, StringHelper::extractLines($string));
+        $this->assertSame($expected, StringHelper::split($string));
     }
 }

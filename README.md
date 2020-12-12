@@ -83,7 +83,7 @@ Overall the helper has the following method groups.
 
 ### Other
 
-- extractLines
+- split
 
 ## NumericHelper usage
 
