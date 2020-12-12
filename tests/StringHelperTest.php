@@ -367,4 +367,39 @@ final class StringHelperTest extends TestCase
     {
         $this->assertSame($expected, StringHelper::replaceSubstring(...$arguments));
     }
+
+    public function dataExtractLines(): array
+    {
+        return [
+            ['', []],
+            [' ', []],
+            [
+                "A \r B \r\r \r C",
+                ['A', 'B', 'C']
+            ],
+            [
+                "A \n B \n\n \n C",
+                ['A', 'B', 'C']
+            ],
+            [
+                "A \n\r B \n\r\n\r \n\r C",
+                ['A', 'B', 'C']
+            ],
+            [
+                "A \r\n B \r\n\r\n \r\n C",
+                ['A', 'B', 'C']
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataExtractLines
+     *
+     * @param string $string
+     * @param array $expected
+     */
+    public function testExtractLines(string $string, array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::extractLines($string));
+    }
 }

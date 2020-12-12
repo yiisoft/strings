@@ -473,4 +473,20 @@ final class StringHelper
     {
         return base64_decode(strtr($input, '-_', '+/'));
     }
+
+    /**
+     * Split a string to array with non empty lines.
+     * Whitespace from the beginning and end of a each line will be stripped by using {@see trim()}.
+     *
+     * @param string $string The input string.
+     *
+     * @return array
+     */
+    public static function extractLines(string $string): array
+    {
+        $lines = preg_split('~(\r\n|\n\r|\n|\r)~', $string, -1, PREG_SPLIT_NO_EMPTY);
+        $lines = array_map('trim', $lines);
+        $lines = array_filter($lines, fn ($line) => $line !== '');
+        return array_values($lines);
+    }
 }
