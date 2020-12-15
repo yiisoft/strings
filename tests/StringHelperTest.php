@@ -401,8 +401,8 @@ final class StringHelperTest extends TestCase
             ],
             [
                 "\0\nA\nB",
-                ["\0", 'A', 'B']
-            ]
+                ["\0", 'A', 'B'],
+            ],
         ];
     }
 
