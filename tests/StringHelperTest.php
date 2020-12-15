@@ -367,4 +367,58 @@ final class StringHelperTest extends TestCase
     {
         $this->assertSame($expected, StringHelper::replaceSubstring(...$arguments));
     }
+
+    public function dataSplit(): array
+    {
+        return [
+            ['', []],
+            [' ', []],
+            [" \n\n \n ", []],
+            [' A B', ['A B']],
+            ['A B ', ['A B']],
+            ['A B', ['A B']],
+            ['Home', ['Home']],
+            [' Hello World! ', ['Hello World!']],
+            [
+                "A \r B \r\r \r C",
+                ['A', 'B', 'C'],
+            ],
+            [
+                "A \n B \n\n \n C",
+                ['A', 'B', 'C'],
+            ],
+            [
+                "A \r\n B \r\n\r\n \r\n C",
+                ['A', 'B', 'C'],
+            ],
+            [
+                "A \v B \v \v C",
+                ['A', 'B', 'C'],
+            ],
+            [
+                "A \n Hello World! \n \n C",
+                ['A', 'Hello World!', 'C'],
+            ],
+            [
+                "\0\nA\nB",
+                ["\0", 'A', 'B'],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataSplit
+     *
+     * @param string $string
+     * @param array $expected
+     */
+    public function testSplit(string $string, array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::split($string));
+    }
+
+    public function testSplitWithSeparator(): void
+    {
+        $this->assertSame(['A', 'B', 'C'], StringHelper::split(' A 2 B3C', '\d'));
+    }
 }

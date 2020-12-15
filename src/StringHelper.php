@@ -473,4 +473,20 @@ final class StringHelper
     {
         return base64_decode(strtr($input, '-_', '+/'));
     }
+
+    /**
+     * Split a string to array with non-empty lines.
+     * Whitespace from the beginning and end of a each line will be stripped.
+     *
+     * @param string $string The input string.
+     * @param string $separator The boundary string. It is a part of regular expression
+     * so should be taken into account or properly escaped with {@see preg_quote()}.
+     *
+     * @return array
+     */
+    public static function split(string $string, string $separator = '\R'): array
+    {
+        $string = preg_replace('(^\s*|\s*$)', '', $string);
+        return preg_split('~\s*' . $separator . '\s*~', $string, -1, PREG_SPLIT_NO_EMPTY);
+    }
 }
