@@ -479,7 +479,8 @@ final class StringHelper
      * Whitespace from the beginning and end of a each line will be stripped.
      *
      * @param string $string The input string.
-     * @param string $separator The boundary string.
+     * @param string $separator The boundary string. It is a part of regular expression
+     * so should be taken into account or properly escaped with {@see preg_quote()}.
      *
      * @return array
      */
