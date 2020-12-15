@@ -479,12 +479,13 @@ final class StringHelper
      * Whitespace from the beginning and end of a each line will be stripped.
      *
      * @param string $string The input string.
+     * @param string $separator The boundary string.
      *
      * @return array
      */
-    public static function split(string $string): array
+    public static function split(string $string, string $separator = '\R'): array
     {
         $string = preg_replace('(^\s*|\s*$)', '', $string);
-        return preg_split('~\s*\R\s*~', $string, -1, PREG_SPLIT_NO_EMPTY);
+        return preg_split('~\s*' . $separator . '\s*~', $string, -1, PREG_SPLIT_NO_EMPTY);
     }
 }

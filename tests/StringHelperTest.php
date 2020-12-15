@@ -416,4 +416,9 @@ final class StringHelperTest extends TestCase
     {
         $this->assertSame($expected, StringHelper::split($string));
     }
+
+    public function testSplitWithSeparator(): void
+    {
+        $this->assertSame(['A', 'B', 'C'], StringHelper::split(' A 2 B3C', '\d'));
+    }
 }
