@@ -392,9 +392,17 @@ final class StringHelperTest extends TestCase
                 ['A', 'B', 'C'],
             ],
             [
+                "A \v B \v \v C",
+                ['A', 'B', 'C'],
+            ],
+            [
                 "A \n Hello World! \n \n C",
                 ['A', 'Hello World!', 'C'],
             ],
+            [
+                "\0\nA\nB",
+                ["\0", 'A', 'B']
+            ]
         ];
     }
 
