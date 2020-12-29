@@ -61,4 +61,16 @@ final class NumericHelper
         $value = str_replace([' ', ','], ['', '.'], (string)$value);
         return preg_replace('/\.(?=.*\.)/', '', $value);
     }
+
+    /**
+     * Checks whether the given string is integer number
+     *
+     * @param string $value
+     *
+     * @return bool
+     */
+    public static function isInteger(string $value): bool
+    {
+        return strval(intval($value)) === $value;
+    }
 }

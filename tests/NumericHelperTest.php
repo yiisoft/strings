@@ -66,4 +66,28 @@ final class NumericHelperTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         NumericHelper::normalize([]);
     }
+
+    public function dataIsNumber(): array
+    {
+        return [
+            ['42', true],
+            ['-42', true],
+            ['0', true],
+            [' 7', false],
+            ['-', false],
+            ['hello', false],
+            ['', false],
+        ];
+    }
+
+    /**
+     * @dataProvider dataIsNumber
+     *
+     * @param string $value
+     * @param bool $expected
+     */
+    public function testIsNumber(string $value, bool $expected): void
+    {
+        $this->assertSame(NumericHelper::isInteger($value), $expected);
+    }
 }
