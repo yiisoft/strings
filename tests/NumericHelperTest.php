@@ -67,7 +67,7 @@ final class NumericHelperTest extends TestCase
         NumericHelper::normalize([]);
     }
 
-    public function dataIsNumber(): array
+    public function dataIsInteger(): array
     {
         return [
             ['42', true],
@@ -81,12 +81,12 @@ final class NumericHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider dataIsNumber
+     * @dataProvider dataIsInteger
      *
      * @param string $value
      * @param bool $expected
      */
-    public function testIsNumber(string $value, bool $expected): void
+    public function testIsInteger(string $value, bool $expected): void
     {
         $this->assertSame(NumericHelper::isInteger($value), $expected);
     }
