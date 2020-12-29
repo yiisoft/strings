@@ -71,6 +71,6 @@ final class NumericHelper
      */
     public static function isInteger(string $value): bool
     {
-        return strval(intval($value)) === $value;
+        return (string)(int)$value === $value;
     }
 }
