@@ -89,6 +89,6 @@ final class NumericHelperTest extends TestCase
      */
     public function testIsInteger(string $value, bool $expected): void
     {
-        $this->assertSame(NumericHelper::isInteger($value), $expected);
+        $this->assertSame($expected, NumericHelper::isInteger($value));
     }
 }
