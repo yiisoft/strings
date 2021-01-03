@@ -73,6 +73,7 @@ final class NumericHelperTest extends TestCase
             ['42', true],
             ['-42', true],
             ['0', true],
+            ['042', true],
             [' 7', false],
             ['-', false],
             ['hello', false],
