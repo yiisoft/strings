@@ -4,6 +4,7 @@
 ## 1.1.1 under development
 
 - Enh #62: Add method `StringHelper::split` that split a string to array with non-empty lines (vjik)
+- Enh #64: Add support of a boolean values to `NumericHelper::normalize` (vjik) 
 
 ## 1.1.0 November 13, 2020
 
