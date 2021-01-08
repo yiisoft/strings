@@ -47,7 +47,7 @@ final class NumericHelper
     /**
      * Returns string representation of a number value without thousands separators and with dot as decimal separator.
      *
-     * @param float|int|string|bool $value
+     * @param bool|float|int|string $value
      *
      * @throws InvalidArgumentException if value is not scalar.
      *
