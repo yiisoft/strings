@@ -67,6 +67,6 @@ final class NumericHelper
      */
     public static function isInteger(string $value): bool
     {
-        return preg_match('/^-?\d+$/', $value) === 1;
+        return filter_var($value, FILTER_VALIDATE_INT); 
     }
 }
