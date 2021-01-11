@@ -97,6 +97,7 @@ The following methods are available:
 
 - toOrdinal
 - normalize
+- isInteger
 
 ## Inflector usage
 
