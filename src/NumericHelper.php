@@ -63,11 +63,7 @@ final class NumericHelper
     }
 
     /**
-     * Checks whether the given string is integer number
-     *
-     * @param string $value
-     *
-     * @return bool
+     * Checks whether the given string is an integer number.
      */
     public static function isInteger(string $value): bool
     {
