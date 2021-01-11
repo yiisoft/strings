@@ -37,7 +37,7 @@ final class NumericHelperTest extends TestCase
         NumericHelper::toOrdinal('bla-bla');
     }
 
-    public function normalizeNumberDataProvider(): array
+    public function dataNormalize(): array
     {
         return [
             'French' => ['4 294 967 295,000', '4294967295.000'],
@@ -47,21 +47,23 @@ final class NumericHelperTest extends TestCase
             'Smaller' => ['10,111', '10.111'],
             'Float' => [10.01, '10.01'],
             'Int' => [10, '10'],
+            'True' => [true, '1'],
+            'False' => [false, '0'],
         ];
     }
 
     /**
-     * @dataProvider normalizeNumberDataProvider
+     * @dataProvider dataNormalize
      *
      * @param float|int|string $input
      * @param string $expected
      */
-    public function testNormalizeNumber($input, string $expected): void
+    public function testNormalize($input, string $expected): void
     {
         $this->assertSame($expected, NumericHelper::normalize($input));
     }
 
-    public function testNormalizeNumberWithIncorrectType(): void
+    public function testNormalizeWithIncorrectType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         NumericHelper::normalize([]);
