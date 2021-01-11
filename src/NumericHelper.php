@@ -64,9 +64,11 @@ final class NumericHelper
 
     /**
      * Checks whether the given string is an integer number.
+     * @param mixed $value
+     * @return bool
      */
     public static function isInteger($value): bool
     {
-        return filter_var($value, FILTER_VALIDATE_INT); 
+        return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }
 }

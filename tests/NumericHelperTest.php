@@ -70,11 +70,12 @@ final class NumericHelperTest extends TestCase
     public function dataIsInteger(): array
     {
         return [
+            [new \stdClass(), false],
+            [[], false],
             ['42', true],
             ['-42', true],
             ['0', true],
-            ['042', true],
-            [' 7', false],
+            [' 7', true],
             ['-', false],
             ['hello', false],
             ['', false],
@@ -84,10 +85,10 @@ final class NumericHelperTest extends TestCase
     /**
      * @dataProvider dataIsInteger
      *
-     * @param string $value
+     * @param mixed $value
      * @param bool $expected
      */
-    public function testIsInteger(string $value, bool $expected): void
+    public function testIsInteger($value, bool $expected): void
     {
         $this->assertSame($expected, NumericHelper::isInteger($value));
     }
