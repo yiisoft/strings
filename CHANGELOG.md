@@ -4,7 +4,7 @@
 ## 1.1.1 under development
 
 - Enh #62: Add method `StringHelper::split` that split a string to array with non-empty lines (vjik)
-- Enh #63: Add method `NumericHelper::isInteger` that checks whether the given string is integer number (vjik)
+- Enh #63: Add method `NumericHelper::isInteger` that checks whether the given string is an integer number (vjik)
 
 ## 1.1.0 November 13, 2020
 
@@ -20,6 +20,5 @@
 ## 1.0.0 August 31, 2020
 
 - Initial release.
-
 
 
