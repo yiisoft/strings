@@ -170,4 +170,10 @@ final class WildcardPatternTest extends TestCase
         $this->assertNotSame($original, $original->withoutEscape());
         $this->assertNotSame($original, $original->withEnding());
     }
+
+    public function testDoubleStar(): void
+    {
+        $pattern = (new WildcardPattern('from/**/b'))->withExactSlashes(true);
+        $this->assertTrue($pattern->match('from/a/to/b'));
+    }
 }

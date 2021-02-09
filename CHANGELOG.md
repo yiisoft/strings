@@ -3,8 +3,7 @@
 
 ## 1.2.1 under development
 
-- no changes in this release.
-
+- Enh: Add `**`, match anything including `/`, to `WildcardPattern` (samdark)
 
 ## 1.2.0 January 22, 2021
 

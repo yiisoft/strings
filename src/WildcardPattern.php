@@ -9,6 +9,8 @@ namespace Yiisoft\Strings;
  *
  * - `\` escapes other special characters if usage of escape character is not turned off.
  * - `*` matches any string, including the empty string.
+ *   Does not match slashes if {@see WildcardPattern::withExactSlashes()} is used.
+ * - `**` always matches any string, including the empty string and slashes.
  * - `?` matches any single character.
  * - `[seq]` matches any character in seq.
  * - `[a-z]` matches any character from a to z.
@@ -47,6 +49,10 @@ final class WildcardPattern
      */
     public function match(string $string): bool
     {
+        if ($this->pattern === '**' && !$this->matchLeadingPeriodExactly) {
+            return true;
+        }
+
         if ($this->pattern === '*' && !$this->matchSlashesExactly && !$this->matchLeadingPeriodExactly) {
             return true;
         }
@@ -58,6 +64,7 @@ final class WildcardPattern
         }
 
         $replacements = [
+            '\*\*' => '[^\\\\]*',
             '\\\\\\\\' => '\\\\',
             '\\\\\\*' => '[*]',
             '\\\\\\?' => '[?]',
