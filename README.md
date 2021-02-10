@@ -165,10 +165,16 @@ The following characters are special in the pattern:
 - `[!seq]` matches any character not in seq.
 - `[[:alnum:]]` matches [POSIX style character classes](https://www.php.net/manual/en/regexp.reference.character-classes.php).
 
-Several options are available. Call these before doing a `match()`:
+`ignoreCase()` could be called before doing a `match()` to get a case-insensitive match:
 
-- `withoutEscape()` - makes `\` a regular character in a pattern.
-- `ignoreCase()` - case-insensitive match.
+```php
+use \Yiisoft\Strings\WildcardPattern;
+
+$startsWithTest = new WildcardPattern('test*');
+if ($startsWithTest->ignoreCase()->match('tEStIfThisIsTrue')) {
+    echo 'It starts with "test"!';
+}
+```
 
 ## Testing
 
