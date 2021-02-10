@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings;
 
+use function extension_loaded;
+
 /**
  * Inflector provides methods such as {@see pluralize()} or {@see slug()} that derive a new string based on
  * the string given.
@@ -640,6 +642,6 @@ final class Inflector
      */
     private function useIntl(): bool
     {
-        return $this->withoutIntl === false && \extension_loaded('intl');
+        return $this->withoutIntl === false && extension_loaded('intl');
     }
 }

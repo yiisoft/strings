@@ -5,37 +5,32 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 /**
- * A shell wildcard pattern to match strings against.
+ * A wildcard pattern to match strings against.
  *
  * - `\` escapes other special characters if usage of escape character is not turned off.
- * - `*` matches any string, including the empty string.
+ * - `*` matches any string including the empty string except it has a delimiter (`/` and `\` by default).
+  * - `**` matches any string including the empty string and delimiters.
  * - `?` matches any single character.
  * - `[seq]` matches any character in seq.
  * - `[a-z]` matches any character from a to z.
  * - `[!seq]` matches any character not in seq.
  * - `[[:alnum:]]` matches POSIX style character classes,
  *   see {@see https://www.php.net/manual/en/regexp.reference.character-classes.php}.
- *
- * @see https://www.man7.org/linux/man-pages/man7/glob.7.html
- *
- * The class emulates {@see fnmatch()} using PCRE since it is not uniform across operating systems
- * and may not be available.
  */
 final class WildcardPattern
 {
-    private bool $withoutEscape = false;
-    private bool $matchSlashesExactly = false;
-    private bool $matchLeadingPeriodExactly = false;
     private bool $ignoreCase = false;
-    private bool $matchEnding = false;
     private string $pattern;
+    private array $delimiters;
 
     /**
      * @param string $pattern The shell wildcard pattern to match against.
+     * @param array $delimiters Delimiters to consider for "*" (`/` and `\` by default).
      */
-    public function __construct(string $pattern)
+    public function __construct(string $pattern, array $delimiters = ['\\\\', '/'])
     {
         $this->pattern = $pattern;
+        $this->delimiters = $delimiters;
     }
 
     /**
@@ -47,74 +42,49 @@ final class WildcardPattern
      */
     public function match(string $string): bool
     {
-        if ($this->pattern === '*' && !$this->matchSlashesExactly && !$this->matchLeadingPeriodExactly) {
+        if ($this->pattern === '**') {
             return true;
         }
 
         $pattern = $this->pattern;
 
-        if ($this->matchLeadingPeriodExactly) {
-            $pattern = preg_replace('/^[*?]/', '[!.]', $pattern);
-        }
-
         $replacements = [
+            '\*\*' => '.*',
             '\\\\\\\\' => '\\\\',
             '\\\\\\*' => '[*]',
             '\\\\\\?' => '[?]',
-            '\*' => '.*',
-            '\?' => '.',
+            '\\\\\\[' => '[\[]',
+            '\\\\\\]' => '[\]]',
+        ];
+
+        if ($this->delimiters === []) {
+            $replacements += [
+                '\*' => '.*',
+                '\?' => '?',
+            ];
+        } else {
+            $notDelimiters = '[^' . preg_quote(implode('', $this->delimiters), '#') . ']';
+            $replacements += [
+                '\*' => "$notDelimiters*",
+                '\?' => $notDelimiters,
+            ];
+        }
+
+        $replacements += [
             '\[\!' => '[^',
             '\[' => '[',
             '\]' => ']',
             '\-' => '-',
         ];
 
-        if ($this->withoutEscape) {
-            unset($replacements['\\\\\\\\'], $replacements['\\\\\\*'], $replacements['\\\\\\?']);
-        }
-
-        if ($this->matchSlashesExactly) {
-            $replacements['\*'] = '[^/\\\\]*';
-            $replacements['\?'] = '[^/\\\\]';
-        }
-
         $pattern = strtr(preg_quote($pattern, '#'), $replacements);
-        $pattern = '#' . ($this->matchEnding ? '' : '^') . $pattern . '$#us';
+        $pattern = '#^' . $pattern . '$#us';
 
         if ($this->ignoreCase) {
             $pattern .= 'i';
         }
 
         return preg_match($pattern, $string) === 1;
-    }
-
-    /**
-     * Disables using `\` to escape following special character. `\` becomes regular character.
-     *
-     * @param bool $flag
-     *
-     * @return self
-     */
-    public function withoutEscape(bool $flag = true): self
-    {
-        $new = clone $this;
-        $new->withoutEscape = $flag;
-        return $new;
-    }
-
-    /**
-     * Do not match `/` character with wildcards. The only way to match `/` is with an explicit `/` in pattern.
-     * Useful for matching file paths. Use with {@see withExactLeadingPeriod()}.
-     *
-     * @param bool $flag
-     *
-     * @return self
-     */
-    public function withExactSlashes(bool $flag = true): self
-    {
-        $new = clone $this;
-        $new->matchSlashesExactly = $flag;
-        return $new;
     }
 
     /**
@@ -132,32 +102,28 @@ final class WildcardPattern
     }
 
     /**
-     * Do not match `.` character at the beginning of string with wildcards.
-     * Useful for matching file paths. Use with {@see withExactSlashes()}.
+     * Returns whether the pattern contains a dynamic part i.e.
+     * has unescaped "*",  "{", "?", or "[" character.
      *
-     * @param bool $flag
+     * @param string $pattern The pattern to check.
      *
-     * @return self
+     * @return bool Whether the pattern contains a dynamic part.
      */
-    public function withExactLeadingPeriod(bool $flag = true): self
+    public static function isDynamic(string $pattern): bool
     {
-        $new = clone $this;
-        $new->matchLeadingPeriodExactly = $flag;
-        return $new;
+        $pattern = preg_replace('/\\\\./', '', $pattern);
+        return (bool)preg_match('/[*{?\[]/', $pattern);
     }
 
     /**
-     * Match ending only.
-     * By default wildcard pattern matches string exactly. By using this mode, beginning of the string could be anything.
+     * Escapes pattern characters in a string.
      *
-     * @param bool $flag
+     * @param string $string Source string.
      *
-     * @return self
+     * @return string String with pattern characters escaped.
      */
-    public function withEnding(bool $flag = true): self
+    public static function quote(string $string): string
     {
-        $new = clone $this;
-        $new->matchEnding = $flag;
-        return $new;
+        return preg_replace('#([\\\\?*\\[\\]])#', '\\\\$1', $string);
     }
 }

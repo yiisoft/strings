@@ -1,10 +1,14 @@
 # Yii Strings Change Log
 
 
-## 1.2.1 under development
+## 2.0.0 under development
 
-- no changes in this release.
-
+- Enh #67: Add `**`, match anything including `/`, to `\Yiisoft\Strings\WildcardPattern`, remove `withExactSlashes()` and `withEnding()` (samdark)
+- Enh #67: Allow specifying delimiters for `*` (samdark)
+- Enh #67: Add `\Yiisoft\Strings\WildcardPattern::isDynamic()` (samdark)
+- Enh #67: Add `\Yiisoft\Strings\WildcardPattern::quote()` (samdark)
+- Chg #67: Remove `\Yiisoft\Strings\WildcardPattern::withoutEscape()` (samdark)
+- Chg #67: Remove `\Yiisoft\Strings\WildcardPattern::withExactLeadingPeriod()` (samdark)
 
 ## 1.2.0 January 22, 2021
 

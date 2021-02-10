@@ -10,7 +10,7 @@ use Yiisoft\Strings\WildcardPattern;
 final class WildcardPatternTest extends TestCase
 {
     /**
-     * Data provider for [[testMatchWildcard()]]
+     * Data provider for {@see testMatchWildcard()}.
      *
      * @return array test data.
      */
@@ -19,6 +19,8 @@ final class WildcardPatternTest extends TestCase
         return [
             // *
             ['*', 'any', true],
+            ['*', 'any/path', false],
+            ['*', '.dotenv', true],
             ['*', '', true],
             ['begin*end', 'begin-middle-end', true],
             ['begin*end', 'beginend', true],
@@ -28,11 +30,30 @@ final class WildcardPatternTest extends TestCase
             ['begin*', 'begin-end', true],
             ['begin*', 'end', false],
             ['begin*', 'before-begin', false],
+
+            // * with slashes
+            ['begin/*/end', 'begin/middle/end', true],
+            ['begin/*/end', 'begin/two/steps/end', false],
+            ['begin/*/end', 'begin/end', false],
+            ['begin\\\\*\\\\end', 'begin\middle\end', true],
+            ['begin\\\\*\\\\end', 'begin\two\steps\end', false],
+            ['begin\\\\*\\\\end', 'begin\end', false],
+
+            // **
+            ['**', 'anything/really/anything', true],
+            ['begin/**/end', 'begin/middle/end', true],
+            ['begin/**/end', 'begin/two/steps/end', true],
+            ['begin/**/end', 'begin/end', false],
+            ['begin\\\\**\\\\end', 'begin\middle\end', true],
+            ['begin\\\\**\\\\end', 'begin\two\steps\end', true],
+            ['begin\\\\**\\\\end', 'begin\end', false],
+
             // ?
             ['begin?end', 'begin1end', true],
             ['begin?end', 'beginend', false],
             ['begin??end', 'begin12end', true],
             ['begin??end', 'begin1end', false],
+
             // []
             ['gr[ae]y', 'gray', true],
             ['gr[ae]y', 'grey', true],
@@ -41,59 +62,34 @@ final class WildcardPatternTest extends TestCase
             ['a[2-8]', 'a3', true],
             ['[][!]', ']', true],
             ['[-1]', '-', true],
+            ['[.-0]', 'any/path', false],
+
             // [!]
             ['gr[!ae]y', 'gray', false],
             ['gr[!ae]y', 'grey', false],
             ['gr[!ae]y', 'groy', true],
             ['a[!2-8]', 'a1', true],
             ['a[!2-8]', 'a3', false],
+
             // -
             ['a-z', 'a-z', true],
             ['a-z', 'a-c', false],
-            // slashes
-            ['begin/*/end', 'begin/middle/end', true],
-            ['begin/*/end', 'begin/two/steps/end', true],
-            ['begin/*/end', 'begin/end', false],
-            ['begin\\\\*\\\\end', 'begin\middle\end', true],
-            ['begin\\\\*\\\\end', 'begin\two\steps\end', true],
-            ['begin\\\\*\\\\end', 'begin\end', false],
-            // dots
+
+            // Dots
             ['begin.*.end', 'begin.middle.end', true],
             ['begin.*.end', 'begin.two.steps.end', true],
             ['begin.*.end', 'begin.end', false],
-            // leading period
-            ['.test', '.test', true],
-            ['*test', '.test', true],
-            ['.test', '.test', true, ['leadingPeriod' => true]],
-            ['*test', '.test', false, ['leadingPeriod' => true]],
-            ['*', '.test', false, ['leadingPeriod' => true]],
-            // case
+
+            // Special characters escaping
+            ['\\\\', '\\', true],
+            ['\\*', '*', true],
+            ['\\?', '?', true],
+            ['\\[', '[', true],
+            ['\\]', ']', true],
+
+            // Case insensitive matching
             ['begin*end', 'BEGIN-middle-END', false],
             ['begin*end', 'BEGIN-middle-END', true, ['caseSensitive' => false]],
-            // file path
-            ['begin/*/end', 'begin/middle/end', true, ['filePath' => true]],
-            ['begin/*/end', 'begin/two/steps/end', false, ['filePath' => true]],
-            ['begin\\\\*\\\\end', 'begin\middle\end', true, ['filePath' => true]],
-            ['begin\\\\*\\\\end', 'begin\two\steps\end', false, ['filePath' => true]],
-            ['*', 'any', true, ['filePath' => true]],
-            ['*', 'any/path', false, ['filePath' => true]],
-            ['[.-0]', 'any/path', false, ['filePath' => true]],
-            ['*', '.dotenv', true, ['filePath' => true]],
-            // escaping
-            ['\*\?', '*?', true],
-            ['\*\?', 'zz', false],
-            ['begin\*\end', 'begin\middle\end', true, ['escape' => false]],
-            ['begin\*\end', 'begin\two\steps\end', true, ['escape' => false]],
-            ['begin\*\end', 'begin\end', false, ['escape' => false]],
-            ['begin\*\end', 'begin\middle\end', true, ['filePath' => true, 'escape' => false]],
-            ['begin\*\end', 'begin\two\steps\end', false, ['filePath' => true, 'escape' => false]],
-            // ending
-            ['i/*.jpg', 'i/hello.jpg', true, ['ending' => true]],
-            ['i/*.jpg', 'i/hello.jpg', true, ['ending' => true, 'filePath' => true]],
-            ['i/*.jpg', 'i/h/hello.jpg', true, ['ending' => true]],
-            ['i/*.jpg', 'i/h/hello.jpg', false, ['ending' => true, 'filePath' => true]],
-            ['i/*.jpg', 'path/to/i/hello.jpg', true, ['ending' => true]],
-            ['i/*.jpg', 'path/to/i/hello.jpg', true, ['ending' => true, 'filePath' => true]],
         ];
     }
 
@@ -117,44 +113,12 @@ final class WildcardPatternTest extends TestCase
         if (isset($options['caseSensitive']) && $options['caseSensitive'] === false) {
             $wildcardPattern = $wildcardPattern->ignoreCase();
         }
-        if (isset($options['filePath']) && $options['filePath'] === true) {
-            $wildcardPattern = $wildcardPattern->withExactSlashes();
-        }
-        if (isset($options['escape']) && $options['escape'] === false) {
-            $wildcardPattern = $wildcardPattern->withoutEscape();
-        }
-        if (isset($options['leadingPeriod']) && $options['leadingPeriod'] === true) {
-            $wildcardPattern = $wildcardPattern->withExactLeadingPeriod();
-        }
-        if (isset($options['ending']) && $options['ending'] === true) {
-            $wildcardPattern = $wildcardPattern->withEnding();
-        }
 
         return $wildcardPattern;
     }
 
     public function testDisableOptions(): void
     {
-        $wildcardPattern = (new WildcardPattern('abc'))
-            ->withEnding()
-            ->withEnding(false);
-        $this->assertFalse($wildcardPattern->match('42abc'));
-
-        $wildcardPattern = (new WildcardPattern('\*42'))
-            ->withoutEscape()
-            ->withoutEscape(false);
-        $this->assertTrue($wildcardPattern->match('*42'));
-
-        $wildcardPattern = (new WildcardPattern('/*/42'))
-            ->withExactSlashes()
-            ->withExactSlashes(false);
-        $this->assertTrue($wildcardPattern->match('/a/b/c/42'));
-
-        $wildcardPattern = (new WildcardPattern('*/42'))
-            ->withExactLeadingPeriod()
-            ->withExactLeadingPeriod(false);
-        $this->assertTrue($wildcardPattern->match('abc/42'));
-
         $wildcardPattern = (new WildcardPattern('abc42'))
             ->ignoreCase()
             ->ignoreCase(false);
@@ -164,10 +128,59 @@ final class WildcardPatternTest extends TestCase
     public function testImmutability(): void
     {
         $original = new WildcardPattern('*');
-        $this->assertNotSame($original, $original->withExactLeadingPeriod());
         $this->assertNotSame($original, $original->ignoreCase());
-        $this->assertNotSame($original, $original->withExactSlashes());
-        $this->assertNotSame($original, $original->withoutEscape());
-        $this->assertNotSame($original, $original->withEnding());
+    }
+
+    /**
+     * @dataProvider isDynamicDataProvider
+     */
+    public function testIsDynamic(string $pattern, bool $expected): void
+    {
+        $this->assertSame($expected, WildcardPattern::isDynamic($pattern));
+    }
+
+    public function isDynamicDataProvider(): array
+    {
+        return [
+            'not-dynamic' => ['just-some-string', false],
+            'char' => ['just-some-string?', true],
+            'escaped-1' => ['just-some-string?', true],
+            'escaped-2' => ['just-some-string\\?', false],
+            'escaped-3' => ['just-some-string\\\\?', true],
+        ];
+    }
+
+    public function customDelimitersProvider(): array
+    {
+        return [
+            'empty' => ['begin*end', 'begin/end', [], true],
+            'dot' => ['begin*end', 'begin.end', ['.'], false],
+            'multiple' => ['begin*end', 'begin$end', ['.', '$'], false],
+        ];
+    }
+
+    /**
+     * @dataProvider customDelimitersProvider
+     */
+    public function testCustomDelimiters(string $pattern, string $string, array $delimiters, bool $expected): void
+    {
+        $wildcardPattern = $wildcardPattern = new WildcardPattern($pattern, $delimiters);
+        $this->assertSame($expected, $wildcardPattern->match($string));
+    }
+
+    public function quoteDataProvider(): array
+    {
+        return [
+            'no-pattern' => ['test', 'test'],
+            'special-chars' => ['?[]*\\', '\\?\\[\\]\\*\\\\'],
+        ];
+    }
+
+    /**
+     * @dataProvider quoteDataProvider
+     */
+    public function testQuote(string $string, string $expected): void
+    {
+        $this->assertSame($expected, WildcardPattern::quote($string));
     }
 }

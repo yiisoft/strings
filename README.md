@@ -157,32 +157,22 @@ if ($startsWithTest->match('testIfThisIsTrue')) {
 The following characters are special in the pattern:
 
 - `\` escapes other special characters if usage of escape character is not turned off.
-- `*` matches any string, including the empty string.
+- `*` matches any string, including the empty string, except delimiters (`/` and `\` by default).
+- `**` matches any string, including the empty string and delimiters.
 - `?` matches any single character.
 - `[seq]` matches any character in seq.
 - `[a-z]` matches any character from a to z.
 - `[!seq]` matches any character not in seq.
 - `[[:alnum:]]` matches [POSIX style character classes](https://www.php.net/manual/en/regexp.reference.character-classes.php).
 
-Several options are available. Call these before doing a `match()`:
-
-- `withoutEscape()` - makes `\` a regular character in a pattern.
-- `withExactSlashes()` - makes `\` in a string to match `\` only in a pattern. 
-- `ignoreCase()` - case-insensitive match.
-- `withExactLeadingPeriod()` - makes first `.` in a string match only `.` in a pattern.
-- `withEnding()` - match ending of testing string.
-
-When matching file paths, it is advised to use both `withExactSlashes()` and `withExactLeadingPeriod()`:
+`ignoreCase()` could be called before doing a `match()` to get a case-insensitive match:
 
 ```php
 use \Yiisoft\Strings\WildcardPattern;
 
-$startsWithTest = (new WildcardPattern('config/*.php'))
-    ->withExactLeadingPeriod()
-    ->withExactSlashes();
-
-if ($startsWithTest->match($fileName)) {
-    echo 'It is a config!';
+$startsWithTest = new WildcardPattern('test*');
+if ($startsWithTest->ignoreCase()->match('tEStIfThisIsTrue')) {
+    echo 'It starts with "test"!';
 }
 ```
 
