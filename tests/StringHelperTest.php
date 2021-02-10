@@ -357,6 +357,7 @@ final class StringHelperTest extends TestCase
             ['bala ', ['try this', 'bala ', -10]],
             ['try thisbala ', ['try this', 'bala ', 8]],
             ['строфа', ['строка', 'офа', -3]],
+            ['watarun', ['wat', 'arun', 10]],
         ];
     }
 

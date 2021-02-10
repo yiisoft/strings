@@ -40,6 +40,7 @@ final class WildcardPatternTest extends TestCase
             ['begin\\\\*\\\\end', 'begin\end', false],
 
             // **
+            ['**', 'anything/really/anything', true],
             ['begin/**/end', 'begin/middle/end', true],
             ['begin/**/end', 'begin/two/steps/end', true],
             ['begin/**/end', 'begin/end', false],
