@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 use function array_slice;
+use function function_exists;
+use function max;
 use function mb_strlen;
 use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
+use function str_ends_with;
+use function str_starts_with;
 
 /**
  * Provides static methods to work with strings.
@@ -137,13 +141,13 @@ final class StringHelper
         $stringLength = mb_strlen($string, $encoding);
 
         if ($start < 0) {
-            $start = \max(0, $stringLength + $start);
+            $start = max(0, $stringLength + $start);
         } elseif ($start > $stringLength) {
             $start = $stringLength;
         }
 
         if ($length !== null && $length < 0) {
-            $length = \max(0, $stringLength - $start + $length);
+            $length = max(0, $stringLength - $start + $length);
         } elseif ($length === null || $length > $stringLength) {
             $length = $stringLength;
         }
@@ -171,7 +175,7 @@ final class StringHelper
         }
 
         if (function_exists('\str_starts_with')) {
-            return \str_starts_with($input, $with);
+            return str_starts_with($input, $with);
         }
 
         $bytes = self::byteLength($with);
@@ -220,7 +224,7 @@ final class StringHelper
         }
 
         if (function_exists('\str_ends_with')) {
-            return \str_ends_with($input, $with);
+            return str_ends_with($input, $with);
         }
 
         $bytes = self::byteLength($with);
@@ -434,7 +438,7 @@ final class StringHelper
      */
     public static function uppercaseFirstCharacterInEachWord(string $string, string $encoding = 'UTF-8'): string
     {
-        $words = preg_split("/\s/u", $string, -1, PREG_SPLIT_NO_EMPTY);
+        $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
         $wordsWithUppercaseFirstCharacter = array_map(static function (string $word) use ($encoding) {
             return self::uppercaseFirstCharacter($word, $encoding);

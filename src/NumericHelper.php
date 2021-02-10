@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 use InvalidArgumentException;
+use function in_array;
+use function is_bool;
 
 /**
  * Provides static methods to work with numeric strings.
@@ -29,7 +31,7 @@ final class NumericHelper
             return (string)$value;
         }
 
-        if (\in_array($value % 100, [11, 12, 13], true)) {
+        if (in_array($value % 100, [11, 12, 13], true)) {
             return $value . 'th';
         }
         switch ($value % 10) {
