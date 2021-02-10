@@ -89,15 +89,6 @@ final class WildcardPatternTest extends TestCase
             // Case insensitive matching
             ['begin*end', 'BEGIN-middle-END', false],
             ['begin*end', 'BEGIN-middle-END', true, ['caseSensitive' => false]],
-
-            // Do not use \ as escaping character
-            ['\*\?', '*?', true],
-            ['\*\?', 'zz', false],
-            ['begin\*\end', 'begin\middle\end', true, ['escape' => false]],
-            ['begin\*\end', 'begin\two\steps\end', false, ['escape' => false]],
-            ['begin\*\end', 'begin\end', false, ['escape' => false]],
-            ['begin\*\end', 'begin\middle\end', true, ['filePath' => true, 'escape' => false]],
-            ['begin\*\end', 'begin\two\steps\end', false, ['filePath' => true, 'escape' => false]],
         ];
     }
 
@@ -121,20 +112,12 @@ final class WildcardPatternTest extends TestCase
         if (isset($options['caseSensitive']) && $options['caseSensitive'] === false) {
             $wildcardPattern = $wildcardPattern->ignoreCase();
         }
-        if (isset($options['escape']) && $options['escape'] === false) {
-            $wildcardPattern = $wildcardPattern->withoutEscape();
-        }
 
         return $wildcardPattern;
     }
 
     public function testDisableOptions(): void
     {
-        $wildcardPattern = (new WildcardPattern('\*42'))
-            ->withoutEscape()
-            ->withoutEscape(false);
-        $this->assertTrue($wildcardPattern->match('*42'));
-
         $wildcardPattern = (new WildcardPattern('abc42'))
             ->ignoreCase()
             ->ignoreCase(false);
@@ -145,7 +128,6 @@ final class WildcardPatternTest extends TestCase
     {
         $original = new WildcardPattern('*');
         $this->assertNotSame($original, $original->ignoreCase());
-        $this->assertNotSame($original, $original->withoutEscape());
     }
 
     /**

@@ -19,7 +19,6 @@ namespace Yiisoft\Strings;
  */
 final class WildcardPattern
 {
-    private bool $withoutEscape = false;
     private bool $ignoreCase = false;
     private string $pattern;
     private array $delimiters;
@@ -78,10 +77,6 @@ final class WildcardPattern
             '\-' => '-',
         ];
 
-        if ($this->withoutEscape) {
-            unset($replacements['\\\\\\\\'], $replacements['\\\\\\*'], $replacements['\\\\\\?']);
-        }
-
         $pattern = strtr(preg_quote($pattern, '#'), $replacements);
         $pattern = '#^' . $pattern . '$#us';
 
@@ -90,20 +85,6 @@ final class WildcardPattern
         }
 
         return preg_match($pattern, $string) === 1;
-    }
-
-    /**
-     * Disables using `\` to escape following special character. `\` becomes regular character.
-     *
-     * @param bool $flag
-     *
-     * @return self
-     */
-    public function withoutEscape(bool $flag = true): self
-    {
-        $new = clone $this;
-        $new->withoutEscape = $flag;
-        return $new;
     }
 
     /**

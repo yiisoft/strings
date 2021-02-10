@@ -16,9 +16,12 @@ In a big application however there may be more things to consider, which are exp
 - `**` was introduced to match anything including `/`.
 - `\Yiisoft\Strings\WildcardPattern::withExactLeadingPeriod()` was removed. There is no replacement for old behavior.
 - `\Yiisoft\Strings\WildcardPattern::withEnding()` was removed.
+- `\Yiisoft\Strings\WildcardPattern::withoutEscape()` was removed.  
 
 To fix possible issues:
 
 - Remove `withExactSlashes()` calls.
 - Replace `*` with `**` in patterns if you need to match `/` as well.
 - If `withEnding()` was used, add `**` to the beginning of the pattern.
+- If `withoutEscape()` was used, escape `\` in patterns with another `\`.
+  Likely `\Yiisoft\Strings\WildcardPattern::quote()` may be of help.
