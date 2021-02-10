@@ -5,28 +5,21 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 /**
- * A shell wildcard pattern to match strings against.
+ * A wildcard pattern to match strings against.
  *
  * - `\` escapes other special characters if usage of escape character is not turned off.
- * - `*` matches any string, including the empty string.
- *   Does not match slashes if {@see WildcardPattern::withExactSlashes()} is used.
- * - `**` always matches any string, including the empty string and slashes.
+ * - `*` matches any string including the empty string. Slashes do not match.
+  * - `**` matches any string including the empty string and slashes.
  * - `?` matches any single character.
  * - `[seq]` matches any character in seq.
  * - `[a-z]` matches any character from a to z.
  * - `[!seq]` matches any character not in seq.
  * - `[[:alnum:]]` matches POSIX style character classes,
  *   see {@see https://www.php.net/manual/en/regexp.reference.character-classes.php}.
- *
- * @see https://www.man7.org/linux/man-pages/man7/glob.7.html
- *
- * The class emulates {@see fnmatch()} using PCRE since it is not uniform across operating systems
- * and may not be available.
  */
 final class WildcardPattern
 {
     private bool $withoutEscape = false;
-    private bool $matchSlashesExactly = false;
     private bool $matchLeadingPeriodExactly = false;
     private bool $ignoreCase = false;
     private bool $matchEnding = false;
@@ -53,10 +46,6 @@ final class WildcardPattern
             return true;
         }
 
-        if ($this->pattern === '*' && !$this->matchSlashesExactly && !$this->matchLeadingPeriodExactly) {
-            return true;
-        }
-
         $pattern = $this->pattern;
 
         if ($this->matchLeadingPeriodExactly) {
@@ -64,12 +53,12 @@ final class WildcardPattern
         }
 
         $replacements = [
-            '\*\*' => '[^\\\\]*',
+            '\*\*' => '.*',
             '\\\\\\\\' => '\\\\',
             '\\\\\\*' => '[*]',
             '\\\\\\?' => '[?]',
-            '\*' => '.*',
-            '\?' => '.',
+            '\*' => '[^/\\\\]*',
+            '\?' => '[^/\\\\]',
             '\[\!' => '[^',
             '\[' => '[',
             '\]' => ']',
@@ -78,11 +67,6 @@ final class WildcardPattern
 
         if ($this->withoutEscape) {
             unset($replacements['\\\\\\\\'], $replacements['\\\\\\*'], $replacements['\\\\\\?']);
-        }
-
-        if ($this->matchSlashesExactly) {
-            $replacements['\*'] = '[^/\\\\]*';
-            $replacements['\?'] = '[^/\\\\]';
         }
 
         $pattern = strtr(preg_quote($pattern, '#'), $replacements);
@@ -110,21 +94,6 @@ final class WildcardPattern
     }
 
     /**
-     * Do not match `/` character with wildcards. The only way to match `/` is with an explicit `/` in pattern.
-     * Useful for matching file paths. Use with {@see withExactLeadingPeriod()}.
-     *
-     * @param bool $flag
-     *
-     * @return self
-     */
-    public function withExactSlashes(bool $flag = true): self
-    {
-        $new = clone $this;
-        $new->matchSlashesExactly = $flag;
-        return $new;
-    }
-
-    /**
      * Make pattern case insensitive.
      *
      * @param bool $flag
@@ -140,7 +109,7 @@ final class WildcardPattern
 
     /**
      * Do not match `.` character at the beginning of string with wildcards.
-     * Useful for matching file paths. Use with {@see withExactSlashes()}.
+     * Useful for matching file paths.
      *
      * @param bool $flag
      *

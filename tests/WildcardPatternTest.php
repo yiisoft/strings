@@ -10,7 +10,7 @@ use Yiisoft\Strings\WildcardPattern;
 final class WildcardPatternTest extends TestCase
 {
     /**
-     * Data provider for [[testMatchWildcard()]]
+     * Data provider for {@see testMatchWildcard()}.
      *
      * @return array test data.
      */
@@ -28,6 +28,16 @@ final class WildcardPatternTest extends TestCase
             ['begin*', 'begin-end', true],
             ['begin*', 'end', false],
             ['begin*', 'before-begin', false],
+            // * with slashes
+            ['begin/*/end', 'begin/middle/end', true],
+            ['begin/*/end', 'begin/two/steps/end', false],
+            ['begin/*/end', 'begin/end', false],
+            ['begin\\\\*\\\\end', 'begin\middle\end', true],
+            ['begin\\\\*\\\\end', 'begin\two\steps\end', false],
+            ['begin\\\\*\\\\end', 'begin\end', false],
+            // **
+            ['from/**/b', 'from/a/to/b', true],
+            ['from\\\\**\\\\b', 'from\a\to\b', true],
             // ?
             ['begin?end', 'begin1end', true],
             ['begin?end', 'beginend', false],
@@ -50,13 +60,6 @@ final class WildcardPatternTest extends TestCase
             // -
             ['a-z', 'a-z', true],
             ['a-z', 'a-c', false],
-            // slashes
-            ['begin/*/end', 'begin/middle/end', true],
-            ['begin/*/end', 'begin/two/steps/end', true],
-            ['begin/*/end', 'begin/end', false],
-            ['begin\\\\*\\\\end', 'begin\middle\end', true],
-            ['begin\\\\*\\\\end', 'begin\two\steps\end', true],
-            ['begin\\\\*\\\\end', 'begin\end', false],
             // dots
             ['begin.*.end', 'begin.middle.end', true],
             ['begin.*.end', 'begin.two.steps.end', true],
@@ -71,29 +74,29 @@ final class WildcardPatternTest extends TestCase
             ['begin*end', 'BEGIN-middle-END', false],
             ['begin*end', 'BEGIN-middle-END', true, ['caseSensitive' => false]],
             // file path
-            ['begin/*/end', 'begin/middle/end', true, ['filePath' => true]],
-            ['begin/*/end', 'begin/two/steps/end', false, ['filePath' => true]],
-            ['begin\\\\*\\\\end', 'begin\middle\end', true, ['filePath' => true]],
-            ['begin\\\\*\\\\end', 'begin\two\steps\end', false, ['filePath' => true]],
-            ['*', 'any', true, ['filePath' => true]],
-            ['*', 'any/path', false, ['filePath' => true]],
-            ['[.-0]', 'any/path', false, ['filePath' => true]],
-            ['*', '.dotenv', true, ['filePath' => true]],
+            ['begin/*/end', 'begin/middle/end', true],
+            ['begin/*/end', 'begin/two/steps/end', false],
+            ['begin\\\\*\\\\end', 'begin\middle\end', true],
+            ['begin\\\\*\\\\end', 'begin\two\steps\end', false],
+            ['*', 'any', true],
+            ['*', 'any/path', false],
+            ['[.-0]', 'any/path', false],
+            ['*', '.dotenv', true],
             // escaping
             ['\*\?', '*?', true],
             ['\*\?', 'zz', false],
             ['begin\*\end', 'begin\middle\end', true, ['escape' => false]],
-            ['begin\*\end', 'begin\two\steps\end', true, ['escape' => false]],
+            ['begin\*\end', 'begin\two\steps\end', false, ['escape' => false]],
             ['begin\*\end', 'begin\end', false, ['escape' => false]],
             ['begin\*\end', 'begin\middle\end', true, ['filePath' => true, 'escape' => false]],
             ['begin\*\end', 'begin\two\steps\end', false, ['filePath' => true, 'escape' => false]],
             // ending
             ['i/*.jpg', 'i/hello.jpg', true, ['ending' => true]],
-            ['i/*.jpg', 'i/hello.jpg', true, ['ending' => true, 'filePath' => true]],
-            ['i/*.jpg', 'i/h/hello.jpg', true, ['ending' => true]],
-            ['i/*.jpg', 'i/h/hello.jpg', false, ['ending' => true, 'filePath' => true]],
+            ['i/*.jpg', 'i/hello.jpg', true, ['ending' => true]],
+            ['i/*.jpg', 'i/h/hello.jpg', false, ['ending' => true]],
+            ['i/*.jpg', 'i/h/hello.jpg', false, ['ending' => true]],
             ['i/*.jpg', 'path/to/i/hello.jpg', true, ['ending' => true]],
-            ['i/*.jpg', 'path/to/i/hello.jpg', true, ['ending' => true, 'filePath' => true]],
+            ['i/*.jpg', 'path/to/i/hello.jpg', true, ['ending' => true]],
         ];
     }
 
@@ -116,9 +119,6 @@ final class WildcardPatternTest extends TestCase
         $wildcardPattern = new WildcardPattern($pattern);
         if (isset($options['caseSensitive']) && $options['caseSensitive'] === false) {
             $wildcardPattern = $wildcardPattern->ignoreCase();
-        }
-        if (isset($options['filePath']) && $options['filePath'] === true) {
-            $wildcardPattern = $wildcardPattern->withExactSlashes();
         }
         if (isset($options['escape']) && $options['escape'] === false) {
             $wildcardPattern = $wildcardPattern->withoutEscape();
@@ -145,11 +145,6 @@ final class WildcardPatternTest extends TestCase
             ->withoutEscape(false);
         $this->assertTrue($wildcardPattern->match('*42'));
 
-        $wildcardPattern = (new WildcardPattern('/*/42'))
-            ->withExactSlashes()
-            ->withExactSlashes(false);
-        $this->assertTrue($wildcardPattern->match('/a/b/c/42'));
-
         $wildcardPattern = (new WildcardPattern('*/42'))
             ->withExactLeadingPeriod()
             ->withExactLeadingPeriod(false);
@@ -166,14 +161,7 @@ final class WildcardPatternTest extends TestCase
         $original = new WildcardPattern('*');
         $this->assertNotSame($original, $original->withExactLeadingPeriod());
         $this->assertNotSame($original, $original->ignoreCase());
-        $this->assertNotSame($original, $original->withExactSlashes());
         $this->assertNotSame($original, $original->withoutEscape());
         $this->assertNotSame($original, $original->withEnding());
-    }
-
-    public function testDoubleStar(): void
-    {
-        $pattern = (new WildcardPattern('from/**/b'))->withExactSlashes(true);
-        $this->assertTrue($pattern->match('from/a/to/b'));
     }
 }
