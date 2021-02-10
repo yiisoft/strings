@@ -170,7 +170,7 @@ Several options are available. Call these before doing a `match()`:
 - `withoutEscape()` - makes `\` a regular character in a pattern.
 - `ignoreCase()` - case-insensitive match.
 - `exactLeadingPeriod()` - makes first `.` in a string match only `.` in a pattern.
-- `matchEnding()` - match ending of testing string.
+- `matchEnding()` - match ending of a test string.
 
 When matching file paths, it is advised to use `exactLeadingPeriod()`:
 
