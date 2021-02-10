@@ -3,7 +3,8 @@
 
 ## 2.0.0 under development
 
-- Enh #67: Add `**`, match anything including `/`, to `WildcardPattern`, remove `withExactSlashes()` (samdark)
+- Enh #67: Add `**`, match anything including `/`, to `\Yiisoft\Strings\WildcardPattern`, remove `withExactSlashes()` (samdark)
+- Enh #67: Add `\Yiisoft\Strings\WildcardPattern::isDynamic()` (samdark)
 - Chg #67: `\Yiisoft\Strings\WildcardPattern#withExactLeadingPeriod()` was renamed to `Yiisoft\Strings\WildcardPattern#exactLeadingPeriod()` (samdark)
 - Chg #67: `\Yiisoft\Strings\WildcardPattern#withEnding()` was renamed to `\Yiisoft\Strings\WildcardPattern#matchEnding()`  (samdark)
 

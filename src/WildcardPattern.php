@@ -136,4 +136,33 @@ final class WildcardPattern
         $new->matchEnding = $flag;
         return $new;
     }
+
+    /**
+     * Returns whether the pattern contains a dynamic part i.e.
+     * has unescaped "*",  "{", "?", or "[" character.
+     *
+     * @param string $pattern The pattern to check.
+     *
+     * @return bool Whether the pattern contains a dynamic part.
+     */
+    public static function isDynamic(string $pattern): bool
+    {
+        $position = strpos($pattern, '*');
+        if ($position !== false && ($position === 0 || $pattern[$position - 1] !== '\\')) {
+            return true;
+        }
+
+        $position = strpos($pattern, '{');
+        if ($position !== false && ($position === 0 || $pattern[$position - 1] !== '\\')) {
+            return true;
+        }
+
+        $position = strpos($pattern, '?');
+        if ($position !== false && ($position === 0 || $pattern[$position - 1] !== '\\')) {
+            return true;
+        }
+
+        $position = strpos($pattern, '[');
+        return $position !== false && ($position === 0 || $pattern[$position - 1] !== '\\');
+    }
 }
