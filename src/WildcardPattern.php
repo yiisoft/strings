@@ -152,35 +152,7 @@ final class WildcardPattern
      */
     public static function isDynamic(string $pattern): bool
     {
-        return
-            self::hasDynamicCharacter($pattern, '*')
-            || self::hasDynamicCharacter($pattern, '{')
-            || self::hasDynamicCharacter($pattern, '?')
-            || self::hasDynamicCharacter($pattern, '[');
-    }
-
-    private static function hasDynamicCharacter(string $pattern, string $character): bool
-    {
-        $position = strpos($pattern, $character);
-        if ($position !== false) {
-            if ($position === 0) {
-                return true;
-            }
-
-            $slashesCount = 0;
-            $checkPosition = $position - 1;
-            while ($checkPosition > 0) {
-                if ($pattern[$checkPosition] === '\\') {
-                    $slashesCount++;
-                }
-                $checkPosition--;
-            }
-
-            if ($slashesCount % 2 === 0) {
-                return true;
-            }
-        }
-
-        return false;
+        $pattern = preg_replace('/\\\\./', '', $pattern);
+        return (bool)preg_match('/[*{?\[]/', $pattern);
     }
 }
