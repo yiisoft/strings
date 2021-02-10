@@ -6,6 +6,7 @@
 - Enh #67: Add `**`, match anything including `/`, to `\Yiisoft\Strings\WildcardPattern`, remove `withExactSlashes()` and `withEnding()` (samdark)
 - Enh #67: Allow specifying delimiters for `*` (samdark)
 - Enh #67: Add `\Yiisoft\Strings\WildcardPattern::isDynamic()` (samdark)
+- Enh #67: Add `\Yiisoft\Strings\WildcardPattern::quote()` (samdark)
 - Chg #67: `\Yiisoft\Strings\WildcardPattern#withExactLeadingPeriod()` was removed (samdark)
 
 ## 1.2.0 January 22, 2021

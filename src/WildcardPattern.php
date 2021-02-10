@@ -133,4 +133,15 @@ final class WildcardPattern
         $pattern = preg_replace('/\\\\./', '', $pattern);
         return (bool)preg_match('/[*{?\[]/', $pattern);
     }
+
+    /**
+     * Escapes pattern characters in a string.
+     *
+     * @param string $string Source string.
+     * @return string String with pattern characters escaped.
+     */
+    public static function quote(string $string): string
+    {
+        return preg_replace('#([\\\\?*\\[\\]])#', '\\\\$1', $string);
+    }
 }

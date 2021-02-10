@@ -169,20 +169,6 @@ Several options are available. Call these before doing a `match()`:
 
 - `withoutEscape()` - makes `\` a regular character in a pattern.
 - `ignoreCase()` - case-insensitive match.
-- `exactLeadingPeriod()` - makes first `.` in a string match only `.` in a pattern.
-
-When matching file paths, it is advised to use `exactLeadingPeriod()`:
-
-```php
-use \Yiisoft\Strings\WildcardPattern;
-
-$startsWithTest = (new WildcardPattern('config/*.php'))
-    ->exactLeadingPeriod();
-
-if ($startsWithTest->match($fileName)) {
-    echo 'It is a config!';
-}
-```
 
 ## Testing
 

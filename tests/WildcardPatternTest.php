@@ -184,4 +184,20 @@ final class WildcardPatternTest extends TestCase
         $wildcardPattern = $wildcardPattern = new WildcardPattern($pattern, $delimiters);
         $this->assertSame($expected, $wildcardPattern->match($string));
     }
+
+    public function quoteDataProvider(): array
+    {
+        return [
+            'no-pattern' => ['test', 'test'],
+            'special-chars' => ['?[]*\\', '\\?\\[\\]\\*\\\\'],
+        ];
+    }
+
+    /**
+     * @dataProvider quoteDataProvider
+     */
+    public function testQuote(string $string, string $expected): void
+    {
+        $this->assertSame($expected, WildcardPattern::quote($string));
+    }
 }
