@@ -19,6 +19,8 @@ final class WildcardPatternTest extends TestCase
         return [
             // *
             ['*', 'any', true],
+            ['*', 'any/path', false],
+            ['*', '.dotenv', true],
             ['*', '', true],
             ['begin*end', 'begin-middle-end', true],
             ['begin*end', 'beginend', true],
@@ -28,6 +30,7 @@ final class WildcardPatternTest extends TestCase
             ['begin*', 'begin-end', true],
             ['begin*', 'end', false],
             ['begin*', 'before-begin', false],
+
             // * with slashes
             ['begin/*/end', 'begin/middle/end', true],
             ['begin/*/end', 'begin/two/steps/end', false],
@@ -35,14 +38,21 @@ final class WildcardPatternTest extends TestCase
             ['begin\\\\*\\\\end', 'begin\middle\end', true],
             ['begin\\\\*\\\\end', 'begin\two\steps\end', false],
             ['begin\\\\*\\\\end', 'begin\end', false],
+
             // **
-            ['from/**/b', 'from/a/to/b', true],
-            ['from\\\\**\\\\b', 'from\a\to\b', true],
+            ['begin/**/end', 'begin/middle/end', true],
+            ['begin/**/end', 'begin/two/steps/end', true],
+            ['begin/**/end', 'begin/end', false],
+            ['begin\\\\**\\\\end', 'begin\middle\end', true],
+            ['begin\\\\**\\\\end', 'begin\two\steps\end', true],
+            ['begin\\\\**\\\\end', 'begin\end', false],
+
             // ?
             ['begin?end', 'begin1end', true],
             ['begin?end', 'beginend', false],
             ['begin??end', 'begin12end', true],
             ['begin??end', 'begin1end', false],
+
             // []
             ['gr[ae]y', 'gray', true],
             ['gr[ae]y', 'grey', true],
@@ -51,38 +61,36 @@ final class WildcardPatternTest extends TestCase
             ['a[2-8]', 'a3', true],
             ['[][!]', ']', true],
             ['[-1]', '-', true],
+            ['[.-0]', 'any/path', false],
+
             // [!]
             ['gr[!ae]y', 'gray', false],
             ['gr[!ae]y', 'grey', false],
             ['gr[!ae]y', 'groy', true],
             ['a[!2-8]', 'a1', true],
             ['a[!2-8]', 'a3', false],
+
             // -
             ['a-z', 'a-z', true],
             ['a-z', 'a-c', false],
-            // dots
+
+            // Dots
             ['begin.*.end', 'begin.middle.end', true],
             ['begin.*.end', 'begin.two.steps.end', true],
             ['begin.*.end', 'begin.end', false],
-            // leading period
+
+            // Exact match of leading period
             ['.test', '.test', true],
             ['*test', '.test', true],
             ['.test', '.test', true, ['leadingPeriod' => true]],
             ['*test', '.test', false, ['leadingPeriod' => true]],
             ['*', '.test', false, ['leadingPeriod' => true]],
-            // case
+
+            // Case insensitive matching
             ['begin*end', 'BEGIN-middle-END', false],
             ['begin*end', 'BEGIN-middle-END', true, ['caseSensitive' => false]],
-            // file path
-            ['begin/*/end', 'begin/middle/end', true],
-            ['begin/*/end', 'begin/two/steps/end', false],
-            ['begin\\\\*\\\\end', 'begin\middle\end', true],
-            ['begin\\\\*\\\\end', 'begin\two\steps\end', false],
-            ['*', 'any', true],
-            ['*', 'any/path', false],
-            ['[.-0]', 'any/path', false],
-            ['*', '.dotenv', true],
-            // escaping
+
+            // Do not use \ as escaping character
             ['\*\?', '*?', true],
             ['\*\?', 'zz', false],
             ['begin\*\end', 'begin\middle\end', true, ['escape' => false]],
@@ -90,7 +98,8 @@ final class WildcardPatternTest extends TestCase
             ['begin\*\end', 'begin\end', false, ['escape' => false]],
             ['begin\*\end', 'begin\middle\end', true, ['filePath' => true, 'escape' => false]],
             ['begin\*\end', 'begin\two\steps\end', false, ['filePath' => true, 'escape' => false]],
-            // ending
+
+            // Match ending
             ['i/*.jpg', 'i/hello.jpg', true, ['ending' => true]],
             ['i/*.jpg', 'i/hello.jpg', true, ['ending' => true]],
             ['i/*.jpg', 'i/h/hello.jpg', false, ['ending' => true]],
