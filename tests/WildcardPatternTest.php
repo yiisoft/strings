@@ -79,6 +79,13 @@ final class WildcardPatternTest extends TestCase
             ['begin.*.end', 'begin.two.steps.end', true],
             ['begin.*.end', 'begin.end', false],
 
+            // Special characters escaping
+            ['\\\\', '\\', true],
+            ['\\*', '*', true],
+            ['\\?', '?', true],
+            ['\\[', '[', true],
+            ['\\]', ']', true],
+
             // Case insensitive matching
             ['begin*end', 'BEGIN-middle-END', false],
             ['begin*end', 'BEGIN-middle-END', true, ['caseSensitive' => false]],
