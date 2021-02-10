@@ -22,7 +22,6 @@ final class WildcardPattern
     private bool $withoutEscape = false;
     private bool $matchLeadingPeriodExactly = false;
     private bool $ignoreCase = false;
-    private bool $matchEnding = false;
     private string $pattern;
     private array $delimiters;
 
@@ -75,7 +74,7 @@ final class WildcardPattern
         }
 
         $pattern = strtr(preg_quote($pattern, '#'), $replacements);
-        $pattern = '#' . ($this->matchEnding ? '' : '^') . $pattern . '$#us';
+        $pattern = '#^' . $pattern . '$#us';
 
         if ($this->ignoreCase) {
             $pattern .= 'i';
@@ -124,21 +123,6 @@ final class WildcardPattern
     {
         $new = clone $this;
         $new->matchLeadingPeriodExactly = $flag;
-        return $new;
-    }
-
-    /**
-     * Match ending only.
-     * By default wildcard pattern matches string exactly. By using this mode, beginning of the string could be anything.
-     *
-     * @param bool $flag
-     *
-     * @return self
-     */
-    public function matchEnding(bool $flag = true): self
-    {
-        $new = clone $this;
-        $new->matchEnding = $flag;
         return $new;
     }
 

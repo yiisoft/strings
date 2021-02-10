@@ -15,12 +15,13 @@ In a big application however there may be more things to consider, which are exp
 - `*` now doesn't match `/`.
 - `**` was introduced to match anything including `/`.
 - `\Yiisoft\Strings\WildcardPattern#withExactSlashes()` was removed.
+- `\Yiisoft\Strings\WildcardPattern#withEnding()` was removed.
 
-Remove `withExactSlashes()` calls. Replace `*` with `**` in patterns if you need to match `/` as well. 
+Remove `withExactSlashes()` calls. Replace `*` with `**` in patterns if you need to match `/` as well.
+If `withEnding()` was used, add `**` to the beginning of the pattern.
   
 There are two method name adjustments:
 
 - `\Yiisoft\Strings\WildcardPattern#withExactLeadingPeriod()` was renamed to `Yiisoft\Strings\WildcardPattern#exactLeadingPeriod()`.
-- `\Yiisoft\Strings\WildcardPattern#withEnding()` was renamed to `\Yiisoft\Strings\WildcardPattern#matchEnding()`.
 
 Adjust methods usage accordingly.
