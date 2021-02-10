@@ -173,4 +173,23 @@ final class WildcardPatternTest extends TestCase
         $this->assertNotSame($original, $original->withoutEscape());
         $this->assertNotSame($original, $original->matchEnding());
     }
+
+    /**
+     * @dataProvider isDynamicDataProvider
+     */
+    public function testIsDynamic(string $pattern, bool $expected): void
+    {
+        $this->assertSame($expected, WildcardPattern::isDynamic($pattern));
+    }
+
+    public function isDynamicDataProvider(): array
+    {
+        return [
+            'not-dynamic' => ['just-some-string', false],
+            'char' => ['just-some-string?', true],
+            'escaped-1' => ['just-some-string?', true],
+            'escaped-2' => ['just-some-string\\?', false],
+            'escaped-3' => ['just-some-string\\\\?', true],
+        ];
+    }
 }
