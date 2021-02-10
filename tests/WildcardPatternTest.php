@@ -79,13 +79,6 @@ final class WildcardPatternTest extends TestCase
             ['begin.*.end', 'begin.two.steps.end', true],
             ['begin.*.end', 'begin.end', false],
 
-            // Exact match of leading period
-            ['.test', '.test', true],
-            ['*test', '.test', true],
-            ['.test', '.test', true, ['leadingPeriod' => true]],
-            ['*test', '.test', false, ['leadingPeriod' => true]],
-            ['*', '.test', false, ['leadingPeriod' => true]],
-
             // Case insensitive matching
             ['begin*end', 'BEGIN-middle-END', false],
             ['begin*end', 'BEGIN-middle-END', true, ['caseSensitive' => false]],
@@ -124,9 +117,6 @@ final class WildcardPatternTest extends TestCase
         if (isset($options['escape']) && $options['escape'] === false) {
             $wildcardPattern = $wildcardPattern->withoutEscape();
         }
-        if (isset($options['leadingPeriod']) && $options['leadingPeriod'] === true) {
-            $wildcardPattern = $wildcardPattern->exactLeadingPeriod();
-        }
 
         return $wildcardPattern;
     }
@@ -138,11 +128,6 @@ final class WildcardPatternTest extends TestCase
             ->withoutEscape(false);
         $this->assertTrue($wildcardPattern->match('*42'));
 
-        $wildcardPattern = (new WildcardPattern('*/42'))
-            ->exactLeadingPeriod()
-            ->exactLeadingPeriod(false);
-        $this->assertTrue($wildcardPattern->match('abc/42'));
-
         $wildcardPattern = (new WildcardPattern('abc42'))
             ->ignoreCase()
             ->ignoreCase(false);
@@ -152,7 +137,6 @@ final class WildcardPatternTest extends TestCase
     public function testImmutability(): void
     {
         $original = new WildcardPattern('*');
-        $this->assertNotSame($original, $original->exactLeadingPeriod());
         $this->assertNotSame($original, $original->ignoreCase());
         $this->assertNotSame($original, $original->withoutEscape());
     }

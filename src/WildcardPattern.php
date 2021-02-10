@@ -20,7 +20,6 @@ namespace Yiisoft\Strings;
 final class WildcardPattern
 {
     private bool $withoutEscape = false;
-    private bool $matchLeadingPeriodExactly = false;
     private bool $ignoreCase = false;
     private string $pattern;
     private array $delimiters;
@@ -44,15 +43,11 @@ final class WildcardPattern
      */
     public function match(string $string): bool
     {
-        if ($this->pattern === '**' && !$this->matchLeadingPeriodExactly) {
+        if ($this->pattern === '**') {
             return true;
         }
 
         $pattern = $this->pattern;
-
-        if ($this->matchLeadingPeriodExactly) {
-            $pattern = preg_replace('/^[*?]/', '[!.]', $pattern);
-        }
 
         $replacements = [
             '\*\*' => '.*',
@@ -120,21 +115,6 @@ final class WildcardPattern
     {
         $new = clone $this;
         $new->ignoreCase = $flag;
-        return $new;
-    }
-
-    /**
-     * Do not match `.` character at the beginning of string with wildcards.
-     * Useful for matching file paths.
-     *
-     * @param bool $flag
-     *
-     * @return self
-     */
-    public function exactLeadingPeriod(bool $flag = true): self
-    {
-        $new = clone $this;
-        $new->matchLeadingPeriodExactly = $flag;
         return $new;
     }
 

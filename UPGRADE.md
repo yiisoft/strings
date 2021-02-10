@@ -10,15 +10,15 @@ In a big application however there may be more things to consider, which are exp
 
 ## Upgrade from 1.2.0
 
-`\Yiisoft\Strings\WildCardPattern` behavior was changed:
+`\Yiisoft\Strings\WildCardPattern` was changed.
 
-- `*` now doesn't match `/`.
+- `\Yiisoft\Strings\WildcardPattern::withExactSlashes()` was removed. `*` now always doesn't match `/`.
 - `**` was introduced to match anything including `/`.
-- `\Yiisoft\Strings\WildcardPattern#withExactSlashes()` was removed.
-- `\Yiisoft\Strings\WildcardPattern#withEnding()` was removed.
+- `\Yiisoft\Strings\WildcardPattern::withExactLeadingPeriod()` was removed. There is no replacement for old behavior.
+- `\Yiisoft\Strings\WildcardPattern::withEnding()` was removed.
 
-Remove `withExactSlashes()` calls. Replace `*` with `**` in patterns if you need to match `/` as well.
-If `withEnding()` was used, add `**` to the beginning of the pattern.
-  
-`\Yiisoft\Strings\WildcardPattern#withExactLeadingPeriod()` was renamed to `Yiisoft\Strings\WildcardPattern#exactLeadingPeriod()`.
-Adjust method usage accordingly.
+To fix possible issues:
+
+- Remove `withExactSlashes()` calls.
+- Replace `*` with `**` in patterns if you need to match `/` as well.
+- If `withEnding()` was used, add `**` to the beginning of the pattern.
