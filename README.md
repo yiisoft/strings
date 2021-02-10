@@ -157,8 +157,8 @@ if ($startsWithTest->match('testIfThisIsTrue')) {
 The following characters are special in the pattern:
 
 - `\` escapes other special characters if usage of escape character is not turned off.
-- `*` matches any string, including the empty string, except `/`.
-- `**` matches any string, including the empty string.
+- `*` matches any string, including the empty string, except delimiters (`/` and `\` by default).
+- `**` matches any string, including the empty string and delimiters.
 - `?` matches any single character.
 - `[seq]` matches any character in seq.
 - `[a-z]` matches any character from a to z.
