@@ -115,7 +115,7 @@ final class WildcardPattern
      *
      * @return self
      */
-    public function withExactLeadingPeriod(bool $flag = true): self
+    public function exactLeadingPeriod(bool $flag = true): self
     {
         $new = clone $this;
         $new->matchLeadingPeriodExactly = $flag;
@@ -130,7 +130,7 @@ final class WildcardPattern
      *
      * @return self
      */
-    public function withEnding(bool $flag = true): self
+    public function matchEnding(bool $flag = true): self
     {
         $new = clone $this;
         $new->matchEnding = $flag;

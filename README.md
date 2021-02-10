@@ -167,19 +167,17 @@ The following characters are special in the pattern:
 Several options are available. Call these before doing a `match()`:
 
 - `withoutEscape()` - makes `\` a regular character in a pattern.
-- `withExactSlashes()` - makes `\` in a string to match `\` only in a pattern. 
 - `ignoreCase()` - case-insensitive match.
 - `withExactLeadingPeriod()` - makes first `.` in a string match only `.` in a pattern.
 - `withEnding()` - match ending of testing string.
 
-When matching file paths, it is advised to use both `withExactSlashes()` and `withExactLeadingPeriod()`:
+When matching file paths, it is advised to use `withExactLeadingPeriod()`:
 
 ```php
 use \Yiisoft\Strings\WildcardPattern;
 
 $startsWithTest = (new WildcardPattern('config/*.php'))
-    ->withExactLeadingPeriod()
-    ->withExactSlashes();
+    ->exactLeadingPeriod();
 
 if ($startsWithTest->match($fileName)) {
     echo 'It is a config!';

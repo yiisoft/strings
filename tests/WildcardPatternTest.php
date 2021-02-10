@@ -124,10 +124,10 @@ final class WildcardPatternTest extends TestCase
             $wildcardPattern = $wildcardPattern->withoutEscape();
         }
         if (isset($options['leadingPeriod']) && $options['leadingPeriod'] === true) {
-            $wildcardPattern = $wildcardPattern->withExactLeadingPeriod();
+            $wildcardPattern = $wildcardPattern->exactLeadingPeriod();
         }
         if (isset($options['ending']) && $options['ending'] === true) {
-            $wildcardPattern = $wildcardPattern->withEnding();
+            $wildcardPattern = $wildcardPattern->matchEnding();
         }
 
         return $wildcardPattern;
@@ -136,8 +136,8 @@ final class WildcardPatternTest extends TestCase
     public function testDisableOptions(): void
     {
         $wildcardPattern = (new WildcardPattern('abc'))
-            ->withEnding()
-            ->withEnding(false);
+            ->matchEnding()
+            ->matchEnding(false);
         $this->assertFalse($wildcardPattern->match('42abc'));
 
         $wildcardPattern = (new WildcardPattern('\*42'))
@@ -146,8 +146,8 @@ final class WildcardPatternTest extends TestCase
         $this->assertTrue($wildcardPattern->match('*42'));
 
         $wildcardPattern = (new WildcardPattern('*/42'))
-            ->withExactLeadingPeriod()
-            ->withExactLeadingPeriod(false);
+            ->exactLeadingPeriod()
+            ->exactLeadingPeriod(false);
         $this->assertTrue($wildcardPattern->match('abc/42'));
 
         $wildcardPattern = (new WildcardPattern('abc42'))
@@ -159,9 +159,9 @@ final class WildcardPatternTest extends TestCase
     public function testImmutability(): void
     {
         $original = new WildcardPattern('*');
-        $this->assertNotSame($original, $original->withExactLeadingPeriod());
+        $this->assertNotSame($original, $original->exactLeadingPeriod());
         $this->assertNotSame($original, $original->ignoreCase());
         $this->assertNotSame($original, $original->withoutEscape());
-        $this->assertNotSame($original, $original->withEnding());
+        $this->assertNotSame($original, $original->matchEnding());
     }
 }
