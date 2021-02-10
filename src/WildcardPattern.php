@@ -138,6 +138,7 @@ final class WildcardPattern
      * Escapes pattern characters in a string.
      *
      * @param string $string Source string.
+     *
      * @return string String with pattern characters escaped.
      */
     public static function quote(string $string): string
