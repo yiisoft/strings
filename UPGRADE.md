@@ -20,8 +20,5 @@ In a big application however there may be more things to consider, which are exp
 Remove `withExactSlashes()` calls. Replace `*` with `**` in patterns if you need to match `/` as well.
 If `withEnding()` was used, add `**` to the beginning of the pattern.
   
-There are two method name adjustments:
-
-- `\Yiisoft\Strings\WildcardPattern#withExactLeadingPeriod()` was renamed to `Yiisoft\Strings\WildcardPattern#exactLeadingPeriod()`.
-
-Adjust methods usage accordingly.
+`\Yiisoft\Strings\WildcardPattern#withExactLeadingPeriod()` was renamed to `Yiisoft\Strings\WildcardPattern#exactLeadingPeriod()`.
+Adjust method usage accordingly.
