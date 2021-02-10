@@ -157,7 +157,8 @@ if ($startsWithTest->match('testIfThisIsTrue')) {
 The following characters are special in the pattern:
 
 - `\` escapes other special characters if usage of escape character is not turned off.
-- `*` matches any string, including the empty string.
+- `*` matches any string, including the empty string, except `/`.
+- `**` matches any string, including the empty string.
 - `?` matches any single character.
 - `[seq]` matches any character in seq.
 - `[a-z]` matches any character from a to z.
@@ -168,10 +169,10 @@ Several options are available. Call these before doing a `match()`:
 
 - `withoutEscape()` - makes `\` a regular character in a pattern.
 - `ignoreCase()` - case-insensitive match.
-- `withExactLeadingPeriod()` - makes first `.` in a string match only `.` in a pattern.
-- `withEnding()` - match ending of testing string.
+- `exactLeadingPeriod()` - makes first `.` in a string match only `.` in a pattern.
+- `matchEnding()` - match ending of testing string.
 
-When matching file paths, it is advised to use `withExactLeadingPeriod()`:
+When matching file paths, it is advised to use `exactLeadingPeriod()`:
 
 ```php
 use \Yiisoft\Strings\WildcardPattern;

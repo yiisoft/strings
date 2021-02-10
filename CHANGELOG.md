@@ -4,6 +4,8 @@
 ## 2.0.0 under development
 
 - Enh #67: Add `**`, match anything including `/`, to `WildcardPattern`, remove `withExactSlashes()` (samdark)
+- Chg #67: `\Yiisoft\Strings\WildcardPattern#withExactLeadingPeriod()` was renamed to `Yiisoft\Strings\WildcardPattern#exactLeadingPeriod()` (samdark)
+- Chg #67: `\Yiisoft\Strings\WildcardPattern#withEnding()` was renamed to `\Yiisoft\Strings\WildcardPattern#matchEnding()`  (samdark)
 
 ## 1.2.0 January 22, 2021
 
