@@ -1,6 +1,11 @@
 # Yii Strings Change Log
 
 
+## 2.0.1 under development
+
+- no changes in this release.
+
+
 ## 2.0.0 February 10, 2021
 
 - Enh #67: Add `**`, match anything including `/`, to `\Yiisoft\Strings\WildcardPattern`, remove `withExactSlashes()` and `withEnding()` (samdark)
