@@ -54,15 +54,27 @@ final class WildcardPattern
             $pattern = preg_replace('/^[*?]/', '[!.]', $pattern);
         }
 
-        $notDelimiters = '[^' . preg_quote(implode('', $this->delimiters), '#') . ']';
-
         $replacements = [
             '\*\*' => '.*',
             '\\\\\\\\' => '\\\\',
             '\\\\\\*' => '[*]',
             '\\\\\\?' => '[?]',
-            '\*' => "$notDelimiters*",
-            '\?' => $notDelimiters,
+        ];
+
+        if ($this->delimiters === []) {
+            $replacements += [
+                '\*' => '.*',
+                '\?' => '?',
+            ];
+        } else {
+            $notDelimiters = '[^' . preg_quote(implode('', $this->delimiters), '#') . ']';
+            $replacements += [
+                '\*' => "$notDelimiters*",
+                '\?' => $notDelimiters,
+            ];
+        }
+
+        $replacements += [
             '\[\!' => '[^',
             '\[' => '[',
             '\]' => ']',

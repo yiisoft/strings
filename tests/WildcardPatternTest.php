@@ -175,4 +175,22 @@ final class WildcardPatternTest extends TestCase
             'escaped-3' => ['just-some-string\\\\?', true],
         ];
     }
+
+    public function customDelimitersProvider(): array
+    {
+        return [
+            'empty' => ['begin*end', 'begin/end', [], true],
+            'dot' => ['begin*end', 'begin.end', ['.'], false],
+            'multiple' => ['begin*end', 'begin$end', ['.', '$'], false],
+        ];
+    }
+
+    /**
+     * @dataProvider customDelimitersProvider
+     */
+    public function testCustomDelimiters(string $pattern, string $string, array $delimiters, bool $expected): void
+    {
+        $wildcardPattern = $wildcardPattern = new WildcardPattern($pattern, $delimiters);
+        $this->assertSame($expected, $wildcardPattern->match($string));
+    }
 }
