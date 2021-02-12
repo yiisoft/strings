@@ -1,7 +1,7 @@
 {
     "name": "yiisoft/strings",
     "type": "library",
-    "description": "Yii - String Helper",
+    "description": "Yii Strings Helper",
     "keywords": [
         "yii",
         "helper",
