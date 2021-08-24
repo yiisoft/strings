@@ -21,11 +21,15 @@ final class WildcardPattern
 {
     private bool $ignoreCase = false;
     private string $pattern;
+
+    /**
+     * @var string[]
+     */
     private array $delimiters;
 
     /**
      * @param string $pattern The shell wildcard pattern to match against.
-     * @param array $delimiters Delimiters to consider for "*" (`/` and `\` by default).
+     * @param string[] $delimiters Delimiters to consider for "*" (`/` and `\` by default).
      */
     public function __construct(string $pattern, array $delimiters = ['\\\\', '/'])
     {
