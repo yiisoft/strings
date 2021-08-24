@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 use function array_slice;
+use function count;
 use function function_exists;
 use function max;
 use function mb_strlen;
@@ -345,7 +346,9 @@ final class StringHelper
     {
         $words = preg_split('/(\s+)/u', trim($input), -1, PREG_SPLIT_DELIM_CAPTURE);
         if (count($words) / 2 > $count) {
-            return implode('', array_slice($words, 0, ($count * 2) - 1)) . $trimMarker;
+            /** @var string[] $words */
+            $words = array_slice($words, 0, ($count * 2) - 1);
+            return implode('', $words) . $trimMarker;
         }
 
         return $input;
