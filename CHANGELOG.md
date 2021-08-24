@@ -8,12 +8,12 @@
 
 ## 2.0.0 February 10, 2021
 
+- Chg #67: Remove `\Yiisoft\Strings\WildcardPattern::withoutEscape()` (samdark)
+- Chg #67: Remove `\Yiisoft\Strings\WildcardPattern::withExactLeadingPeriod()` (samdark)
 - Enh #67: Add `**`, match anything including `/`, to `\Yiisoft\Strings\WildcardPattern`, remove `withExactSlashes()` and `withEnding()` (samdark)
 - Enh #67: Allow specifying delimiters for `*` (samdark)
 - Enh #67: Add `\Yiisoft\Strings\WildcardPattern::isDynamic()` (samdark)
 - Enh #67: Add `\Yiisoft\Strings\WildcardPattern::quote()` (samdark)
-- Chg #67: Remove `\Yiisoft\Strings\WildcardPattern::withoutEscape()` (samdark)
-- Chg #67: Remove `\Yiisoft\Strings\WildcardPattern::withExactLeadingPeriod()` (samdark)
 
 ## 1.2.0 January 22, 2021
 
