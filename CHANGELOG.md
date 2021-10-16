@@ -3,7 +3,7 @@
 
 ## 2.0.1 under development
 
-- Chg #75: Add method `camelCaseToSnakeCase()` to Inflector class (soodssr)
+- Chg #75: Add method `toSnakeCase()` to Inflector class (soodssr)
 
 ## 2.0.0 February 10, 2021
 

@@ -567,7 +567,7 @@ final class Inflector
      *
      * @return string
      */
-    public function camelCaseToSnakeCase(string $input): string
+    public function toSnakeCase(string $input): string
     {
         return $this->pascalCaseToId($input, '_', true);
     }
