@@ -164,9 +164,9 @@ final class InflectorTest extends TestCase
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('user_name', $inflector->camelCaseToSnakeCase('userName'));
-        $this->assertEquals('ひらがな_hepimiz', $inflector->camelCaseToSnakeCase('ひらがなHepimiz'));
-        $this->assertEquals('travel_s_guide', $inflector->camelCaseToSnakeCase('travelSGuide'));
+        $this->assertEquals('user_name', $inflector->toSnakeCase('userName'));
+        $this->assertEquals('ひらがな_hepimiz', $inflector->toSnakeCase('ひらがなHepimiz'));
+        $this->assertEquals('travel_s_guide', $inflector->toSnakeCase('travelSGuide'));
     }
 
     public function testToTable(): void
