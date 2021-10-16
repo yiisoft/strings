@@ -558,18 +558,19 @@ final class Inflector
 
 
     /**
-     * Returns given word as snake_case.
+     * Returns given word as "snake_cased".
      *
-     * Converts a word like "userName" to "user_name" or
-     * "userSName" to "user_s_name".
+     * Converts a word like "userName" to "user_name". 
+     * It will remove non-alphanumeric character from the word,
+     * so "who's online" will be converted to "who_s_online".
      *
      * @param string $input The word to convert.
      *
-     * @return string
+     * @return string The "snake_cased" string.
      */
     public function toSnakeCase(string $input): string
     {
-        return $this->pascalCaseToId($input, '_', true);
+        return $this->pascalCaseToId(preg_replace('/[^\pL\pN]+/u', '_', $input), '_', true);
     }
 
     /**
