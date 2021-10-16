@@ -160,7 +160,7 @@ final class InflectorTest extends TestCase
         $this->assertEquals('ひらがなHepimiz', $inflector->toCamelCase('ひらがな_hepimiz'));
     }
 
-    public function testCamelCaseToSnakeCase(): void
+    public function testToSnakeCase(): void
     {
         $inflector = new Inflector();
 
