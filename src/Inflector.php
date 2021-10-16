@@ -555,6 +555,23 @@ final class Inflector
         return mb_strtolower(mb_substr($input, 0, 1)) . mb_substr($input, 1, null);
     }
 
+
+
+    /**
+     * Returns given word as snake_case.
+     *
+     * Converts a word like "userName" to "user_name" or
+     * "userSName" to "user_s_name".
+     *
+     * @param string $input The word to convert.
+     *
+     * @return string
+     */
+    public function camelCaseToSnakeCase(string $input): string
+    {
+        return $this->pascalCaseToId($input, '_', true);
+    }
+
     /**
      * Converts a class name to its table name (pluralized) naming conventions.
      *

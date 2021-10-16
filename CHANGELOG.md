@@ -3,8 +3,7 @@
 
 ## 2.0.1 under development
 
-- no changes in this release.
-
+- Chg #75: Add method `camelCaseToSnakeCase()` to Inflector class (soodssr)
 
 ## 2.0.0 February 10, 2021
 
