@@ -168,7 +168,7 @@ final class InflectorTest extends TestCase
         $this->assertEquals('travel_s_guide', $inflector->toSnakeCase('travelSGuide'));
         $this->assertEquals('ひらがな_hepimiz', $inflector->toSnakeCase('ひらがなHepimiz'));
         $this->assertEquals(
-            'let_s_say_hello_world_yii_3', 
+            'let_s_say_hello_world_yii_3',
             $inflector->toSnakeCase('Let\'s say "Hello, World!" yii 3 😂')
         );
     }
@@ -444,7 +444,8 @@ final class InflectorTest extends TestCase
         $this->assertNotSame($original, $original->withTransliterator(Inflector::TRANSLITERATE_MEDIUM));
     }
 
-    /** Asserts that value is one of expected values.
+    /**
+     * Asserts that value is one of expected values.
      *
      * @param mixed $actual
      * @param array $expected

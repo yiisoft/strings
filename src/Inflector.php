@@ -555,12 +555,10 @@ final class Inflector
         return mb_strtolower(mb_substr($input, 0, 1)) . mb_substr($input, 1, null);
     }
 
-
-
     /**
      * Returns given word as "snake_cased".
      *
-     * Converts a word like "userName" to "user_name". 
+     * Converts a word like "userName" to "user_name".
      * It will remove non-alphanumeric character from the word,
      * so "who's online" will be converted to "who_s_online".
      *
