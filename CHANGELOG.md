@@ -3,8 +3,7 @@
 
 ## 2.0.1 under development
 
-- no changes in this release.
-
+- New #75: Add method `Inflector::toSnakeCase()` that convert word to "snake_case" (soodssr)
 
 ## 2.0.0 February 10, 2021
 

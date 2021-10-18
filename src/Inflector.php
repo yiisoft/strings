@@ -555,6 +555,24 @@ final class Inflector
         return mb_strtolower(mb_substr($input, 0, 1)) . mb_substr($input, 1, null);
     }
 
+
+
+    /**
+     * Returns given word as "snake_cased".
+     *
+     * Converts a word like "userName" to "user_name". 
+     * It will remove non-alphanumeric character from the word,
+     * so "who's online" will be converted to "who_s_online".
+     *
+     * @param string $input The word to convert.
+     *
+     * @return string The "snake_cased" string.
+     */
+    public function toSnakeCase(string $input): string
+    {
+        return $this->pascalCaseToId(preg_replace('/[^\pL\pN]+/u', '_', $input), '_', true);
+    }
+
     /**
      * Converts a class name to its table name (pluralized) naming conventions.
      *
