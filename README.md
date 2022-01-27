@@ -102,6 +102,7 @@ The following methods are available:
 - toOrdinal
 - normalize
 - isInteger
+- isPositiveInteger
 
 ## Inflector usage
 

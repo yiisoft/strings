@@ -3,7 +3,7 @@
 ## 2.0.1 under development
 
 - Enh #75: Add method `Inflector::toSnakeCase()` that convert word to "snake_case" (soodssr)
-- Enh: Add method `NumericHelper:isPositiveInteger()` that checks whether the given string is a positive integer number 
+- Enh #78: Add method `NumericHelper:isPositiveInteger()` that checks whether the given string is a positive integer number 
 (arogachev)
 
 ## 2.0.0 February 10, 2021

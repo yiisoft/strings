@@ -105,6 +105,7 @@ final class NumericHelperTest extends TestCase
             ['-', false],
             ['hello', false],
             ['', false],
+            ['+5', false],
         ];
     }
 
