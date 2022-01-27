@@ -1,6 +1,6 @@
 # Yii Strings Change Log
 
-## 2.0.1 under development
+## 2.1.0 under development
 
 - Enh #75: Add method `Inflector::toSnakeCase()` that convert word to "snake_case" (soodssr)
 - Enh #78: Add method `NumericHelper:isPositiveInteger()` that checks whether the given string represents a positive 
