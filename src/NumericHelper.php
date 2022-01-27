@@ -73,7 +73,7 @@ final class NumericHelper
     }
 
     /**
-     * Checks whether the given string is an integer number.
+     * Checks whether the given value is an integer number.
      *
      * @param mixed $value
      *
@@ -82,5 +82,22 @@ final class NumericHelper
     public static function isInteger($value): bool
     {
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
+    }
+
+    /**
+     * Checks whether the given string is a positive integer number.
+     *
+     * @param string $string
+     *
+     * @return bool
+     */
+    public static function isPositiveInteger(string $string): bool
+    {
+        // Exclude strings like "+5"
+        if (!preg_match('/^\d+$/', $string)) {
+            return false;
+        }
+
+        return filter_var($string, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]) !== false;
     }
 }

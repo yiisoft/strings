@@ -94,4 +94,28 @@ final class NumericHelperTest extends TestCase
     {
         $this->assertSame($expected, NumericHelper::isInteger($value));
     }
+
+    public function dataIsPositiveInteger(): array
+    {
+        return [
+            ['42', true],
+            ['-42', false],
+            ['0', false],
+            [' 7', false],
+            ['-', false],
+            ['hello', false],
+            ['', false],
+        ];
+    }
+
+    /**
+     * @dataProvider dataIsPositiveInteger
+     *
+     * @param string $string
+     * @param bool $expected
+     */
+    public function testIsPositiveInteger($string, bool $expected): void
+    {
+        $this->assertSame($expected, NumericHelper::isPositiveInteger($string));
+    }
 }
