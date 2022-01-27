@@ -73,7 +73,7 @@ final class NumericHelper
     }
 
     /**
-     * Checks whether the given value is an integer number.
+     * Checks whether the given value represents an integer number.
      *
      * @param mixed $value
      *
