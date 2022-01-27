@@ -85,7 +85,7 @@ final class NumericHelper
     }
 
     /**
-     * Checks whether the given string is a positive integer number.
+     * Checks whether the given string represents a positive integer number.
      *
      * @param string $string
      *
