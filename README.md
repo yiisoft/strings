@@ -106,7 +106,9 @@ The following methods are available:
 ## Inflector usage
 
 ```php
-echo (new \Yiisoft\Strings\Inflector())->withoutIntl()->toSlug('Strings are cool!'); // strings-are-cool
+echo (new \Yiisoft\Strings\Inflector())
+    ->withoutIntl()
+    ->toSlug('Strings are cool!'); // strings-are-cool
 ```
 
 Overall the inflector has the following method groups.
@@ -171,7 +173,9 @@ The following characters are special in the pattern:
 use \Yiisoft\Strings\WildcardPattern;
 
 $startsWithTest = new WildcardPattern('test*');
-if ($startsWithTest->ignoreCase()->match('tEStIfThisIsTrue')) {
+if ($startsWithTest
+    ->ignoreCase()
+    ->match('tEStIfThisIsTrue')) {
     echo 'It starts with "test"!';
 }
 ```
