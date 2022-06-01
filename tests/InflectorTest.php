@@ -212,7 +212,9 @@ final class InflectorTest extends TestCase
         if (\extension_loaded('intl')) {
             $this->assertEquals($expected, $inflector->toSlug($input, $replacement));
         }
-        $this->assertEquals($expected, $inflector->withoutIntl()->toSlug($input, $replacement));
+        $this->assertEquals($expected, $inflector
+            ->withoutIntl()
+            ->toSlug($input, $replacement));
     }
 
     public function testToSlugWithIntl(): void
@@ -403,13 +405,15 @@ final class InflectorTest extends TestCase
             $this->markTestSkipped('intl extension is required.');
         }
 
-        $inflector = (new Inflector())->withoutIntl()->withTransliterationMap(
-            [
-                'O' => 'E',
-                'N' => 'N',
-                'E' => 'O',
-            ]
-        );
+        $inflector = (new Inflector())
+            ->withoutIntl()
+            ->withTransliterationMap(
+                [
+                    'O' => 'E',
+                    'N' => 'N',
+                    'E' => 'O',
+                ]
+            );
         $this->assertEquals('ENO', $inflector->toTransliterated('ONE'));
     }
 
