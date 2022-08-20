@@ -7,6 +7,8 @@ namespace Yiisoft\Strings\Tests;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\Inflector;
 
+use function extension_loaded;
+
 final class InflectorTest extends TestCase
 {
     private function getTestDataForToPlural(): array
@@ -209,7 +211,7 @@ final class InflectorTest extends TestCase
     public function testToSlugCommons(string $input, string $expected, string $replacement = '-'): void
     {
         $inflector = new Inflector();
-        if (\extension_loaded('intl')) {
+        if (extension_loaded('intl')) {
             $this->assertEquals($expected, $inflector->toSlug($input, $replacement));
         }
         $this->assertEquals($expected, $inflector
@@ -219,7 +221,7 @@ final class InflectorTest extends TestCase
 
     public function testToSlugWithIntl(): void
     {
-        if (!\extension_loaded('intl')) {
+        if (!extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -256,7 +258,7 @@ final class InflectorTest extends TestCase
 
     public function testToTransliteratedStrict(): void
     {
-        if (!\extension_loaded('intl')) {
+        if (!extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -264,15 +266,20 @@ final class InflectorTest extends TestCase
         $data = [
             // Korean
             '해동검도' => 'haedong-geomdo',
+
             // Hiragana
             'ひらがな' => 'hiragana',
+
             // Georgian
             'საქართველო' => 'sakartvelo',
+
             // Arabic
             'العربي' => 'ạlʿrby',
             'عرب' => 'ʿrb',
+
             // Hebrew
             'עִבְרִית' => 'ʻibĕriyţ',
+
             // Turkish
             'Sanırım hepimiz aynı şeyi düşünüyoruz.' => 'Sanırım hepimiz aynı şeyi düşünüyoruz.',
 
@@ -288,6 +295,7 @@ final class InflectorTest extends TestCase
 
             // Spanish
             '¿Español?' => '¿Español?',
+
             // Chinese
             '美国' => 'měi guó',
         ];
@@ -301,7 +309,7 @@ final class InflectorTest extends TestCase
 
     public function testToTransliteratedMedium(): void
     {
-        if (!\extension_loaded('intl')) {
+        if (!extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -309,15 +317,20 @@ final class InflectorTest extends TestCase
         $data = [
             // Korean
             '해동검도' => ['haedong-geomdo'],
+
             // Hiragana
             'ひらがな' => ['hiragana'],
+
             // Georgian
             'საქართველო' => ['sakartvelo'],
+
             // Arabic
             'العربي' => ['alʿrby'],
             'عرب' => ['ʿrb'],
+
             // Hebrew
             'עִבְרִית' => ['\'iberiyt', 'ʻiberiyt'],
+
             // Turkish
             'Sanırım hepimiz aynı şeyi düşünüyoruz.' => ['Sanirim hepimiz ayni seyi dusunuyoruz.'],
 
@@ -332,7 +345,8 @@ final class InflectorTest extends TestCase
             'Српска: ђ, њ, џ!' => ['Srpska: d, n, d!'],
 
             // Spanish
-            '¿Español?' => ['¿Espanol?'],
+            '¿Español?' => ['¿Espanol?', '?Espanol?'],
+
             // Chinese
             '美国' => ['mei guo'],
         ];
@@ -346,7 +360,7 @@ final class InflectorTest extends TestCase
 
     public function testToTransliteratedLoose(): void
     {
-        if (!\extension_loaded('intl')) {
+        if (!extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -354,15 +368,20 @@ final class InflectorTest extends TestCase
         $data = [
             // Korean
             '해동검도' => ['haedong-geomdo'],
+
             // Hiragana
             'ひらがな' => ['hiragana'],
+
             // Georgian
             'საქართველო' => ['sakartvelo'],
+
             // Arabic
             'العربي' => ['alrby'],
             'عرب' => ['rb'],
+
             // Hebrew
             'עִבְרִית' => ['\'iberiyt', 'iberiyt'],
+
             // Turkish
             'Sanırım hepimiz aynı şeyi düşünüyoruz.' => ['Sanirim hepimiz ayni seyi dusunuyoruz.'],
 
@@ -377,7 +396,8 @@ final class InflectorTest extends TestCase
             'Српска: ђ, њ, џ!' => ['Srpska: d, n, d!'],
 
             // Spanish
-            '¿Español?' => ['Espanol?'],
+            '¿Español?' => ['Espanol?', '?Espanol?'],
+
             // Chinese
             '美国' => ['mei guo'],
         ];
@@ -391,7 +411,7 @@ final class InflectorTest extends TestCase
 
     public function testToTransliteratedWithTransliterator(): void
     {
-        if (!\extension_loaded('intl')) {
+        if (!extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
@@ -401,7 +421,7 @@ final class InflectorTest extends TestCase
 
     public function testToTransliteratedWithTransliterationMap(): void
     {
-        if (!\extension_loaded('intl')) {
+        if (!extension_loaded('intl')) {
             $this->markTestSkipped('intl extension is required.');
         }
 
