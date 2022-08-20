@@ -1,6 +1,6 @@
 # Yii Strings Change Log
 
-## 2.0.1 under development
+## 2.1.0 August 20, 2022
 
 - New #75: Add method `Inflector::toSnakeCase()` that convert word to "snake_case" (@soodssr)
 - New #81: Add `StringHelper::parsePath()` method (@arogachev, @vjik)
