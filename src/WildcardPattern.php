@@ -20,21 +20,13 @@ namespace Yiisoft\Strings;
 final class WildcardPattern
 {
     private bool $ignoreCase = false;
-    private string $pattern;
-
-    /**
-     * @var string[]
-     */
-    private array $delimiters;
 
     /**
      * @param string $pattern The shell wildcard pattern to match against.
      * @param string[] $delimiters Delimiters to consider for "*" (`/` and `\` by default).
      */
-    public function __construct(string $pattern, array $delimiters = ['\\\\', '/'])
+    public function __construct(private string $pattern, private array $delimiters = ['\\\\', '/'])
     {
-        $this->pattern = $pattern;
-        $this->delimiters = $delimiters;
     }
 
     /**
@@ -93,10 +85,6 @@ final class WildcardPattern
 
     /**
      * Make pattern case insensitive.
-     *
-     * @param bool $flag
-     *
-     * @return self
      */
     public function ignoreCase(bool $flag = true): self
     {
