@@ -85,8 +85,6 @@ final class WildcardPattern
 
     /**
      * Make pattern case insensitive.
-     *
-     *
      */
     public function ignoreCase(bool $flag = true): self
     {

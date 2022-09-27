@@ -365,8 +365,6 @@ final class StringHelper
 
     /**
      * Counts words in a string.
-     *
-     *
      */
     public static function countWords(string $input): int
     {
@@ -405,7 +403,6 @@ final class StringHelper
      * @param string $string The string to be processed.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
-     *
      * @see https://php.net/manual/en/function.ucfirst.php
      */
     public static function uppercaseFirstCharacter(string $string, string $encoding = 'UTF-8'): string
@@ -428,7 +425,7 @@ final class StringHelper
     {
         $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
-        $wordsWithUppercaseFirstCharacter = array_map(static fn(string $word) => self::uppercaseFirstCharacter($word, $encoding), $words);
+        $wordsWithUppercaseFirstCharacter = array_map(static fn (string $word) => self::uppercaseFirstCharacter($word, $encoding), $words);
 
         return implode(' ', $wordsWithUppercaseFirstCharacter);
     }
@@ -536,7 +533,7 @@ final class StringHelper
         }
 
         return array_map(
-            static fn(string $key): string => str_replace(
+            static fn (string $key): string => str_replace(
                 [
                     $escapeCharacter . $escapeCharacter,
                     $escapeCharacter . $delimiter,

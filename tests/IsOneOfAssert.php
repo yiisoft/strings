@@ -17,7 +17,7 @@ final class IsOneOfAssert extends Constraint
 
     public function toString(): string
     {
-        $allowedValues = array_map(static fn($value) => (string)$value, $this->allowedValues);
+        $allowedValues = array_map(static fn ($value) => (string)$value, $this->allowedValues);
         $expectedAsString = implode(', ', $allowedValues);
         return "is one of $expectedAsString";
     }

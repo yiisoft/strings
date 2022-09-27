@@ -43,9 +43,7 @@ final class NumericHelper
     /**
      * Returns string representation of a number value without thousands separators and with dot as decimal separator.
      *
-     *
      * @throws InvalidArgumentException if value is not scalar.
-     *
      */
     public static function normalize(bool|float|int|string $value): string
     {
@@ -66,8 +64,6 @@ final class NumericHelper
 
     /**
      * Checks whether the given string is an integer number.
-     *
-     *
      */
     public static function isInteger(mixed $value): bool
     {

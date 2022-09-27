@@ -359,7 +359,6 @@ final class Inflector
      * a {@see \Transliterator} can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
      *
-     *
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
     public function withTransliterator(string|\Transliterator $transliterator): self
