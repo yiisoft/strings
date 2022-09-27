@@ -17,10 +17,8 @@ final class NumericHelper
      * Converts number to its ordinal English form. For example, converts 13 to 13th, 2 to 2nd etc.
      *
      * @param float|int|string $value The number to get its ordinal value.
-     *
-     * @return string
      */
-    public static function toOrdinal($value): string
+    public static function toOrdinal(float|int|string $value): string
     {
         if (!is_numeric($value)) {
             $type = gettype($value);
@@ -34,28 +32,22 @@ final class NumericHelper
         if (in_array($value % 100, [11, 12, 13], true)) {
             return $value . 'th';
         }
-        switch ($value % 10) {
-            case 1:
-                return $value . 'st';
-            case 2:
-                return $value . 'nd';
-            case 3:
-                return $value . 'rd';
-            default:
-                return $value . 'th';
-        }
+        return match ($value % 10) {
+            1 => $value . 'st',
+            2 => $value . 'nd',
+            3 => $value . 'rd',
+            default => $value . 'th',
+        };
     }
 
     /**
      * Returns string representation of a number value without thousands separators and with dot as decimal separator.
      *
-     * @param bool|float|int|string $value
      *
      * @throws InvalidArgumentException if value is not scalar.
      *
-     * @return string
      */
-    public static function normalize($value): string
+    public static function normalize(bool|float|int|string $value): string
     {
         /** @psalm-suppress DocblockTypeContradiction */
         if (!is_scalar($value)) {
@@ -75,11 +67,9 @@ final class NumericHelper
     /**
      * Checks whether the given string is an integer number.
      *
-     * @param mixed $value
      *
-     * @return bool
      */
-    public static function isInteger($value): bool
+    public static function isInteger(mixed $value): bool
     {
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }

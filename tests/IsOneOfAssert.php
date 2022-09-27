@@ -11,18 +11,13 @@ use PHPUnit\Framework\Constraint\Constraint;
  */
 final class IsOneOfAssert extends Constraint
 {
-    private array $allowedValues;
-
-    public function __construct(array $allowedValues)
+    public function __construct(private array $allowedValues)
     {
-        $this->allowedValues = $allowedValues;
     }
 
     public function toString(): string
     {
-        $allowedValues = array_map(static function ($value) {
-            return (string)$value;
-        }, $this->allowedValues);
+        $allowedValues = array_map(static fn($value) => (string)$value, $this->allowedValues);
         $expectedAsString = implode(', ', $allowedValues);
         return "is one of $expectedAsString";
     }

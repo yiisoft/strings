@@ -471,11 +471,9 @@ final class InflectorTest extends TestCase
     /**
      * Asserts that value is one of expected values.
      *
-     * @param mixed $actual
-     * @param array $expected
      * @param string $message
      */
-    private function assertIsOneOf($actual, array $expected, $message = ''): void
+    private function assertIsOneOf(mixed $actual, array $expected, $message = ''): void
     {
         self::assertThat($actual, new IsOneOfAssert($expected), $message);
     }

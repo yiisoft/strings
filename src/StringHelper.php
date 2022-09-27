@@ -114,8 +114,6 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.mb-substr.php
-     *
-     * @return string
      */
     public static function substring(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
     {
@@ -136,8 +134,6 @@ final class StringHelper
      * If it is not given, then it will default to the length of the string; i.e. end the replacing at the end of string.
      * If length is zero then this function will have the effect of inserting replacement into string at the given start offset.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
-     *
-     * @return string
      */
     public static function replaceSubstring(string $string, string $replacement, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
     {
@@ -272,8 +268,6 @@ final class StringHelper
      * @param int $length Maximum length of the truncated string including trim marker.
      * @param string $trimMarker String to append to the beginning.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
-     *
-     * @return string
      */
     public static function truncateBegin(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
@@ -347,7 +341,7 @@ final class StringHelper
     public static function truncateWords(string $input, int $count, string $trimMarker = '…'): string
     {
         $words = preg_split('/(\s+)/u', trim($input), -1, PREG_SPLIT_DELIM_CAPTURE);
-        if (count($words) / 2 > $count) {
+        if ((is_countable($words) ? count($words) : 0) / 2 > $count) {
             /** @var string[] $words */
             $words = array_slice($words, 0, ($count * 2) - 1);
             return implode('', $words) . $trimMarker;
@@ -363,8 +357,6 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.mb-strlen.php
-     *
-     * @return int
      */
     public static function length(string $string, string $encoding = 'UTF-8'): int
     {
@@ -374,13 +366,11 @@ final class StringHelper
     /**
      * Counts words in a string.
      *
-     * @param string $input
      *
-     * @return int
      */
     public static function countWords(string $input): int
     {
-        return count(preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY));
+        return is_countable(preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY)) ? count(preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY)) : 0;
     }
 
     /**
@@ -390,8 +380,6 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.mb-strtolower.php
-     *
-     * @return string
      */
     public static function lowercase(string $string, string $encoding = 'UTF-8'): string
     {
@@ -405,8 +393,6 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.mb-strtoupper.php
-     *
-     * @return string
      */
     public static function uppercase(string $string, string $encoding = 'UTF-8'): string
     {
@@ -419,7 +405,6 @@ final class StringHelper
      * @param string $string The string to be processed.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
-     * @return string
      *
      * @see https://php.net/manual/en/function.ucfirst.php
      */
@@ -438,16 +423,12 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.ucwords.php
-     *
-     * @return string
      */
     public static function uppercaseFirstCharacterInEachWord(string $string, string $encoding = 'UTF-8'): string
     {
         $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
-        $wordsWithUppercaseFirstCharacter = array_map(static function (string $word) use ($encoding) {
-            return self::uppercaseFirstCharacter($word, $encoding);
-        }, $words);
+        $wordsWithUppercaseFirstCharacter = array_map(static fn(string $word) => self::uppercaseFirstCharacter($word, $encoding), $words);
 
         return implode(' ', $wordsWithUppercaseFirstCharacter);
     }
@@ -490,8 +471,6 @@ final class StringHelper
      * @param string $string The input string.
      * @param string $separator The boundary string. It is a part of regular expression
      * so should be taken into account or properly escaped with {@see preg_quote()}.
-     *
-     * @return array
      */
     public static function split(string $string, string $separator = '\R'): array
     {
@@ -545,7 +524,7 @@ final class StringHelper
             PREG_SPLIT_OFFSET_CAPTURE
         );
         $result = [];
-        $countResults = count($matches);
+        $countResults = is_countable($matches) ? count($matches) : 0;
         for ($i = 1; $i < $countResults; $i++) {
             $l = $matches[$i][1] - $matches[$i - 1][1] - strlen($matches[$i - 1][0]) - 1;
             $result[] = $matches[$i - 1][0] . ($l > 0 ? str_repeat($escapeCharacter, $l) : '');
@@ -557,19 +536,17 @@ final class StringHelper
         }
 
         return array_map(
-            static function (string $key) use ($delimiter, $escapeCharacter): string {
-                return str_replace(
-                    [
-                        $escapeCharacter . $escapeCharacter,
-                        $escapeCharacter . $delimiter,
-                    ],
-                    [
-                        $escapeCharacter,
-                        $delimiter,
-                    ],
-                    $key
-                );
-            },
+            static fn(string $key): string => str_replace(
+                [
+                    $escapeCharacter . $escapeCharacter,
+                    $escapeCharacter . $delimiter,
+                ],
+                [
+                    $escapeCharacter,
+                    $delimiter,
+                ],
+                $key
+            ),
             $result
         );
     }

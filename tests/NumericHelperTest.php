@@ -54,11 +54,8 @@ final class NumericHelperTest extends TestCase
 
     /**
      * @dataProvider dataNormalize
-     *
-     * @param float|int|string $input
-     * @param string $expected
      */
-    public function testNormalize($input, string $expected): void
+    public function testNormalize(float|int|string $input, string $expected): void
     {
         $this->assertSame($expected, NumericHelper::normalize($input));
     }
@@ -86,11 +83,8 @@ final class NumericHelperTest extends TestCase
 
     /**
      * @dataProvider dataIsInteger
-     *
-     * @param mixed $value
-     * @param bool $expected
      */
-    public function testIsInteger($value, bool $expected): void
+    public function testIsInteger(mixed $value, bool $expected): void
     {
         $this->assertSame($expected, NumericHelper::isInteger($value));
     }
