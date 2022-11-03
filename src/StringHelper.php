@@ -511,6 +511,7 @@ final class StringHelper
      * becomes "\.". Defaults to `false`.
      *
      * @return string[]
+     * @psalm-return list<string>
      */
     public static function parsePath(
         string $path,

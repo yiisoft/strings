@@ -2,7 +2,7 @@
 
 ## 2.1.1 under development
 
-- no changes in this release.
+- Enh #85: Improve `StringHelper::parsePath()` method annotation (@vjik)
 
 ## 2.1.0 August 20, 2022
 
