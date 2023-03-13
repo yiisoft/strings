@@ -56,6 +56,7 @@ final class Inflector
 
     /**
      * @var string[] The rules for converting a word into its plural form.
+     *
      * @psalm-var array<string,string>
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
@@ -95,6 +96,7 @@ final class Inflector
 
     /**
      * @var string[] The rules for converting a word into its singular form.
+     *
      * @psalm-var array<string, string>
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
@@ -293,6 +295,7 @@ final class Inflector
 
     /**
      * @param string[] $rules The rules for converting a word into its plural form.
+     *
      * @psalm-param array<string, string> $rules
      * The keys are the regular expressions and the values are the corresponding replacements.
      *
@@ -317,6 +320,7 @@ final class Inflector
     /**
      * @param string[] $rules The rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
+     *
      * @psalm-param array<string, string> $rules
      *
      * @return self
@@ -339,6 +343,7 @@ final class Inflector
 
     /**
      * @param string[] $rules The special rules for converting a word between its plural form and singular form.
+     *
      * @psalm-param array<string, string> $rules
      * The keys are the special words in singular form, and the values are the corresponding plural form.
      *

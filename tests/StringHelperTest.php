@@ -274,6 +274,7 @@ final class StringHelperTest extends TestCase
     /**
      * @param string $string
      * @param string $expectedResult
+     *
      * @dataProvider uppercaseFirstCharacterProvider
      */
     public function testUppercaseFirstCharacter(string $string, string $expectedResult): void
@@ -295,6 +296,7 @@ final class StringHelperTest extends TestCase
     /**
      * @param string $string
      * @param string $expectedResult
+     *
      * @dataProvider uppercaseFirstCharacterInEachWordProvider
      */
     public function testUppercaseFirstCharacterInEachWord(string $string, string $expectedResult): void
