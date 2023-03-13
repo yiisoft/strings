@@ -535,6 +535,7 @@ final class StringHelper
             return [];
         }
 
+        /** @psalm-var non-empty-list<array{0:string, 1:int}> $matches */
         $matches = preg_split(
             sprintf(
                 '/(?<!%1$s)((?>%1$s%1$s)*)%2$s/',
