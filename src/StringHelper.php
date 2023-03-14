@@ -47,7 +47,7 @@ final class StringHelper
      *
      * @return string The extracted part of string, or FALSE on failure or an empty string.
      *
-     * @see http://www.php.net/manual/en/function.substr.php
+     * @see https://www.php.net/manual/en/function.substr.php
      */
     public static function byteSubstring(string $input, int $start, int $length = null): string
     {
@@ -67,7 +67,7 @@ final class StringHelper
      *
      * @return string The trailing name component of the given path.
      *
-     * @see http://www.php.net/manual/en/function.basename.php
+     * @see https://www.php.net/manual/en/function.basename.php
      */
     public static function baseName(string $path, string $suffix = ''): string
     {
@@ -93,7 +93,7 @@ final class StringHelper
      *
      * @return string The parent directory's path.
      *
-     * @see http://www.php.net/manual/en/function.basename.php
+     * @see https://www.php.net/manual/en/function.basename.php
      */
     public static function directoryName(string $path): string
     {
@@ -235,7 +235,7 @@ final class StringHelper
             return true;
         }
 
-        // Warning check, see http://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
+        // Warning check, see https://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
         if (self::byteLength($input) < $bytes) {
             return false;
         }

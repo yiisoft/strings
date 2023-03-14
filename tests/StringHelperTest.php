@@ -89,7 +89,7 @@ final class StringHelperTest extends TestCase
         $this->assertEquals('file', StringHelper::baseName('/path/to/filete\st', 'te\st'));
         $this->assertEquals('st', StringHelper::baseName('/path/to/filete\st', 'te/st'));
 
-        // http://www.php.net/manual/en/function.basename.php#72254
+        // https://www.php.net/manual/en/function.basename.php#72254
         $this->assertEquals('foo', StringHelper::baseName('/bar/foo/'));
         $this->assertEquals('foo', StringHelper::baseName('\\bar\\foo\\'));
     }
