@@ -20,9 +20,9 @@ final class Inflector
      * `获取到 どちら Українська: ґ,є, Српска: ђ, њ, џ! ¿Español?` will be transliterated to
      * `huò qǔ dào dochira Ukraí̈nsʹka: g̀,ê, Srpska: đ, n̂, d̂! ¿Español?`.
      *
-     * For detailed information see [unicode normalization forms](http://unicode.org/reports/tr15/#Normalization_Forms_Table)
+     * For detailed information see [unicode normalization forms](https://unicode.org/reports/tr15/#Normalization_Forms_Table)
      *
-     * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
+     * @see https://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
     public const TRANSLITERATE_STRICT = 'Any-Latin; NFKD';
@@ -35,7 +35,7 @@ final class Inflector
      * `获取到 どちら Українська: ґ,є, Српска: ђ, њ, џ! ¿Español?` will be transliterated to
      * `huo qu dao dochira Ukrainsʹka: g,e, Srpska: d, n, d! ¿Espanol?`.
      *
-     * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
+     * @see https://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
     public const TRANSLITERATE_MEDIUM = 'Any-Latin; Latin-ASCII';
@@ -49,7 +49,7 @@ final class Inflector
      * `获取到 どちら Українська: ґ,є, Српска: ђ, њ, џ! ¿Español?` will be transliterated to
      * `huo qu dao dochira Ukrainska: g,e, Srpska: d, n, d! Espanol?`.
      *
-     * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
+     * @see https://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
     public const TRANSLITERATE_LOOSE = 'Any-Latin; Latin-ASCII; [\u0080-\uffff] remove';
