@@ -1,5 +1,9 @@
 # Yii Strings Change Log
 
+## 2.1.2 under development
+
+- no changes in this release.
+
 ## 2.1.1 April 28, 2023
 
 - Enh #85: Improve `StringHelper::parsePath()` method annotation (@vjik)
