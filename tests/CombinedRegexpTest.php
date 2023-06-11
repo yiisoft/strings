@@ -206,7 +206,7 @@ final class CombinedRegexpTest extends TestCase
     public function testMatchDifferentDelimiters(
         array $patterns,
         string $flags,
-        string $string,
+        string $string
     ): void {
         $regexp = new CombinedRegexp($patterns, $flags);
         $message = sprintf(
