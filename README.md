@@ -181,6 +181,25 @@ if ($startsWithTest
 }
 ```
 
+## CombinedRegexp usage
+
+`CombinedRegexp` optimises matching multiple regular expressions. 
+
+```php
+use \Yiisoft\Strings\CombinedRegexp;
+
+$patterns = [
+    'first',
+    'second',
+    '^a\d$',
+];
+$regexp = new CombinedRegexp($patterns);
+$regexp->matchAny('a5'); // true – matches the third pattern
+$regexp->matchPattern('a5'); // '^a\d$' – the pattern that matched
+$regexp->matchPatternPosition('a5'); // 2 – the index of the pattern in the array
+$regexp->getCompiledPattern(); // '~(?|first|second()|^a\d$()())~'
+```
+
 ## Testing
 
 ### Unit testing
