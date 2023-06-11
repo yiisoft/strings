@@ -14,16 +14,22 @@ final class CombinedRegexp
     private const REGEXP_DELIMITER = '/';
     private const QUOTE_REPLACER = '\\/';
 
+    /**
+     * @var string[]
+     */
+    private array $patterns;
     private string $compiledPattern;
 
+    /**
+     * @param string[] $patterns Regular expressions to combine.
+     * @param string $flags Regular expression flags.
+     */
     public function __construct(
-        /**
-         * @var string[]
-         */
-        private array $patterns,
+        array $patterns,
         string $flags = ''
     ) {
-        $this->compiledPattern = $this->compilePatterns($this->patterns) . $flags;
+        $this->patterns = $patterns;
+        $this->compiledPattern = $this->compilePatterns($patterns) . $flags;
     }
 
     /**
