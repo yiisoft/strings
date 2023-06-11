@@ -21,8 +21,9 @@ final class CombinedRegexp
          * @var string[]
          */
         private array $patterns,
+        string $flags = ''
     ) {
-        $this->compiledPattern = $this->compilePatterns($this->patterns);
+        $this->compiledPattern = $this->compilePatterns($this->patterns) . $flags;
     }
 
     /**
@@ -36,27 +37,27 @@ final class CombinedRegexp
     /**
      * Returns `true` whether the given string matches any of the patterns, `false` - otherwise.
      */
-    public function matchAny(string $string, string $flags = ''): bool
+    public function matches(string $string): bool
     {
-        return preg_match($this->compiledPattern.$flags, $string) === 1;
+        return preg_match($this->compiledPattern, $string) === 1;
     }
 
     /**
      * Returns pattern that matches the given string.
      * @throws \Exception if the string does not match any of the patterns.
      */
-    public function matchPattern(string $string, string $flags = ''): string
+    public function matchPattern(string $string): string
     {
-        return $this->patterns[$this->matchPatternPosition($string, $flags)];
+        return $this->patterns[$this->matchPatternPosition($string)];
     }
 
     /**
      * Returns position of the pattern that matches the given string.
      * @throws \Exception if the string does not match any of the patterns.
      */
-    public function matchPatternPosition(string $string, string $flags = ''): int
+    public function matchPatternPosition(string $string): int
     {
-        $match = preg_match($this->compiledPattern . $flags, $string, $matches);
+        $match = preg_match($this->compiledPattern, $string, $matches);
         if ($match !== 1) {
             throw new \Exception(
                 sprintf(

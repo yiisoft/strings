@@ -15,7 +15,7 @@ final class CombinedRegexpTest extends TestCase
     public function testMatchAny(array $patterns, string $string, bool $expectedResult): void
     {
         $regexp = new CombinedRegexp($patterns);
-        $actualResult = $regexp->matchAny($string);
+        $actualResult = $regexp->matches($string);
         $message = sprintf(
             'Failed to assert that string "%s" matches the string "%s".',
             $regexp->getCompiledPattern(),
@@ -208,15 +208,15 @@ final class CombinedRegexpTest extends TestCase
         string $flags,
         string $string,
     ): void {
-        $regexp = new CombinedRegexp($patterns);
+        $regexp = new CombinedRegexp($patterns, $flags);
         $message = sprintf(
             'Failed to assert that string "%s" matches the string "%s".',
             $regexp->getCompiledPattern(),
             $string,
         );
-        $this->assertTrue($regexp->matchAny($string, $flags), $message);
-        $this->assertEquals($patterns[0], $regexp->matchPattern($string, $flags), $message);
-        $this->assertEquals(0, $regexp->matchPatternPosition($string, $flags), $message);
+        $this->assertTrue($regexp->matches($string), $message);
+        $this->assertEquals($patterns[0], $regexp->matchPattern($string), $message);
+        $this->assertEquals(0, $regexp->matchPatternPosition($string), $message);
     }
 
     public static function dataMatchDifferentDelimiters(): iterable
