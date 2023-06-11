@@ -26,7 +26,7 @@ final class CombinedRegexpTest extends TestCase
 
     public static function dataMatchAny(): iterable
     {
-        yield 'matches the first pattern' => [
+        yield 'the first pattern' => [
             [
                 'first',
                 'middle',
@@ -35,7 +35,7 @@ final class CombinedRegexpTest extends TestCase
             'first',
             true,
         ];
-        yield 'matches the second pattern' => [
+        yield 'the second pattern' => [
             [
                 'first',
                 'middle',
@@ -44,7 +44,7 @@ final class CombinedRegexpTest extends TestCase
             'middle',
             true,
         ];
-        yield 'matches the third pattern' => [
+        yield 'the third pattern' => [
             [
                 'first',
                 'middle',
@@ -53,7 +53,7 @@ final class CombinedRegexpTest extends TestCase
             'last',
             true,
         ];
-        yield 'matches the word in the middle of string' => [
+        yield 'the word in the middle of string' => [
             [
                 '^a\d$',
                 'def',
@@ -71,7 +71,7 @@ final class CombinedRegexpTest extends TestCase
             false,
         ];
 
-        yield 'matches a range' => [
+        yield 'a range' => [
             [
                 'abc[0-9]+',
                 'def',
@@ -80,7 +80,7 @@ final class CombinedRegexpTest extends TestCase
             'abc123',
             true,
         ];
-        yield 'matches an anchor' => [
+        yield 'an anchor' => [
             [
                 'a\d$',
                 'def',
@@ -88,7 +88,7 @@ final class CombinedRegexpTest extends TestCase
             'test a4',
             true,
         ];
-        yield 'matches routes' => [
+        yield 'routes' => [
             [
                 '/user/[\d+]',
                 '/user/logout',
@@ -96,7 +96,7 @@ final class CombinedRegexpTest extends TestCase
             '/user/123',
             true,
         ];
-        yield 'matches different quote' => [
+        yield 'different quote' => [
             [
                 '/user/[\d+]',
                 '/user/logout',
@@ -123,7 +123,7 @@ final class CombinedRegexpTest extends TestCase
 
     public static function dataMatchPattern(): iterable
     {
-        yield 'matches the "first" pattern' => [
+        yield 'the "first" pattern' => [
             [
                 'zero',
                 'first',
@@ -133,7 +133,7 @@ final class CombinedRegexpTest extends TestCase
             'first',
             'first',
         ];
-        yield 'matches the regexp pattern' => [
+        yield 'the regexp pattern' => [
             [
                 'first',
                 'def',
@@ -142,7 +142,7 @@ final class CombinedRegexpTest extends TestCase
             'a5',
             '^a\d$',
         ];
-        yield 'matches first of two similar regexps' => [
+        yield 'first of two similar regexps' => [
             [
                 'first',
                 '/user/[\d+]',
@@ -170,7 +170,7 @@ final class CombinedRegexpTest extends TestCase
 
     public static function dataMatchPosition(): iterable
     {
-        yield 'matches the "first" pattern' => [
+        yield 'the "first" pattern' => [
             [
                 'zero',
                 'first',
@@ -180,7 +180,7 @@ final class CombinedRegexpTest extends TestCase
             'first',
             1,
         ];
-        yield 'matches the regexp pattern' => [
+        yield 'the regexp pattern' => [
             [
                 'first',
                 'def',
@@ -189,7 +189,7 @@ final class CombinedRegexpTest extends TestCase
             'a5',
             2,
         ];
-        yield 'matches first of two similar regexps' => [
+        yield 'first of two similar regexps' => [
             [
                 'first',
                 '/user/[\d+]',
@@ -197,6 +197,39 @@ final class CombinedRegexpTest extends TestCase
             ],
             '/user/1',
             1,
+        ];
+    }
+
+    /**
+     * @dataProvider dataMatchDifferentDelimiters
+     */
+    public function testMatchDifferentDelimiters(
+        array $patterns,
+        string $flags,
+        string $string,
+    ): void {
+        $regexp = new CombinedRegexp($patterns);
+        $message = sprintf(
+            'Failed to assert that string "%s" matches the string "%s".',
+            $regexp->getCompiledPattern(),
+            $string,
+        );
+        $this->assertTrue($regexp->matchAny($string, $flags), $message);
+        $this->assertEquals($patterns[0], $regexp->matchPattern($string, $flags), $message);
+        $this->assertEquals(0, $regexp->matchPatternPosition($string, $flags), $message);
+    }
+
+    public static function dataMatchDifferentDelimiters(): iterable
+    {
+        yield 'ignore case' => [
+            ['a\d'],
+            'i',
+            'A5',
+        ];
+        yield 'whitespace case' => [
+            ['1.2'],
+            's',
+            "1\n2",
         ];
     }
 }

@@ -11,8 +11,9 @@ namespace Yiisoft\Strings;
  */
 final class CombinedRegexp
 {
-    private string $freeQuoter;
-    private string $quoteReplacer;
+    private const REGEXP_DELIMITER = '/';
+    private const QUOTE_REPLACER = '\\/';
+
     private string $compiledPattern;
 
     public function __construct(
@@ -20,10 +21,7 @@ final class CombinedRegexp
          * @var string[]
          */
         private array $patterns,
-        private string $regexpQuoter = '/'
     ) {
-        $this->freeQuoter = $this->regexpQuoter === '/' ? '~' : '/';
-        $this->quoteReplacer = preg_quote($this->regexpQuoter, $this->regexpQuoter);
         $this->compiledPattern = $this->compilePatterns($this->patterns);
     }
 
@@ -38,34 +36,32 @@ final class CombinedRegexp
     /**
      * Returns `true` whether the given string matches any of the patterns, `false` - otherwise.
      */
-    public function matchAny(string $string, string $flags = 'i'): bool
+    public function matchAny(string $string, string $flags = ''): bool
     {
-        $pattern = $this->compiledPattern . $flags;
-
-        return preg_match($pattern, $string) === 1;
+        return preg_match($this->compiledPattern.$flags, $string) === 1;
     }
 
     /**
      * Returns pattern that matches the given string.
      * @throws \Exception if the string does not match any of the patterns.
      */
-    public function matchPattern(string $string): string
+    public function matchPattern(string $string, string $flags = ''): string
     {
-        return $this->patterns[$this->matchPatternPosition($string)];
+        return $this->patterns[$this->matchPatternPosition($string, $flags)];
     }
 
     /**
      * Returns position of the pattern that matches the given string.
      * @throws \Exception if the string does not match any of the patterns.
      */
-    public function matchPatternPosition(string $string): int
+    public function matchPatternPosition(string $string, string $flags = ''): int
     {
-        $match = preg_match($this->compiledPattern, $string, $matches);
+        $match = preg_match($this->compiledPattern . $flags, $string, $matches);
         if ($match !== 1) {
             throw new \Exception(
                 sprintf(
                     'Failed to match pattern "%s" with string "%s".',
-                    $this->compiledPattern,
+                    $this->getCompiledPattern(),
                     $string,
                 )
             );
@@ -80,15 +76,15 @@ final class CombinedRegexp
     private function compilePatterns(array $patterns): string
     {
         $quotedPatterns = [];
-        for ($i = 0; $i < count($patterns); $i++) {
-            $quotedPatterns[] = preg_replace(
-                    $this->freeQuoter . $this->regexpQuoter . $this->freeQuoter,
-                    $this->quoteReplacer,
-                    $patterns[$i],
-                ) . str_repeat('()', $i);
-        }
-        $combinedRegexps = '(?|' . implode('|', $quotedPatterns) . ')';
 
-        return $this->freeQuoter . $combinedRegexps . $this->freeQuoter;
+        for ($i = 0; $i < count($patterns); $i++) {
+            $quotedPatterns[] = $patterns[$i] . str_repeat('()', $i);
+        }
+        $combinedRegexps = '(?|' . strtr(
+                implode('|', $quotedPatterns),
+                [self::REGEXP_DELIMITER => self::QUOTE_REPLACER]
+            ) . ')';
+
+        return self::REGEXP_DELIMITER . $combinedRegexps . self::REGEXP_DELIMITER;
     }
 }
