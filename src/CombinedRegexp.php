@@ -64,10 +64,10 @@ final class CombinedRegexp
         $quotedPatterns = [];
         for ($i = 0; $i < count($patterns); $i++) {
             $quotedPatterns[] = preg_replace(
-                    $this->freeQuoter . $this->regexpQuoter . $this->freeQuoter,
-                    $this->quoteReplacer,
-                    $patterns[$i],
-                ) . str_repeat('()', $i);
+                $this->freeQuoter . $this->regexpQuoter . $this->freeQuoter,
+                $this->quoteReplacer,
+                $patterns[$i],
+            ) . str_repeat('()', $i);
         }
         $combinedRegexps = '(?|' . implode('|', $quotedPatterns) . ')';
 
