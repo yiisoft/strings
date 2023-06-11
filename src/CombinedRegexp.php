@@ -11,6 +11,9 @@ final class CombinedRegexp
     private string $compiledPattern;
 
     public function __construct(
+        /**
+         * @var string[]
+         */
         private array $patterns,
         private string $regexpQuoter = '/'
     ) {
@@ -31,7 +34,7 @@ final class CombinedRegexp
         return preg_match($pattern, $string) === 1;
     }
 
-    public function matchPattern(string $string)
+    public function matchPattern(string $string): string
     {
         return $this->patterns[$this->matchPatternPosition($string)];
     }
@@ -52,6 +55,10 @@ final class CombinedRegexp
         return count($matches) - 1;
     }
 
+    /**
+     * @param string[] $patterns
+     * @return string
+     */
     private function compilePatterns(array $patterns): string
     {
         $quotedPatterns = [];
@@ -59,7 +66,7 @@ final class CombinedRegexp
             $quotedPatterns[] = preg_replace(
                     $this->freeQuoter . $this->regexpQuoter . $this->freeQuoter,
                     $this->quoteReplacer,
-                    $patterns[$i]
+                    $patterns[$i],
                 ) . str_repeat('()', $i);
         }
         $combinedRegexps = '(?|' . implode('|', $quotedPatterns) . ')';
