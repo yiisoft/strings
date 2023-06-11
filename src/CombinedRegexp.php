@@ -28,6 +28,9 @@ final class CombinedRegexp
         array $patterns,
         string $flags = ''
     ) {
+        if (count($patterns) === 0) {
+            throw new \InvalidArgumentException('At least one pattern should be specified.');
+        }
         $this->patterns = $patterns;
         $this->compiledPattern = $this->compilePatterns($patterns) . $flags;
     }

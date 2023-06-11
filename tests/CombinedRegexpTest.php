@@ -232,4 +232,24 @@ final class CombinedRegexpTest extends TestCase
             "1\n2",
         ];
     }
+
+    public function testInvalidNumberOfPatterns(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('At least one pattern should be specified.');
+        new CombinedRegexp([], '');
+    }
+
+    public function testInvalidMatch(): void
+    {
+        $regexp = new CombinedRegexp(['abc'], '');
+        $string = 'def';
+        $this->assertFalse($regexp->matches($string));
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Failed to match pattern "/(?|abc)/" with string "def".');
+
+        $regexp->matchPatternPosition($string);
+        $regexp->matchPattern($string);
+    }
 }
