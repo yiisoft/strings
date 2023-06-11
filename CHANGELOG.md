@@ -1,8 +1,8 @@
 # Yii Strings Change Log
 
-## 2.1.2 under development
+## 2.2.0 under development
 
-- no changes in this release.
+- Enh #102: Add `CombinedRegexp` class (@xepozz)
 
 ## 2.1.1 April 28, 2023
 
