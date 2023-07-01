@@ -237,12 +237,12 @@ final class CombinedRegexpTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('At least one pattern should be specified.');
-        new CombinedRegexp([], '');
+        new CombinedRegexp([]);
     }
 
     public function testInvalidMatch(): void
     {
-        $regexp = new CombinedRegexp(['abc'], '');
+        $regexp = new CombinedRegexp(['abc']);
         $string = 'def';
         $this->assertFalse($regexp->matches($string));
 

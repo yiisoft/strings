@@ -22,7 +22,7 @@ final class CombinedRegexp
 
     /**
      * @param string[] $patterns Regular expressions to combine.
-     * @param string $flags Regular expression flags.
+     * @param string $flags Flags to apply to all regular expressions.
      */
     public function __construct(
         array $patterns,

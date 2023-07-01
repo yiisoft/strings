@@ -183,7 +183,7 @@ if ($startsWithTest
 
 ## CombinedRegexp usage
 
-`CombinedRegexp` optimises matching multiple regular expressions. 
+`CombinedRegexp` optimizes matching multiple regular expressions.
 
 ```php
 use \Yiisoft\Strings\CombinedRegexp;
@@ -195,7 +195,7 @@ $patterns = [
 ];
 $regexp = new CombinedRegexp($patterns, 'i');
 $regexp->matches('a5'); // true – matches the third pattern
-$regexp->matches('A5'); // true – matches the third pattern because of `i` flag
+$regexp->matches('A5'); // true – matches the third pattern because of `i` flag that is applied to all regular expressions
 $regexp->matchPattern('a5'); // '^a\d$' – the pattern that matched
 $regexp->matchPatternPosition('a5'); // 2 – the index of the pattern in the array
 $regexp->getCompiledPattern(); // '~(?|first|second()|^a\d$()())~'
