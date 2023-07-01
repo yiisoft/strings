@@ -55,16 +55,16 @@ final class CombinedRegexp
      * Returns pattern that matches the given string.
      * @throws \Exception if the string does not match any of the patterns.
      */
-    public function matchPattern(string $string): string
+    public function getMatchingPattern(string $string): string
     {
-        return $this->patterns[$this->matchPatternPosition($string)];
+        return $this->patterns[$this->getMatchingPatternPosition($string)];
     }
 
     /**
      * Returns position of the pattern that matches the given string.
      * @throws \Exception if the string does not match any of the patterns.
      */
-    public function matchPatternPosition(string $string): int
+    public function getMatchingPatternPosition(string $string): int
     {
         $match = preg_match($this->compiledPattern, $string, $matches);
         if ($match !== 1) {
@@ -87,6 +87,11 @@ final class CombinedRegexp
     {
         $quotedPatterns = [];
 
+        /**
+         * Possible mutant escaping, but it's ok for our case.
+         * It doesn't matter where to place `()` in the pattern:
+         * https://regex101.com/r/lE1Q1S/1, https://regex101.com/r/rWg7Fj/1
+         */
         for ($i = 0; $i < count($patterns); $i++) {
             $quotedPatterns[] = $patterns[$i] . str_repeat('()', $i);
         }

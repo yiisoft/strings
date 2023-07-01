@@ -107,12 +107,12 @@ final class CombinedRegexpTest extends TestCase
     }
 
     /**
-     * @dataProvider dataMatchPattern
+     * @dataProvider dataMatchingPattern
      */
-    public function testMatchPattern(array $patterns, string $string, string $expectedResult): void
+    public function testMatchingPattern(array $patterns, string $string, string $expectedResult): void
     {
         $regexp = new CombinedRegexp($patterns);
-        $actualResult = $regexp->matchPattern($string);
+        $actualResult = $regexp->getMatchingPattern($string);
         $message = sprintf(
             'Failed to assert that string "%s" matches the string "%s".',
             $regexp->getCompiledPattern(),
@@ -121,7 +121,7 @@ final class CombinedRegexpTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult, $message);
     }
 
-    public static function dataMatchPattern(): iterable
+    public static function dataMatchingPattern(): iterable
     {
         yield 'the "first" pattern' => [
             [
@@ -154,12 +154,12 @@ final class CombinedRegexpTest extends TestCase
     }
 
     /**
-     * @dataProvider dataMatchPosition
+     * @dataProvider dataMatchingPatternPosition
      */
-    public function testMatchPosition(array $patterns, string $string, int $expectedResult): void
+    public function testMatchingPatternPosition(array $patterns, string $string, int $expectedResult): void
     {
         $regexp = new CombinedRegexp($patterns);
-        $actualResult = $regexp->matchPatternPosition($string);
+        $actualResult = $regexp->getMatchingPatternPosition($string);
         $message = sprintf(
             'Failed to assert that string "%s" matches the string "%s".',
             $regexp->getCompiledPattern(),
@@ -168,7 +168,7 @@ final class CombinedRegexpTest extends TestCase
         $this->assertEquals($expectedResult, $actualResult, $message);
     }
 
-    public static function dataMatchPosition(): iterable
+    public static function dataMatchingPatternPosition(): iterable
     {
         yield 'the "first" pattern' => [
             [
@@ -215,8 +215,8 @@ final class CombinedRegexpTest extends TestCase
             $string,
         );
         $this->assertTrue($regexp->matches($string), $message);
-        $this->assertEquals($patterns[0], $regexp->matchPattern($string), $message);
-        $this->assertEquals(0, $regexp->matchPatternPosition($string), $message);
+        $this->assertEquals($patterns[0], $regexp->getMatchingPattern($string), $message);
+        $this->assertEquals(0, $regexp->getMatchingPatternPosition($string), $message);
     }
 
     public static function dataMatchDifferentDelimiters(): iterable
@@ -249,7 +249,7 @@ final class CombinedRegexpTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Failed to match pattern "/(?|abc)/" with string "def".');
 
-        $regexp->matchPatternPosition($string);
-        $regexp->matchPattern($string);
+        $regexp->getMatchingPatternPosition($string);
+        $regexp->getMatchingPattern($string);
     }
 }
