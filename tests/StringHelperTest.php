@@ -407,6 +407,10 @@ final class StringHelperTest extends TestCase
                 "\0\nA\nB",
                 ["\0", 'A', 'B'],
             ],
+            [
+                "технический\nдолг",
+                ['технический', 'долг'],
+            ],
         ];
     }
 

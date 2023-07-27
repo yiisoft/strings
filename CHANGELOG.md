@@ -2,7 +2,7 @@
 
 ## 2.1.2 under development
 
-- no changes in this release.
+- Bug #105: Fix incorrect split UTF-8 strings in `StringHelper::split()` method (@vjik)
 
 ## 2.1.1 April 28, 2023
 
