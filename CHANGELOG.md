@@ -1,5 +1,9 @@
 # Yii Strings Change Log
 
+## 2.1.3 under development
+
+- no changes in this release.
+
 ## 2.1.2 July 27, 2023
 
 - Bug #105: Fix incorrect split UTF-8 strings in `StringHelper::split()` method (@vjik)
