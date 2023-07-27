@@ -2,7 +2,7 @@
 
 ## 2.1.2 under development
 
-- Bug #105: Fix incorrect split UTF-8 strings in some cases in `StringHelper::split()` method (@vjik)
+- Bug #105: Fix incorrect split UTF-8 strings in `StringHelper::split()` method (@vjik)
 
 ## 2.1.1 April 28, 2023
 
