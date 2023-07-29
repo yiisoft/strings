@@ -2,7 +2,8 @@
 
 ## 2.2.0 under development
 
-- Enh #102: Add `CombinedRegexp` class (@xepozz)
+- New #102, #106: Add `CombinedRegexp` class (@xepozz, @vjik)
+- Enh #106: Using fully-qualified function calls for improve performance (@vjik)
 
 ## 2.1.2 July 27, 2023
 
