@@ -21,6 +21,7 @@ The package provides:
 - `NumericHelper` that has static methods to work with numeric strings;
 - `Inflector` provides methods such as `toPlural()` or `toSlug()` that derive a new string based on the string given;
 - `WildcardPattern` is a shell wildcard pattern to match strings against.
+- `CombinedRegexp` is a wrapper that optimizes multiple regular expressions matching.
 
 ## Requirements
 
@@ -179,6 +180,26 @@ if ($startsWithTest
     ->match('tEStIfThisIsTrue')) {
     echo 'It starts with "test"!';
 }
+```
+
+## CombinedRegexp usage
+
+`CombinedRegexp` optimizes matching multiple regular expressions.
+
+```php
+use \Yiisoft\Strings\CombinedRegexp;
+
+$patterns = [
+    'first',
+    'second',
+    '^a\d$',
+];
+$regexp = new CombinedRegexp($patterns, 'i');
+$regexp->matches('a5'); // true – matches the third pattern
+$regexp->matches('A5'); // true – matches the third pattern because of `i` flag that is applied to all regular expressions
+$regexp->getMatchingPattern('a5'); // '^a\d$' – the pattern that matched
+$regexp->getMatchingPatternPosition('a5'); // 2 – the index of the pattern in the array
+$regexp->getCompiledPattern(); // '~(?|first|second()|^a\d$()())~'
 ```
 
 ## Testing
