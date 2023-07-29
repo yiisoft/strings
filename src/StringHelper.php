@@ -496,7 +496,7 @@ final class StringHelper
     public static function split(string $string, string $separator = '\R'): array
     {
         $string = preg_replace('(^\s*|\s*$)', '', $string);
-        return preg_split('~\s*' . $separator . '\s*~', $string, -1, PREG_SPLIT_NO_EMPTY);
+        return preg_split('~\s*' . $separator . '\s*~u', $string, -1, PREG_SPLIT_NO_EMPTY);
     }
 
     /**
