@@ -104,9 +104,9 @@ final class CombinedRegexp
             $quotedPatterns[] = $pattern . str_repeat('()', $i);
         }
         $combinedRegexps = '(?|' . strtr(
-                implode('|', $quotedPatterns),
-                [self::REGEXP_DELIMITER => self::QUOTE_REPLACER]
-            ) . ')';
+            implode('|', $quotedPatterns),
+            [self::REGEXP_DELIMITER => self::QUOTE_REPLACER]
+        ) . ')';
 
         return self::REGEXP_DELIMITER . $combinedRegexps . self::REGEXP_DELIMITER;
     }
