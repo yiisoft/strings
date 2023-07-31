@@ -6,6 +6,7 @@ namespace Yiisoft\Strings;
 
 use InvalidArgumentException;
 
+use function gettype;
 use function in_array;
 use function is_bool;
 

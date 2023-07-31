@@ -16,6 +16,7 @@ use function mb_strtoupper;
 use function mb_substr;
 use function str_ends_with;
 use function str_starts_with;
+use function strlen;
 
 /**
  * Provides static methods to work with strings.
