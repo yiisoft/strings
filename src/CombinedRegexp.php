@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings;
 
+use Exception;
+
+use InvalidArgumentException;
+
+use function count;
+
 /**
  * `CombinedRegexp` optimizes matching of multiple regular expressions.
  * Read more about the concept in
@@ -28,11 +34,11 @@ final class CombinedRegexp
         array $patterns,
         string $flags = ''
     ) {
-        if (count($patterns) === 0) {
-            throw new \InvalidArgumentException('At least one pattern should be specified.');
+        if (empty($patterns)) {
+            throw new InvalidArgumentException('At least one pattern should be specified.');
         }
-        $this->patterns = $patterns;
-        $this->compiledPattern = $this->compilePatterns($patterns) . $flags;
+        $this->patterns = array_values($patterns);
+        $this->compiledPattern = $this->compilePatterns($this->patterns) . $flags;
     }
 
     /**
@@ -53,7 +59,7 @@ final class CombinedRegexp
 
     /**
      * Returns pattern that matches the given string.
-     * @throws \Exception if the string does not match any of the patterns.
+     * @throws Exception if the string does not match any of the patterns.
      */
     public function getMatchingPattern(string $string): string
     {
@@ -62,13 +68,13 @@ final class CombinedRegexp
 
     /**
      * Returns position of the pattern that matches the given string.
-     * @throws \Exception if the string does not match any of the patterns.
+     * @throws Exception if the string does not match any of the patterns.
      */
     public function getMatchingPatternPosition(string $string): int
     {
         $match = preg_match($this->compiledPattern, $string, $matches);
         if ($match !== 1) {
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     'Failed to match pattern "%s" with string "%s".',
                     $this->getCompiledPattern(),
@@ -82,6 +88,8 @@ final class CombinedRegexp
 
     /**
      * @param string[] $patterns
+     *
+     * @psalm-param list<string> $patterns
      */
     private function compilePatterns(array $patterns): string
     {
@@ -92,8 +100,8 @@ final class CombinedRegexp
          * It doesn't matter where to place `()` in the pattern:
          * https://regex101.com/r/lE1Q1S/1, https://regex101.com/r/rWg7Fj/1
          */
-        for ($i = 0; $i < count($patterns); $i++) {
-            $quotedPatterns[] = $patterns[$i] . str_repeat('()', $i);
+        foreach ($patterns as $i => $pattern) {
+            $quotedPatterns[] = $pattern . str_repeat('()', $i);
         }
         $combinedRegexps = '(?|' . strtr(
             implode('|', $quotedPatterns),
