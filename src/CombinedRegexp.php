@@ -80,6 +80,7 @@ final class CombinedRegexp extends AbstractCombinedRegexp
      * @param string[] $patterns
      *
      * @psalm-param list<string> $patterns
+     * @psalm-return non-empty-string
      */
     private function compilePatterns(array $patterns): string
     {
