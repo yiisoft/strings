@@ -20,6 +20,9 @@ final class CombinedRegexp extends AbstractCombinedRegexp
      * @var string[]
      */
     private array $patterns;
+    /**
+     * @psalm-var non-empty-string
+     */
     private string $compiledPattern;
 
     /**
