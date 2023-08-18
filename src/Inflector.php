@@ -296,8 +296,8 @@ final class Inflector
     /**
      * @param string[] $rules The rules for converting a word into its plural form.
      *
-     * @psalm-param non-empty-array<non-empty-string, string> $rules
      * The keys are the regular expressions and the values are the corresponding replacements.
+     * @psalm-param non-empty-array<non-empty-string, string> $rules
      *
      * @return self
      */

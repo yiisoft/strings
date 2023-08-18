@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 /**
- * MemoizedCombinedRegexp is a decorator for {@see AbstractCombinedRegexp} that caches results of
+ * `MemoizedCombinedRegexp` is a decorator for {@see AbstractCombinedRegexp} that caches results of
  * - {@see AbstractCombinedRegexp::matches()}
  * - {@see AbstractCombinedRegexp::getMatchingPattern()}
  * - {@see AbstractCombinedRegexp::getMatchingPatternPosition()}.

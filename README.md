@@ -20,9 +20,9 @@ The package provides:
 - `StringHelper` that has static methods to work with strings;
 - `NumericHelper` that has static methods to work with numeric strings;
 - `Inflector` provides methods such as `toPlural()` or `toSlug()` that derive a new string based on the string given;
-- `WildcardPattern` is a shell wildcard pattern to match strings against.
-- `CombinedRegexp` is a wrapper that optimizes multiple regular expressions matching
-  - `MemoizedCombinedRegexp` is a decorator that caches results of `CombinedRegexp` to speed up matching.
+- `WildcardPattern` is a shell wildcard pattern to match strings against;
+- `CombinedRegexp` is a wrapper that optimizes multiple regular expressions matching and 
+  `MemoizedCombinedRegexp` is a decorator that caches results of `CombinedRegexp` to speed up matching.
 
 ## Requirements
 
