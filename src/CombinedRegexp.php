@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 use Exception;
-
 use InvalidArgumentException;
 
 use function count;
@@ -15,15 +14,15 @@ use function count;
  * Read more about the concept in
  * {@see https://nikic.github.io/2014/02/18/Fast-request-routing-using-regular-expressions.html}.
  */
-final class CombinedRegexp
+final class CombinedRegexp extends AbstractCombinedRegexp
 {
-    private const REGEXP_DELIMITER = '/';
-    private const QUOTE_REPLACER = '\\/';
-
     /**
      * @var string[]
      */
     private array $patterns;
+    /**
+     * @psalm-var non-empty-string
+     */
     private string $compiledPattern;
 
     /**
@@ -32,13 +31,13 @@ final class CombinedRegexp
      */
     public function __construct(
         array $patterns,
-        string $flags = ''
+        private string $flags = ''
     ) {
         if (empty($patterns)) {
             throw new InvalidArgumentException('At least one pattern should be specified.');
         }
         $this->patterns = array_values($patterns);
-        $this->compiledPattern = $this->compilePatterns($this->patterns) . $flags;
+        $this->compiledPattern = $this->compilePatterns($this->patterns) . $this->flags;
     }
 
     /**
@@ -74,13 +73,7 @@ final class CombinedRegexp
     {
         $match = preg_match($this->compiledPattern, $string, $matches);
         if ($match !== 1) {
-            throw new Exception(
-                sprintf(
-                    'Failed to match pattern "%s" with string "%s".',
-                    $this->getCompiledPattern(),
-                    $string,
-                )
-            );
+            $this->throwFailedMatchException($string);
         }
 
         return count($matches) - 1;
@@ -90,6 +83,7 @@ final class CombinedRegexp
      * @param string[] $patterns
      *
      * @psalm-param list<string> $patterns
+     * @psalm-return non-empty-string
      */
     private function compilePatterns(array $patterns): string
     {
@@ -109,5 +103,15 @@ final class CombinedRegexp
         ) . ')';
 
         return self::REGEXP_DELIMITER . $combinedRegexps . self::REGEXP_DELIMITER;
+    }
+
+    public function getPatterns(): array
+    {
+        return $this->patterns;
+    }
+
+    public function getFlags(): string
+    {
+        return $this->flags;
     }
 }

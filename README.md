@@ -20,12 +20,13 @@ The package provides:
 - `StringHelper` that has static methods to work with strings;
 - `NumericHelper` that has static methods to work with numeric strings;
 - `Inflector` provides methods such as `toPlural()` or `toSlug()` that derive a new string based on the string given;
-- `WildcardPattern` is a shell wildcard pattern to match strings against.
-- `CombinedRegexp` is a wrapper that optimizes multiple regular expressions matching.
+- `WildcardPattern` is a shell wildcard pattern to match strings against;
+- `CombinedRegexp` is a wrapper that optimizes multiple regular expressions matching and 
+  `MemoizedCombinedRegexp` is a decorator that caches results of `CombinedRegexp` to speed up matching.
 
 ## Requirements
 
-- PHP 7.4 or higher.
+- PHP 8.0 or higher.
 
 ## Installation
 
@@ -200,6 +201,37 @@ $regexp->matches('A5'); // true – matches the third pattern because of `i` fla
 $regexp->getMatchingPattern('a5'); // '^a\d$' – the pattern that matched
 $regexp->getMatchingPatternPosition('a5'); // 2 – the index of the pattern in the array
 $regexp->getCompiledPattern(); // '~(?|first|second()|^a\d$()())~'
+```
+
+## MemoizedCombinedRegexp usage
+
+`MemoizedCombinedRegexp` caches results of `CombinedRegexp` in memory.
+It is useful when the same incoming string are matching multiple times or different methods of `CombinedRegexp` are called.
+
+```php
+use \Yiisoft\Strings\CombinedRegexp;
+use \Yiisoft\Strings\MemoizedCombinedRegexp;
+
+$patterns = [
+    'first',
+    'second',
+    '^a\d$',
+];
+$regexp = new MemoizedCombinedRegexp(new CombinedRegexp($patterns, 'i'));
+$regexp->matches('a5'); // Fires `preg_match` inside the `CombinedRegexp`.
+$regexp->matches('first'); // Fires `preg_match` inside the `CombinedRegexp`.
+$regexp->matches('a5'); // Does not fire `preg_match` inside the `CombinedRegexp` because the result is cached.
+$regexp->getMatchingPattern('a5'); // The result is cached so no `preg_match` is fired.
+$regexp->getMatchingPatternPosition('a5'); // The result is cached so no `preg_match` is fired.
+
+// The following code fires only once matching mechanism.
+if ($regexp->matches('second')) {
+    echo sprintf(
+        'Matched the pattern "%s" which is on the position "%s" in the expressions list.',
+        $regexp->getMatchingPattern('second'),
+        $regexp->getMatchingPatternPosition('second'),
+    );
+}
 ```
 
 ## Testing

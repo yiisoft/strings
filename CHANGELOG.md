@@ -2,6 +2,8 @@
 
 ## 2.2.0 under development
 
+- New #103: Add `MemoizedCombinedRegexp` decorator that caches results of `CombinedRegexp` (@xepozz)
+- Enh #103: Raise required PHP version to `^8.0` (@xepozz)
 - New #102, #106: Add `CombinedRegexp` class (@xepozz, @vjik)
 - Enh #106: Using fully-qualified function calls to improve performance (@vjik)
 
