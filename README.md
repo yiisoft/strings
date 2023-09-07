@@ -69,6 +69,9 @@ Overall the helper has the following method groups.
 - truncateMiddle
 - truncateEnd
 - truncateWords
+- trim
+- ltrim
+- rtrim
 
 ### Counting
 

@@ -512,4 +512,40 @@ final class StringHelperTest extends TestCase
 
         StringHelper::parsePath('key1.key2.key3', '.', '.');
     }
+
+    /**
+     * @return array [$string, $expected]
+     */
+    public function dataTrim(): array
+    {
+        $bom = pack('H*', 'EFBBBF'); // U+FEFF
+        $nbsp = pack('H*', 'C2A0'); // U+00A0
+        $emsp = pack('H*', 'E28083'); // U+2003
+        $thsp = pack('H*', 'E28089'); // U+2009
+        $lsep = pack('H*', 'E280A8'); // U+2028
+
+        $base = 'Здесь我'.$nbsp.'-'.$thsp.'Multibyte我'.$lsep.'Строка 👍🏻';
+
+        return [
+            [$base, $base],
+            ['  '.$base.$emsp.'   '.PHP_EOL."\n", $base],
+            [$bom.$base."\n    ", $base],
+            [$bom.$base.$nbsp.$nbsp.'  ', $base],
+            ["\n".$thsp.$base.$nbsp.$nbsp."\n", $base],
+            ['  '.$thsp.$base.$lsep."\n".PHP_EOL, $base],
+        ];
+    }
+
+    /**
+     * @dataProvider dataTrim
+     *
+     * @param string $string
+     * @param string $expected
+     */
+    public function testTrim(string $string, string $expected): void
+    {
+        $this->assertSame($expected, StringHelper::trim($string));
+    }
+    
+    
 }
