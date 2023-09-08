@@ -623,6 +623,20 @@ final class StringHelperTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
+        StringHelper::trim('string', "\xC3\x28");
+    }
+
+    public function testInvalidLtrimPattern(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        StringHelper::ltrim('string', "\xC3\x28");
+    }
+
+    public function testInvalidRtrimPattern(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
         StringHelper::rtrim('string', "\xC3\x28");
     }
 }
