@@ -587,11 +587,11 @@ final class StringHelper
      * @see https://en.wikipedia.org/wiki/Whitespace_character#Unicode
      * @see https://www.php.net/manual/function.preg-replace
      *
-     * @param string $string The input string.
-     * @param string $pattern PCRE regex pattern to search for, as a string. Quote $pattern if it contains special regular expression characters.
+     * @param string|array $string The input string.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Quote $pattern if it contains special regular expression characters.
      * @see https://www.php.net/manual/function.preg-quote.php
      *
-     * @return string
+     * @return string|array
      */
     public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
@@ -604,18 +604,28 @@ final class StringHelper
      * Strip Unicode whitespace (with property White_Space=yes) or other characters from the beginning of a string
      *
      * @see self::trim()
+     *
+     * @param string|array $string The input string.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string.
+     *
+     * @return string|array
      */
     public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
         self::ensureUTF8String($pattern);
 
-        return preg_replace("#^[$pattern]+#u", '', $string);
+        return preg_replace("#^[$pattern]+#uD", '', $string);
     }
 
     /**
      * Strip Unicode whitespace (with property White_Space=yes) or other characters from the end of a string
      *
      * @see self::trim()
+     *
+     * @param string|array $string The input string.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string.
+     *
+     * @return string|array
      */
     public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
