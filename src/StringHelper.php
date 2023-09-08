@@ -23,6 +23,8 @@ use function strlen;
  */
 final class StringHelper
 {
+    public const DEFAULT_WHITESPACE_PATTERN = "\pC\pZ";
+
     /**
      * Returns the number of bytes in the given string.
      * This method ensures the string is treated as a byte array even if `mbstring.func_overload` is turned on
@@ -591,11 +593,9 @@ final class StringHelper
      *
      * @return string
      */
-    public static function trim(string $string, string $pattern = "\pC\pZ"): string
+    public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
-        if (!preg_match('##u', $pattern)) {
-            throw new InvalidArgumentException('Pattern must be valid UTF-8 string.');
-        }
+        self::ensureUTF8String($pattern);
 
         return preg_replace("#^[$pattern]+|[$pattern]+$#uD", '', $string);
     }
@@ -605,11 +605,9 @@ final class StringHelper
      *
      * @see self::trim()
      */
-    public static function ltrim(string $string, string $pattern = "\pC\pZ"): string
+    public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
-        if (!preg_match('##u', $pattern)) {
-            throw new InvalidArgumentException('Pattern must be valid UTF-8 string.');
-        }
+        self::ensureUTF8String($pattern);
 
         return preg_replace("#^[$pattern]+#u", '', $string);
     }
@@ -619,12 +617,25 @@ final class StringHelper
      *
      * @see self::trim()
      */
-    public static function rtrim(string $string, string $pattern = "\pC\pZ"): string
+    public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
-        if (!preg_match('##u', $pattern)) {
-            throw new InvalidArgumentException('Pattern must be valid UTF-8 string.');
-        }
+        self::ensureUTF8String($pattern);
 
         return preg_replace("#[$pattern]+$#uD", '', $string);
+    }
+
+    /**
+     * Ensure the input string is a valid UTF-8 string.
+     * 
+     * @param string $string The input string.
+     * 
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    public static function ensureUTF8String(string $string): void
+    {
+        if (!preg_match('##u', $string)) {
+            throw new InvalidArgumentException('String is not a valid UTF-8 string.');
+        }
     }
 }

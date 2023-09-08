@@ -513,10 +513,7 @@ final class StringHelperTest extends TestCase
         StringHelper::parsePath('key1.key2.key3', '.', '.');
     }
 
-    /**
-     * @return array [$string, $expected]
-     */
-    public function dataTrim(): array
+    public function dataNoTrim(): iterable
     {
         $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
         $nbsp = "\u{00A0}"; // "\xC2\xA0"
@@ -527,116 +524,94 @@ final class StringHelperTest extends TestCase
 
         $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
-        return [
-            [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, ''],
-            [$base, $base],
-            ['  ' . $base . $emsp . '   ' . PHP_EOL . "\n", $base],
-            [$bom . $base . "\n    ", $base],
-            [$bom . $base . $nbsp . $nbsp . '  ', $base],
-            ["\n" . $thsp . $base . $nbsp . $nbsp . "\n", $base],
-            ['  ' . $thsp . $base . $lsep . $ascii . "\n" . PHP_EOL, $base],
-        ];
+        yield [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, ''];
+        yield [$base, $base];
+        yield [[$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, $base], ['', $base]];
+    }
+
+    public function dataTrim(): iterable
+    {
+        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
+        $nbsp = "\u{00A0}"; // "\xC2\xA0"
+        $emsp = "\u{2003}"; // "\xE2\x80\x83"
+        $thsp = "\u{2009}"; // "\xE2\x80\x89"
+        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
+        $ascii = " \f\n\r\t\v\x00";
+
+        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+
+        yield ['  ' . $base . $emsp . '   ' . PHP_EOL . "\n", $base];
+        yield [$bom . $base . "\n    ", $base];
+        yield [$bom . $base . $nbsp . $nbsp . '  ', $base];
+        yield ["\n" . $thsp . $base . $nbsp . $nbsp . "\n", $base];
+        yield ['  ' . $thsp . $base . $lsep . $ascii . "\n" . PHP_EOL, $base];
+    }
+
+    public function dataLtrim(): iterable
+    {
+        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
+        $nbsp = "\u{00A0}"; // "\xC2\xA0"
+        $emsp = "\u{2003}"; // "\xE2\x80\x83"
+        $thsp = "\u{2009}"; // "\xE2\x80\x89"
+        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
+        $ascii = " \f\n\r\t\v\x00";
+
+        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+
+        yield [PHP_EOL . '  ' . $base . PHP_EOL, $base . PHP_EOL];
+        yield [$bom . $base . "\n    ", $base . "\n    "];
+        yield [$bom . $nbsp . $nbsp . '  ' . $base . $nbsp . $nbsp . '  ', $base . $nbsp . $nbsp . '  '];
+        yield ["\n" . $ascii . $thsp . $base . "\n", $base . "\n"];
+    }
+
+    public function dataRtrim(): iterable
+    {
+        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
+        $nbsp = "\u{00A0}"; // "\xC2\xA0"
+        $emsp = "\u{2003}"; // "\xE2\x80\x83"
+        $thsp = "\u{2009}"; // "\xE2\x80\x89"
+        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
+        $ascii = " \f\n\r\t\v\x00";
+
+        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+
+        yield [PHP_EOL . $base . '  ' . PHP_EOL, PHP_EOL . $base];
+        yield [$bom . $base . "\n    ", $bom . $base];
+        yield [$bom . $nbsp . $nbsp . '  ' . $base, $bom . $nbsp . $nbsp . '  ' . $base];
+        yield ["\n" . $base . $ascii . $thsp . "\n", "\n" . $base];
     }
 
     /**
+     * @dataProvider dataNoTrim
      * @dataProvider dataTrim
-     *
-     * @param string $string
-     * @param string $expected
      */
-    public function testTrim(string $string, string $expected): void
+    public function testTrim(string|array $string, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::trim($string));
     }
 
     /**
-     * @return array [$string, $expected]
-     */
-    public function dataLtrim(): array
-    {
-        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
-        $nbsp = "\u{00A0}"; // "\xC2\xA0"
-        $emsp = "\u{2003}"; // "\xE2\x80\x83"
-        $thsp = "\u{2009}"; // "\xE2\x80\x89"
-        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
-        $ascii = " \f\n\r\t\v\x00";
-
-        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
-
-        return [
-            [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, ''],
-            [$base, $base],
-            [PHP_EOL . '  ' . $base . PHP_EOL, $base . PHP_EOL],
-            [$bom . $base . "\n    ", $base . "\n    "],
-            [$bom . $nbsp . $nbsp . '  ' . $base . $nbsp . $nbsp . '  ', $base . $nbsp . $nbsp . '  '],
-            ["\n" . $ascii . $thsp . $base . "\n", $base . "\n"],
-        ];
-    }
-
-    /**
+     * @dataProvider dataNoTrim
      * @dataProvider dataLtrim
-     *
-     * @param string $string
-     * @param string $expected
      */
-    public function testLtrim(string $string, string $expected): void
+    public function testLtrim(string|array $string, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::ltrim($string));
     }
 
     /**
-     * @return array [$string, $expected]
-     */
-    public function dataRtrim(): array
-    {
-        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
-        $nbsp = "\u{00A0}"; // "\xC2\xA0"
-        $emsp = "\u{2003}"; // "\xE2\x80\x83"
-        $thsp = "\u{2009}"; // "\xE2\x80\x89"
-        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
-        $ascii = " \f\n\r\t\v\x00";
-
-        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
-
-        return [
-            [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, ''],
-            [$base, $base],
-            [PHP_EOL . $base . '  ' . PHP_EOL, PHP_EOL . $base],
-            [$bom . $base . "\n    ", $bom . $base],
-            [$bom . $nbsp . $nbsp . '  ' . $base, $bom . $nbsp . $nbsp . '  ' . $base],
-            ["\n" . $base . $ascii . $thsp . "\n", "\n" . $base],
-        ];
-    }
-
-    /**
+     * @dataProvider dataNoTrim
      * @dataProvider dataRtrim
-     *
-     * @param string $string
-     * @param string $expected
      */
-    public function testRtrim(string $string, string $expected): void
+    public function testRtrim(string|array $string, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::rtrim($string));
     }
 
-    public function testInvalidTrimPattern(): void
+    public function testInvalidUTF8String(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        StringHelper::trim('string', "\xC3\x28");
-    }
-
-    public function testInvalidLtrimPattern(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        StringHelper::ltrim('string', "\xC3\x28");
-    }
-
-    public function testInvalidRtrimPattern(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-
-        StringHelper::rtrim('string', "\xC3\x28");
+        StringHelper::ensureUTF8String("\xC3\x28");
     }
 }
