@@ -581,14 +581,14 @@ final class StringHelper
     /**
      * Strip Unicode whitespace (with property White_Space=yes) or other characters from the beginning and end of a string.
      * Input string and pattern are treated as UTF-8.
-     * 
+     *
      * @see https://en.wikipedia.org/wiki/Whitespace_character#Unicode
      * @see https://www.php.net/manual/function.preg-replace
-     * 
+     *
      * @param string $string The input string.
      * @param string $pattern PCRE regex pattern to search for, as a string. Quote $pattern if it contains special regular expression characters.
      * @see https://www.php.net/manual/function.preg-quote.php
-     * 
+     *
      * @return string
      */
     public static function trim(string $string, string $pattern = "\pC\pZ"): string
@@ -601,9 +601,8 @@ final class StringHelper
     }
 
     /**
-     * 
      * Strip Unicode whitespace (with property White_Space=yes) or other characters from the beginning of a string
-     * 
+     *
      * @see self::trim()
      */
     public static function ltrim(string $string, string $pattern = "\pC\pZ"): string
@@ -617,7 +616,7 @@ final class StringHelper
 
     /**
      * Strip Unicode whitespace (with property White_Space=yes) or other characters from the end of a string
-     * 
+     *
      * @see self::trim()
      */
     public static function rtrim(string $string, string $pattern = "\pC\pZ"): string

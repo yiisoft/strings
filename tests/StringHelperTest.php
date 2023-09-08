@@ -525,16 +525,16 @@ final class StringHelperTest extends TestCase
         $lsep = "\u{2028}"; // "\xE2\x80\xA8"
         $ascii = " \f\n\r\t\v\x00";
 
-        $base = 'Здесь我'.$nbsp.'-'.$thsp.'Multibyte我'.$lsep.'Строка 👍🏻';
+        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
         return [
-            [$ascii.$ascii.$nbsp.$emsp.$emsp.PHP_EOL, ''],
+            [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, ''],
             [$base, $base],
-            ['  '.$base.$emsp.'   '.PHP_EOL."\n", $base],
-            [$bom.$base."\n    ", $base],
-            [$bom.$base.$nbsp.$nbsp.'  ', $base],
-            ["\n".$thsp.$base.$nbsp.$nbsp."\n", $base],
-            ['  '.$thsp.$base.$lsep.$ascii."\n".PHP_EOL, $base],
+            ['  ' . $base . $emsp . '   ' . PHP_EOL . "\n", $base],
+            [$bom . $base . "\n    ", $base],
+            [$bom . $base . $nbsp . $nbsp . '  ', $base],
+            ["\n" . $thsp . $base . $nbsp . $nbsp . "\n", $base],
+            ['  ' . $thsp . $base . $lsep . $ascii . "\n" . PHP_EOL, $base],
         ];
     }
 
@@ -561,15 +561,15 @@ final class StringHelperTest extends TestCase
         $lsep = "\u{2028}"; // "\xE2\x80\xA8"
         $ascii = " \f\n\r\t\v\x00";
 
-        $base = 'Здесь我'.$nbsp.'-'.$thsp.'Multibyte我'.$lsep.'Строка 👍🏻';
+        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
         return [
-            [$ascii.$ascii.$nbsp.$emsp.$emsp.PHP_EOL, ''],
+            [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, ''],
             [$base, $base],
-            [PHP_EOL.'  '.$base.PHP_EOL, $base.PHP_EOL],
-            [$bom.$base."\n    ", $base."\n    "],
-            [$bom.$nbsp.$nbsp.'  '.$base.$nbsp.$nbsp.'  ', $base.$nbsp.$nbsp.'  '],
-            ["\n".$ascii.$thsp.$base."\n", $base."\n"],
+            [PHP_EOL . '  ' . $base . PHP_EOL, $base . PHP_EOL],
+            [$bom . $base . "\n    ", $base . "\n    "],
+            [$bom . $nbsp . $nbsp . '  ' . $base . $nbsp . $nbsp . '  ', $base . $nbsp . $nbsp . '  '],
+            ["\n" . $ascii . $thsp . $base . "\n", $base . "\n"],
         ];
     }
 
@@ -596,15 +596,15 @@ final class StringHelperTest extends TestCase
         $lsep = "\u{2028}"; // "\xE2\x80\xA8"
         $ascii = " \f\n\r\t\v\x00";
 
-        $base = 'Здесь我'.$nbsp.'-'.$thsp.'Multibyte我'.$lsep.'Строка 👍🏻';
+        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
         return [
-            [$ascii.$ascii.$nbsp.$emsp.$emsp.PHP_EOL, ''],
+            [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, ''],
             [$base, $base],
-            [PHP_EOL.$base.'  '.PHP_EOL, PHP_EOL.$base],
-            [$bom.$base."\n    ", $bom.$base],
-            [$bom.$nbsp.$nbsp.'  '.$base, $bom.$nbsp.$nbsp.'  '.$base],
-            ["\n".$base.$ascii.$thsp."\n", "\n".$base],
+            [PHP_EOL . $base . '  ' . PHP_EOL, PHP_EOL . $base],
+            [$bom . $base . "\n    ", $bom . $base],
+            [$bom . $nbsp . $nbsp . '  ' . $base, $bom . $nbsp . $nbsp . '  ' . $base],
+            ["\n" . $base . $ascii . $thsp . "\n", "\n" . $base],
         ];
     }
 
