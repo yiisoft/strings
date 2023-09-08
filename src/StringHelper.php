@@ -593,7 +593,7 @@ final class StringHelper
      */
     public static function trim(string $string, string $pattern = "\pC\pZ"): string
     {
-        if ("\pC\pZ" !== $pattern && !preg_match('##u', $pattern)) {
+        if (!preg_match('##u', $pattern)) {
             throw new InvalidArgumentException('Pattern must be valid UTF-8 string.');
         }
 
@@ -608,6 +608,10 @@ final class StringHelper
      */
     public static function ltrim(string $string, string $pattern = "\pC\pZ"): string
     {
+        if (!preg_match('##u', $pattern)) {
+            throw new InvalidArgumentException('Pattern must be valid UTF-8 string.');
+        }
+
         return preg_replace("#^[$pattern]+#u", '', $string);
     }
 
@@ -618,6 +622,10 @@ final class StringHelper
      */
     public static function rtrim(string $string, string $pattern = "\pC\pZ"): string
     {
+        if (!preg_match('##u', $pattern)) {
+            throw new InvalidArgumentException('Pattern must be valid UTF-8 string.');
+        }
+
         return preg_replace("#[$pattern]+$#uD", '', $string);
     }
 }
