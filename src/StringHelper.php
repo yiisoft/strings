@@ -591,6 +591,8 @@ final class StringHelper
      * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Quote $pattern if it contains special regular expression characters.
      * @see https://www.php.net/manual/function.preg-quote.php
      *
+     * @psalm-param array<array-key, string> $string
+     *
      * @return string|array
      */
     public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
@@ -601,14 +603,11 @@ final class StringHelper
     }
 
     /**
-     * Strip Unicode whitespace (with property White_Space=yes) or other characters from the beginning of a string
+     * Strip Unicode whitespace (with property White_Space=yes) or other characters from the beginning of a string.
      *
-     * @see self::trim()
+     * {@see self::trim()}
      *
-     * @param string|array $string The input string.
-     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string.
-     *
-     * @return string|array
+     * @psalm-param array<array-key, string> $string
      */
     public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
@@ -618,14 +617,11 @@ final class StringHelper
     }
 
     /**
-     * Strip Unicode whitespace (with property White_Space=yes) or other characters from the end of a string
+     * Strip Unicode whitespace (with property White_Space=yes) or other characters from the end of a string.
      *
-     * @see self::trim()
+     * {@see self::trim()}
      *
-     * @param string|array $string The input string.
-     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string.
-     *
-     * @return string|array
+     * @psalm-param array<array-key, string> $string
      */
     public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
