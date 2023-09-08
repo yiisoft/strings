@@ -587,11 +587,9 @@ final class StringHelper
      * @see https://en.wikipedia.org/wiki/Whitespace_character#Unicode
      * @see https://www.php.net/manual/function.preg-replace
      *
-     * @param array|string $string The input string.
+     * @param string|string[] $string The input string.
      * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Quote $pattern if it contains special regular expression characters.
      * @see https://www.php.net/manual/function.preg-quote.php
-     *
-     * @psalm-param array<array-key, string> $string
      *
      * @return array|string
      */
@@ -607,7 +605,10 @@ final class StringHelper
      *
      * {@see self::trim()}
      *
-     * @psalm-param array<array-key, string> $string
+     * @param string|string[] $string
+     * @param string $pattern
+     *
+     * @return array|string
      */
     public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
@@ -621,7 +622,10 @@ final class StringHelper
      *
      * {@see self::trim()}
      *
-     * @psalm-param array<array-key, string> $string
+     * @param string|string[] $string
+     * @param string $pattern
+     *
+     * @return array|string
      */
     public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
