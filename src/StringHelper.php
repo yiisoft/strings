@@ -587,7 +587,7 @@ final class StringHelper
      * @see https://en.wikipedia.org/wiki/Whitespace_character#Unicode
      * @see https://www.php.net/manual/function.preg-replace
      *
-     * @param string|string[] $string The input string.
+     * @param string|string[] $string The string or an array with strings.
      * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Quote $pattern if it contains special regular expression characters.
      * @see https://www.php.net/manual/function.preg-quote.php
      *
@@ -595,7 +595,7 @@ final class StringHelper
      */
     public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
-        self::ensureUTF8String($pattern);
+        self::ensureUTF8Pattern($pattern);
 
         return preg_replace("#^[$pattern]+|[$pattern]+$#uD", '', $string);
     }
@@ -612,7 +612,7 @@ final class StringHelper
      */
     public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
-        self::ensureUTF8String($pattern);
+        self::ensureUTF8Pattern($pattern);
 
         return preg_replace("#^[$pattern]+#uD", '', $string);
     }
@@ -629,7 +629,7 @@ final class StringHelper
      */
     public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
-        self::ensureUTF8String($pattern);
+        self::ensureUTF8Pattern($pattern);
 
         return preg_replace("#[$pattern]+$#uD", '', $string);
     }
@@ -637,14 +637,14 @@ final class StringHelper
     /**
      * Ensure the input string is a valid UTF-8 string.
      *
-     * @param string $string The input string.
+     * @param string $pattern The input string.
      *
      * @throws InvalidArgumentException
      */
-    public static function ensureUTF8String(string $string): void
+    private static function ensureUTF8Pattern(string $pattern): void
     {
-        if (!preg_match('##u', $string)) {
-            throw new InvalidArgumentException('String is not a valid UTF-8 string.');
+        if (!preg_match('##u', $pattern)) {
+            throw new InvalidArgumentException('Pattern is not a valid UTF-8 string.');
         }
     }
 }

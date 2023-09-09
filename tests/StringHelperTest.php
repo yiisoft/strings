@@ -524,9 +524,18 @@ final class StringHelperTest extends TestCase
 
         $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
-        yield [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, ''];
-        yield [$base, $base];
-        yield [[$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, $base], ['', $base]];
+        yield [
+            $ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL,
+            ''
+        ];
+        yield [
+            $base,
+            $base
+        ];
+        yield [
+            [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, $base],
+            ['', $base]
+        ];
     }
 
     public function dataTrim(): iterable
@@ -540,11 +549,26 @@ final class StringHelperTest extends TestCase
 
         $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
-        yield ['  ' . $base . $emsp . '   ' . PHP_EOL . "\n", $base];
-        yield [$bom . $base . "\n    ", $base];
-        yield [$bom . $base . $nbsp . $nbsp . '  ', $base];
-        yield ["\n" . $thsp . $base . $nbsp . $nbsp . "\n", $base];
-        yield ['  ' . $thsp . $base . $lsep . $ascii . "\n" . PHP_EOL, $base];
+        yield [
+            '  ' . $base . $emsp . '   ' . PHP_EOL . "\n",
+            $base
+        ];
+        yield [
+            $bom . $base . "\n    ",
+            $base
+        ];
+        yield [
+            $bom . $base . $nbsp . $nbsp . '  ',
+            $base
+        ];
+        yield [
+            "\n" . $thsp . $base . $nbsp . $nbsp . "\n",
+            $base
+        ];
+        yield [
+            '  ' . $thsp . $base . $lsep . $ascii . "\n" . PHP_EOL,
+            $base
+        ];
     }
 
     public function dataLtrim(): iterable
@@ -558,10 +582,22 @@ final class StringHelperTest extends TestCase
 
         $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
-        yield [PHP_EOL . '  ' . $base . PHP_EOL, $base . PHP_EOL];
-        yield [$bom . $base . "\n    ", $base . "\n    "];
-        yield [$bom . $nbsp . $nbsp . '  ' . $base . $nbsp . $nbsp . '  ', $base . $nbsp . $nbsp . '  '];
-        yield ["\n" . $ascii . $thsp . $base . "\n", $base . "\n"];
+        yield [
+            PHP_EOL . '  ' . $emsp . $base . PHP_EOL,
+            $base . PHP_EOL
+        ];
+        yield [
+            $bom . $base . "\n    ",
+            $base . "\n    "
+        ];
+        yield [
+            $bom . $nbsp . $nbsp . '  ' . $base . $nbsp . $nbsp . '  ',
+            $base . $nbsp . $nbsp . '  '
+        ];
+        yield [
+            "\n" . $ascii . $thsp . $base . "\n",
+            $base . "\n"
+        ];
     }
 
     public function dataRtrim(): iterable
@@ -575,10 +611,22 @@ final class StringHelperTest extends TestCase
 
         $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
-        yield [PHP_EOL . $base . '  ' . PHP_EOL, PHP_EOL . $base];
-        yield [$bom . $base . "\n    ", $bom . $base];
-        yield [$bom . $nbsp . $nbsp . '  ' . $base, $bom . $nbsp . $nbsp . '  ' . $base];
-        yield ["\n" . $base . $ascii . $thsp . "\n", "\n" . $base];
+        yield [
+            PHP_EOL . $base . $emsp . '  ' . PHP_EOL,
+            PHP_EOL . $base
+        ];
+        yield [
+            $bom . $base . "\n    ",
+            $bom . $base
+        ];
+        yield [
+            $bom . $nbsp . $nbsp . '  ' . $base,
+            $bom . $nbsp . $nbsp . '  ' . $base
+        ];
+        yield [
+            "\n" . $base . $ascii . $thsp . "\n",
+            "\n" . $base
+        ];
     }
 
     /**
@@ -608,10 +656,10 @@ final class StringHelperTest extends TestCase
         $this->assertSame($expected, StringHelper::rtrim($string));
     }
 
-    public function testInvalidUTF8String(): void
+    public function testInvalidTrimPattern(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
-        StringHelper::ensureUTF8String("\xC3\x28");
+        StringHelper::trim('string', "\xC3\x28");
     }
 }
