@@ -583,8 +583,8 @@ final class StringHelperTest extends TestCase
         $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
         yield [
-            $base  . $ascii . $nbsp . '  ' . PHP_EOL,
-            $base  . $ascii . $nbsp . '  ' . PHP_EOL,
+            $base . $ascii . $nbsp . '  ' . PHP_EOL,
+            $base . $ascii . $nbsp . '  ' . PHP_EOL,
         ];
         yield [
             PHP_EOL . '  ' . $emsp . $base . PHP_EOL,
