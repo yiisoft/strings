@@ -591,7 +591,12 @@ final class StringHelper
      * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Quote $pattern if it contains special regular expression characters.
      * @see https://www.php.net/manual/function.preg-quote.php
      *
-     * @return array|string
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
      */
     public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
@@ -608,7 +613,12 @@ final class StringHelper
      * @param string|string[] $string
      * @param string $pattern
      *
-     * @return array|string
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
      */
     public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
@@ -625,7 +635,12 @@ final class StringHelper
      * @param string|string[] $string
      * @param string $pattern
      *
-     * @return array|string
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
      */
     public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
