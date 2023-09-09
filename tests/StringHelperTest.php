@@ -526,15 +526,15 @@ final class StringHelperTest extends TestCase
 
         yield [
             $ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL,
-            ''
+            '',
         ];
         yield [
             $base,
-            $base
+            $base,
         ];
         yield [
             [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, $base],
-            ['', $base]
+            ['', $base],
         ];
     }
 
@@ -551,23 +551,23 @@ final class StringHelperTest extends TestCase
 
         yield [
             '  ' . $base . $emsp . '   ' . PHP_EOL . "\n",
-            $base
+            $base,
         ];
         yield [
             $bom . $base . "\n    ",
-            $base
+            $base,
         ];
         yield [
             $bom . $base . $nbsp . $nbsp . '  ',
-            $base
+            $base,
         ];
         yield [
             "\n" . $thsp . $base . $nbsp . $nbsp . "\n",
-            $base
+            $base,
         ];
         yield [
             '  ' . $thsp . $base . $lsep . $ascii . "\n" . PHP_EOL,
-            $base
+            $base,
         ];
     }
 
@@ -583,20 +583,24 @@ final class StringHelperTest extends TestCase
         $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
         yield [
+            $base  . $ascii . $nbsp . '  ' . PHP_EOL,
+            $base  . $ascii . $nbsp . '  ' . PHP_EOL,
+        ];
+        yield [
             PHP_EOL . '  ' . $emsp . $base . PHP_EOL,
-            $base . PHP_EOL
+            $base . PHP_EOL,
         ];
         yield [
             $bom . $base . "\n    ",
-            $base . "\n    "
+            $base . "\n    ",
         ];
         yield [
             $bom . $nbsp . $nbsp . '  ' . $base . $nbsp . $nbsp . '  ',
-            $base . $nbsp . $nbsp . '  '
+            $base . $nbsp . $nbsp . '  ',
         ];
         yield [
             "\n" . $ascii . $thsp . $base . "\n",
-            $base . "\n"
+            $base . "\n",
         ];
     }
 
@@ -612,20 +616,20 @@ final class StringHelperTest extends TestCase
         $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
 
         yield [
-            PHP_EOL . $base . $emsp . '  ' . PHP_EOL,
-            PHP_EOL . $base
+            $bom . $nbsp . $nbsp . '  ' . $base,
+            $bom . $nbsp . $nbsp . '  ' . $base,
         ];
         yield [
             $bom . $base . "\n    ",
-            $bom . $base
+            $bom . $base,
         ];
         yield [
-            $bom . $nbsp . $nbsp . '  ' . $base,
-            $bom . $nbsp . $nbsp . '  ' . $base
+            PHP_EOL . $base . $emsp . '  ' . PHP_EOL,
+            PHP_EOL . $base,
         ];
         yield [
             "\n" . $base . $ascii . $thsp . "\n",
-            "\n" . $base
+            "\n" . $base,
         ];
     }
 
