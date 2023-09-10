@@ -14,6 +14,8 @@ use function mb_strlen;
 use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
+use function preg_match;
+use function preg_replace;
 use function str_ends_with;
 use function str_starts_with;
 use function strlen;
