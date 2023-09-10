@@ -626,7 +626,7 @@ final class StringHelper
     {
         self::ensureUTF8Pattern($pattern);
 
-        return preg_replace("#^[$pattern]+#uD", '', $string);
+        return preg_replace("#^[$pattern]+#u", '', $string);
     }
 
     /**
@@ -648,7 +648,7 @@ final class StringHelper
     {
         self::ensureUTF8Pattern($pattern);
 
-        return preg_replace("#[$pattern]+$#u", '', $string);
+        return preg_replace("#[$pattern]+$#uD", '', $string);
     }
 
     /**
