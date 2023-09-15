@@ -633,6 +633,135 @@ final class StringHelperTest extends TestCase
         ];
     }
 
+    public function dataTrimPattern(): iterable
+    {
+        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
+        $nbsp = "\u{00A0}"; // "\xC2\xA0"
+        $emsp = "\u{2003}"; // "\xE2\x80\x83"
+        $thsp = "\u{2009}"; // "\xE2\x80\x89"
+        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
+        $ascii = " \f\n\r\t\v\x00";
+
+        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+
+        yield [
+            $base . 'aaaa',
+            'a',
+            $base,
+        ];
+        yield [
+            'ьььь' . $base . '我我我我',
+            '我ь',
+            $base,
+        ];
+        yield [
+            '####' . $base . '####',
+            preg_quote('#'),
+            $base,
+        ];
+        yield [
+            '\\\\\\' . $base . '\\\\\\',
+            preg_quote('\\'),
+            $base,
+        ];
+        yield [
+            $base . 'aaa' . "\n",
+            'a',
+            $base . 'aaa' . "\n",
+        ];
+        yield [
+            $base . 'aaa' . PHP_EOL,
+            'a',
+            $base . 'aaa' . PHP_EOL,
+        ];
+        yield [
+            $base . '\\\\\\' . "\n",
+            preg_quote('\\'),
+            $base . '\\\\\\' . "\n",
+        ];
+    }
+
+    public function dataLtrimPattern(): iterable
+    {
+        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
+        $nbsp = "\u{00A0}"; // "\xC2\xA0"
+        $emsp = "\u{2003}"; // "\xE2\x80\x83"
+        $thsp = "\u{2009}"; // "\xE2\x80\x89"
+        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
+        $ascii = " \f\n\r\t\v\x00";
+
+        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+
+        yield [
+            'aaaa' . $base,
+            'a',
+            $base,
+        ];
+        yield [
+            'ьььь' . '我我我我' . $base . 'ьььь',
+            '我ь',
+            $base . 'ьььь',
+        ];
+        yield [
+            '####' . $base . '####',
+            preg_quote('#'),
+            $base . '####',
+        ];
+        yield [
+            '\\\\\\' . $base . '\\\\\\',
+            preg_quote('\\'),
+            $base . '\\\\\\',
+        ];
+    }
+
+    public function dataRtrimPattern(): iterable
+    {
+        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
+        $nbsp = "\u{00A0}"; // "\xC2\xA0"
+        $emsp = "\u{2003}"; // "\xE2\x80\x83"
+        $thsp = "\u{2009}"; // "\xE2\x80\x89"
+        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
+        $ascii = " \f\n\r\t\v\x00";
+
+        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+
+        yield [
+            $base . 'aaaa',
+            'a',
+            $base,
+        ];
+        yield [
+            'ьььь' . $base . '我我我我' . 'ьььь',
+            '我ь',
+            'ьььь' . $base,
+        ];
+        yield [
+            '####' . $base . '####',
+            preg_quote('#'),
+            '####' . $base,
+        ];
+        yield [
+            '\\\\\\' . $base . '\\\\\\',
+            preg_quote('\\'),
+            '\\\\\\' . $base,
+        ];
+        yield [
+            $base . 'aaa' . "\n",
+            'a',
+            $base . 'aaa' . "\n",
+        ];
+        yield [
+            $base . 'aaa' . PHP_EOL,
+            'a',
+            $base . 'aaa' . PHP_EOL,
+        ];
+        yield [
+            $base . '\\\\\\' . "\n",
+            preg_quote('\\'),
+            $base . '\\\\\\' . "\n",
+        ];
+    }
+
     /**
      * @dataProvider dataNoTrim
      * @dataProvider dataTrim
@@ -658,6 +787,30 @@ final class StringHelperTest extends TestCase
     public function testRtrim(string|array $string, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::rtrim($string));
+    }
+
+    /**
+     * @dataProvider dataTrimPattern
+     */
+    public function testTrimPattern(string|array $string, string $pattern, string|array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::trim($string, $pattern));
+    }
+
+    /**
+     * @dataProvider dataLtrimPattern
+     */
+    public function testLtrimPattern(string|array $string, string $pattern, string|array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::ltrim($string, $pattern));
+    }
+
+    /**
+     * @dataProvider dataRtrimPattern
+     */
+    public function testRtrimPattern(string|array $string, string $pattern, string|array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::rtrim($string, $pattern));
     }
 
     public function testInvalidTrimPattern(): void
