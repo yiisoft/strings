@@ -590,8 +590,8 @@ final class StringHelper
      * @see https://www.php.net/manual/function.preg-replace
      *
      * @param string|string[] $string The string or an array with strings.
-     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Quote `$pattern` if it contains
-     * special regular expression characters {@see https://www.php.net/manual/function.preg-quote.php}.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
      *
      * @psalm-template TKey of array-key
      * @psalm-param string|array<TKey, string> $string
@@ -613,8 +613,8 @@ final class StringHelper
      * @see self::trim()
      *
      * @param string|string[] $string The string or an array with strings.
-     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Quote `$pattern` if it contains
-     * special regular expression characters {@see https://www.php.net/manual/function.preg-quote.php}.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
      *
      * @psalm-template TKey of array-key
      * @psalm-param string|array<TKey, string> $string
@@ -636,8 +636,8 @@ final class StringHelper
      * @see self::trim()
      *
      * @param string|string[] $string The string or an array with strings.
-     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Quote `$pattern` if it contains
-     * special regular expression characters {@see https://www.php.net/manual/function.preg-quote.php}.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
      *
      * @psalm-template TKey of array-key
      * @psalm-param string|array<TKey, string> $string
