@@ -6,7 +6,7 @@
 - Enh #103: Raise required PHP version to `^8.0` (@xepozz)
 - New #102, #106: Add `CombinedRegexp` class (@xepozz, @vjik)
 - Enh #106: Using fully-qualified function calls to improve performance (@vjik)
-- New #104: Add methods StringHelper::trim(), StringHelper::ltrim(), StringHelper::rtrim() (@olegbaturin)
+- New #104: Add methods `StringHelper::trim()`, `StringHelper::ltrim()`, `StringHelper::rtrim()` (@olegbaturin)
 
 ## 2.1.2 July 27, 2023
 

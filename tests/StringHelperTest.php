@@ -10,6 +10,15 @@ use Yiisoft\Strings\StringHelper;
 
 final class StringHelperTest extends TestCase
 {
+    private const WS = [
+        'bom' => "\u{FEFF}", // "\xEF\xBB\xBF"
+        'nbsp' => "\u{00A0}", // "\xC2\xA0"
+        'emsp' => "\u{2003}", // "\xE2\x80\x83"
+        'thsp' => "\u{2009}", // "\xE2\x80\x89"
+        'lsep' => "\u{2028}", // "\xE2\x80\xA8"
+        'ascii' => " \f\n\r\t\v\x00",
+    ];
+
     public function byteLength(): void
     {
         $this->assertEquals(4, StringHelper::byteLength('this'));
@@ -513,19 +522,12 @@ final class StringHelperTest extends TestCase
         StringHelper::parsePath('key1.key2.key3', '.', '.');
     }
 
-    public function dataNoTrim(): iterable
+    public function dataInvariantTrim(): iterable
     {
-        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
-        $nbsp = "\u{00A0}"; // "\xC2\xA0"
-        $emsp = "\u{2003}"; // "\xE2\x80\x83"
-        $thsp = "\u{2009}"; // "\xE2\x80\x89"
-        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
-        $ascii = " \f\n\r\t\v\x00";
-
-        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
         yield [
-            $ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL,
+            self::WS['ascii'] . self::WS['ascii'] . self::WS['nbsp'] . self::WS['emsp'] . self::WS['emsp'] . PHP_EOL,
             '',
         ];
         yield [
@@ -533,116 +535,88 @@ final class StringHelperTest extends TestCase
             $base,
         ];
         yield [
-            [$ascii . $ascii . $nbsp . $emsp . $emsp . PHP_EOL, $base],
+            [self::WS['ascii'] . self::WS['ascii'] . self::WS['nbsp'] . self::WS['emsp'] . self::WS['emsp'] . PHP_EOL, $base],
             ['', $base],
         ];
     }
 
     public function dataTrim(): iterable
     {
-        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
-        $nbsp = "\u{00A0}"; // "\xC2\xA0"
-        $emsp = "\u{2003}"; // "\xE2\x80\x83"
-        $thsp = "\u{2009}"; // "\xE2\x80\x89"
-        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
-        $ascii = " \f\n\r\t\v\x00";
-
-        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
         yield [
-            '  ' . $base . $emsp . '   ' . PHP_EOL . "\n",
+            '  ' . $base . self::WS['emsp'] . '   ' . PHP_EOL . "\n",
             $base,
         ];
         yield [
-            $bom . $base . "\n    ",
+            self::WS['bom'] . $base . "\n    ",
             $base,
         ];
         yield [
-            $bom . $base . $nbsp . $nbsp . '  ',
+            self::WS['bom'] . $base . self::WS['nbsp'] . self::WS['nbsp'] . '  ',
             $base,
         ];
         yield [
-            "\n" . $thsp . $base . $nbsp . $nbsp . "\n",
+            "\n" . self::WS['thsp'] . $base . self::WS['nbsp'] . self::WS['nbsp'] . "\n",
             $base,
         ];
         yield [
-            '  ' . $thsp . $base . $lsep . $ascii . "\n" . PHP_EOL,
+            '  ' . self::WS['thsp'] . $base . self::WS['lsep'] . self::WS['ascii'] . "\n" . PHP_EOL,
             $base,
         ];
     }
 
     public function dataLtrim(): iterable
     {
-        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
-        $nbsp = "\u{00A0}"; // "\xC2\xA0"
-        $emsp = "\u{2003}"; // "\xE2\x80\x83"
-        $thsp = "\u{2009}"; // "\xE2\x80\x89"
-        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
-        $ascii = " \f\n\r\t\v\x00";
-
-        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
         yield [
-            $base . $ascii . $nbsp . '  ' . PHP_EOL,
-            $base . $ascii . $nbsp . '  ' . PHP_EOL,
+            $base . self::WS['ascii'] . self::WS['nbsp'] . '  ' . PHP_EOL,
+            $base . self::WS['ascii'] . self::WS['nbsp'] . '  ' . PHP_EOL,
         ];
         yield [
-            PHP_EOL . '  ' . $emsp . $base . PHP_EOL,
+            PHP_EOL . '  ' . self::WS['emsp'] . $base . PHP_EOL,
             $base . PHP_EOL,
         ];
         yield [
-            $bom . $base . "\n    ",
+            self::WS['bom'] . $base . "\n    ",
             $base . "\n    ",
         ];
         yield [
-            $bom . $nbsp . $nbsp . '  ' . $base . $nbsp . $nbsp . '  ',
-            $base . $nbsp . $nbsp . '  ',
+            self::WS['bom'] . self::WS['nbsp'] . self::WS['nbsp'] . '  ' . $base . self::WS['nbsp'] . self::WS['nbsp'] . '  ',
+            $base . self::WS['nbsp'] . self::WS['nbsp'] . '  ',
         ];
         yield [
-            "\n" . $ascii . $thsp . $base . "\n",
+            "\n" . self::WS['ascii'] . self::WS['thsp'] . $base . "\n",
             $base . "\n",
         ];
     }
 
     public function dataRtrim(): iterable
     {
-        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
-        $nbsp = "\u{00A0}"; // "\xC2\xA0"
-        $emsp = "\u{2003}"; // "\xE2\x80\x83"
-        $thsp = "\u{2009}"; // "\xE2\x80\x89"
-        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
-        $ascii = " \f\n\r\t\v\x00";
-
-        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
         yield [
-            $bom . $nbsp . $nbsp . '  ' . $base,
-            $bom . $nbsp . $nbsp . '  ' . $base,
+            self::WS['bom'] . self::WS['nbsp'] . self::WS['nbsp'] . '  ' . $base,
+            self::WS['bom'] . self::WS['nbsp'] . self::WS['nbsp'] . '  ' . $base,
         ];
         yield [
-            $bom . $base . "\n    ",
-            $bom . $base,
+            self::WS['bom'] . $base . "\n    ",
+            self::WS['bom'] . $base,
         ];
         yield [
-            PHP_EOL . $base . $emsp . '  ' . PHP_EOL,
+            PHP_EOL . $base . self::WS['emsp'] . '  ' . PHP_EOL,
             PHP_EOL . $base,
         ];
         yield [
-            "\n" . $base . $ascii . $thsp . "\n",
+            "\n" . $base . self::WS['ascii'] . self::WS['thsp'] . "\n",
             "\n" . $base,
         ];
     }
 
     public function dataTrimPattern(): iterable
     {
-        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
-        $nbsp = "\u{00A0}"; // "\xC2\xA0"
-        $emsp = "\u{2003}"; // "\xE2\x80\x83"
-        $thsp = "\u{2009}"; // "\xE2\x80\x89"
-        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
-        $ascii = " \f\n\r\t\v\x00";
-
-        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
         yield [
             $base . 'aaaa',
@@ -683,14 +657,7 @@ final class StringHelperTest extends TestCase
 
     public function dataLtrimPattern(): iterable
     {
-        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
-        $nbsp = "\u{00A0}"; // "\xC2\xA0"
-        $emsp = "\u{2003}"; // "\xE2\x80\x83"
-        $thsp = "\u{2009}"; // "\xE2\x80\x89"
-        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
-        $ascii = " \f\n\r\t\v\x00";
-
-        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
         yield [
             'aaaa' . $base,
@@ -716,14 +683,7 @@ final class StringHelperTest extends TestCase
 
     public function dataRtrimPattern(): iterable
     {
-        $bom = "\u{FEFF}"; // "\xEF\xBB\xBF"
-        $nbsp = "\u{00A0}"; // "\xC2\xA0"
-        $emsp = "\u{2003}"; // "\xE2\x80\x83"
-        $thsp = "\u{2009}"; // "\xE2\x80\x89"
-        $lsep = "\u{2028}"; // "\xE2\x80\xA8"
-        $ascii = " \f\n\r\t\v\x00";
-
-        $base = 'Здесь我' . $nbsp . '-' . $thsp . 'Multibyte我' . $lsep . 'Строка 👍🏻';
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
         yield [
             $base . 'aaaa',
@@ -763,7 +723,7 @@ final class StringHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider dataNoTrim
+     * @dataProvider dataInvariantTrim
      * @dataProvider dataTrim
      */
     public function testTrim(string|array $string, string|array $expected): void
@@ -772,7 +732,7 @@ final class StringHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider dataNoTrim
+     * @dataProvider dataInvariantTrim
      * @dataProvider dataLtrim
      */
     public function testLtrim(string|array $string, string|array $expected): void
@@ -781,7 +741,7 @@ final class StringHelperTest extends TestCase
     }
 
     /**
-     * @dataProvider dataNoTrim
+     * @dataProvider dataInvariantTrim
      * @dataProvider dataRtrim
      */
     public function testRtrim(string|array $string, string|array $expected): void
