@@ -25,8 +25,10 @@ final class WildcardPattern
      * @param string $pattern The shell wildcard pattern to match against.
      * @param string[] $delimiters Delimiters to consider for "*" (`/` and `\` by default).
      */
-    public function __construct(private string $pattern, private array $delimiters = ['\\\\', '/'])
-    {
+    public function __construct(
+        private string $pattern,
+        private array $delimiters = ['\\\\', '/'],
+    ) {
     }
 
     /**
