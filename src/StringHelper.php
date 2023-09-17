@@ -14,6 +14,8 @@ use function mb_strlen;
 use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
+use function preg_match;
+use function preg_replace;
 use function str_ends_with;
 use function str_starts_with;
 use function strlen;
@@ -23,6 +25,8 @@ use function strlen;
  */
 final class StringHelper
 {
+    public const DEFAULT_WHITESPACE_PATTERN = "\pC\pZ";
+
     /**
      * Returns the number of bytes in the given string.
      * This method ensures the string is treated as a byte array even if `mbstring.func_overload` is turned on
@@ -576,5 +580,90 @@ final class StringHelper
             },
             $result
         );
+    }
+
+    /**
+     * Strip Unicode whitespace (with Unicode symbol property White_Space=yes) or other characters from the beginning and end of a string.
+     * Input string and pattern are treated as UTF-8.
+     *
+     * @see https://en.wikipedia.org/wiki/Whitespace_character#Unicode
+     * @see https://www.php.net/manual/function.preg-replace
+     *
+     * @param string|string[] $string The string or an array with strings.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
+     *
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
+     */
+    public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
+    {
+        self::ensureUtf8Pattern($pattern);
+
+        return preg_replace("#^[$pattern]+|[$pattern]+$#uD", '', $string);
+    }
+
+    /**
+     * Strip Unicode whitespace (with Unicode symbol property White_Space=yes) or other characters from the beginning of a string.
+     *
+     * @see self::trim()
+     *
+     * @param string|string[] $string The string or an array with strings.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
+     *
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
+     */
+    public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
+    {
+        self::ensureUtf8Pattern($pattern);
+
+        return preg_replace("#^[$pattern]+#u", '', $string);
+    }
+
+    /**
+     * Strip Unicode whitespace (with Unicode symbol property White_Space=yes) or other characters from the end of a string.
+     *
+     * @see self::trim()
+     *
+     * @param string|string[] $string The string or an array with strings.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
+     *
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
+     */
+    public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
+    {
+        self::ensureUtf8Pattern($pattern);
+
+        return preg_replace("#[$pattern]+$#uD", '', $string);
+    }
+
+    /**
+     * Ensure the input string is a valid UTF-8 string.
+     *
+     * @param string $pattern The input string.
+     *
+     * @throws InvalidArgumentException
+     */
+    private static function ensureUtf8Pattern(string $pattern): void
+    {
+        if (!preg_match('##u', $pattern)) {
+            throw new InvalidArgumentException('Pattern is not a valid UTF-8 string.');
+        }
     }
 }
