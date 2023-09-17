@@ -68,6 +68,8 @@ final class NumericHelper
 
     /**
      * Checks whether the given string is an integer number.
+     *
+     * Require Filter PHP extension ({@see https://www.php.net/manual/intro.filter.php}).
      */
     public static function isInteger(mixed $value): bool
     {
