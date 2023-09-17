@@ -430,7 +430,12 @@ final class StringHelper
     {
         $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
-        $wordsWithUppercaseFirstCharacter = array_map(static fn (string $word) => self::uppercaseFirstCharacter($word, $encoding), $words);
+        $wordsWithUppercaseFirstCharacter = array_map(
+            static function (string $word) use ($encoding) {
+                return self::uppercaseFirstCharacter($word, $encoding);
+            },
+            $words
+        );
 
         return implode(' ', $wordsWithUppercaseFirstCharacter);
     }
