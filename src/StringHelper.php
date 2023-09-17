@@ -345,9 +345,9 @@ final class StringHelper
      */
     public static function truncateWords(string $input, int $count, string $trimMarker = '…'): string
     {
+        /** @psalm-var list<string> $words */
         $words = preg_split('/(\s+)/u', trim($input), -1, PREG_SPLIT_DELIM_CAPTURE);
-        if ((is_countable($words) ? count($words) : 0) / 2 > $count) {
-            /** @var string[] $words */
+        if (count($words) / 2 > $count) {
             $words = array_slice($words, 0, ($count * 2) - 1);
             return implode('', $words) . $trimMarker;
         }
@@ -373,7 +373,9 @@ final class StringHelper
      */
     public static function countWords(string $input): int
     {
-        return is_countable(preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY)) ? count(preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY)) : 0;
+        /** @var array $words */
+        $words = preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY);
+        return count($words);
     }
 
     /**
