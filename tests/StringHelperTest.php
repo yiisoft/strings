@@ -121,8 +121,6 @@ final class StringHelperTest extends TestCase
     /**
      * @dataProvider providerStartsWith
      *
-     * @param bool $result
-     * @param string $string
      * @param string|null $with
      */
     public function testStartsWith(bool $result, string $string, ?string $with): void
@@ -175,8 +173,6 @@ final class StringHelperTest extends TestCase
     /**
      * @dataProvider providerEndsWith
      *
-     * @param bool $result
-     * @param string $string
      * @param string|null $with
      */
     public function testEndsWith(bool $result, string $string, ?string $with): void
@@ -237,9 +233,6 @@ final class StringHelperTest extends TestCase
 
     /**
      * @dataProvider base64UrlEncodedStringsProvider
-     *
-     * @param string $input
-     * @param string $base64UrlEncoded
      */
     public function testBase64UrlEncode(string $input, string $base64UrlEncoded): void
     {
@@ -281,8 +274,6 @@ final class StringHelperTest extends TestCase
     }
 
     /**
-     * @param string $string
-     * @param string $expectedResult
      *
      * @dataProvider uppercaseFirstCharacterProvider
      */
@@ -303,8 +294,6 @@ final class StringHelperTest extends TestCase
     }
 
     /**
-     * @param string $string
-     * @param string $expectedResult
      *
      * @dataProvider uppercaseFirstCharacterInEachWordProvider
      */
@@ -425,9 +414,6 @@ final class StringHelperTest extends TestCase
 
     /**
      * @dataProvider dataSplit
-     *
-     * @param string $string
-     * @param array $expected
      */
     public function testSplit(string $string, array $expected): void
     {
