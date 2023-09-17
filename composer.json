@@ -18,7 +18,7 @@
         "chat": "https://t.me/yii3en"
     },
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
         "ext-mbstring": "*"
     },
     "require-dev": {
@@ -26,7 +26,7 @@
         "rector/rector": "^0.14.3",
         "roave/infection-static-analysis-plugin": "^1.16",
         "spatie/phpunit-watcher": "^1.23",
-        "vimeo/psalm": "^4.18"
+        "vimeo/psalm": "^4.30|^5.8"
     },
     "autoload": {
         "psr-4": {

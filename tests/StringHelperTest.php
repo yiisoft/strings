@@ -10,6 +10,15 @@ use Yiisoft\Strings\StringHelper;
 
 final class StringHelperTest extends TestCase
 {
+    private const WS = [
+        'bom' => "\u{FEFF}", // "\xEF\xBB\xBF"
+        'nbsp' => "\u{00A0}", // "\xC2\xA0"
+        'emsp' => "\u{2003}", // "\xE2\x80\x83"
+        'thsp' => "\u{2009}", // "\xE2\x80\x89"
+        'lsep' => "\u{2028}", // "\xE2\x80\xA8"
+        'ascii' => " \f\n\r\t\v\x00",
+    ];
+
     public function byteLength(): void
     {
         $this->assertEquals(4, StringHelper::byteLength('this'));
@@ -89,7 +98,7 @@ final class StringHelperTest extends TestCase
         $this->assertEquals('file', StringHelper::baseName('/path/to/filete\st', 'te\st'));
         $this->assertEquals('st', StringHelper::baseName('/path/to/filete\st', 'te/st'));
 
-        // http://www.php.net/manual/en/function.basename.php#72254
+        // https://www.php.net/manual/en/function.basename.php#72254
         $this->assertEquals('foo', StringHelper::baseName('/bar/foo/'));
         $this->assertEquals('foo', StringHelper::baseName('\\bar\\foo\\'));
     }
@@ -111,6 +120,10 @@ final class StringHelperTest extends TestCase
 
     /**
      * @dataProvider providerStartsWith
+     *
+     * @param bool $result
+     * @param string $string
+     * @param string|null $with
      */
     public function testStartsWith(bool $result, string $string, ?string $with): void
     {
@@ -161,6 +174,10 @@ final class StringHelperTest extends TestCase
 
     /**
      * @dataProvider providerEndsWith
+     *
+     * @param bool $result
+     * @param string $string
+     * @param string|null $with
      */
     public function testEndsWith(bool $result, string $string, ?string $with): void
     {
@@ -220,6 +237,9 @@ final class StringHelperTest extends TestCase
 
     /**
      * @dataProvider base64UrlEncodedStringsProvider
+     *
+     * @param string $input
+     * @param string $base64UrlEncoded
      */
     public function testBase64UrlEncode(string $input, string $base64UrlEncoded): void
     {
@@ -261,6 +281,9 @@ final class StringHelperTest extends TestCase
     }
 
     /**
+     * @param string $string
+     * @param string $expectedResult
+     *
      * @dataProvider uppercaseFirstCharacterProvider
      */
     public function testUppercaseFirstCharacter(string $string, string $expectedResult): void
@@ -280,6 +303,9 @@ final class StringHelperTest extends TestCase
     }
 
     /**
+     * @param string $string
+     * @param string $expectedResult
+     *
      * @dataProvider uppercaseFirstCharacterInEachWordProvider
      */
     public function testUppercaseFirstCharacterInEachWord(string $string, string $expectedResult): void
@@ -390,11 +416,18 @@ final class StringHelperTest extends TestCase
                 "\0\nA\nB",
                 ["\0", 'A', 'B'],
             ],
+            [
+                "технический\nдолг",
+                ['технический', 'долг'],
+            ],
         ];
     }
 
     /**
      * @dataProvider dataSplit
+     *
+     * @param string $string
+     * @param array $expected
      */
     public function testSplit(string $string, array $expected): void
     {
@@ -487,5 +520,263 @@ final class StringHelperTest extends TestCase
         $this->expectExceptionMessage('Delimiter and escape character must be different.');
 
         StringHelper::parsePath('key1.key2.key3', '.', '.');
+    }
+
+    public function dataInvariantTrim(): iterable
+    {
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
+
+        yield [
+            self::WS['ascii'] . self::WS['ascii'] . self::WS['nbsp'] . self::WS['emsp'] . self::WS['emsp'] . PHP_EOL,
+            '',
+        ];
+        yield [
+            $base,
+            $base,
+        ];
+        yield [
+            [self::WS['ascii'] . self::WS['ascii'] . self::WS['nbsp'] . self::WS['emsp'] . self::WS['emsp'] . PHP_EOL, $base],
+            ['', $base],
+        ];
+    }
+
+    public function dataTrim(): iterable
+    {
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
+
+        yield [
+            '  ' . $base . self::WS['emsp'] . '   ' . PHP_EOL . "\n",
+            $base,
+        ];
+        yield [
+            self::WS['bom'] . $base . "\n    ",
+            $base,
+        ];
+        yield [
+            self::WS['bom'] . $base . self::WS['nbsp'] . self::WS['nbsp'] . '  ',
+            $base,
+        ];
+        yield [
+            "\n" . self::WS['thsp'] . $base . self::WS['nbsp'] . self::WS['nbsp'] . "\n",
+            $base,
+        ];
+        yield [
+            '  ' . self::WS['thsp'] . $base . self::WS['lsep'] . self::WS['ascii'] . "\n" . PHP_EOL,
+            $base,
+        ];
+    }
+
+    public function dataLtrim(): iterable
+    {
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
+
+        yield [
+            $base . self::WS['ascii'] . self::WS['nbsp'] . '  ' . PHP_EOL,
+            $base . self::WS['ascii'] . self::WS['nbsp'] . '  ' . PHP_EOL,
+        ];
+        yield [
+            PHP_EOL . '  ' . self::WS['emsp'] . $base . PHP_EOL,
+            $base . PHP_EOL,
+        ];
+        yield [
+            self::WS['bom'] . $base . "\n    ",
+            $base . "\n    ",
+        ];
+        yield [
+            self::WS['bom'] . self::WS['nbsp'] . self::WS['nbsp'] . '  ' . $base . self::WS['nbsp'] . self::WS['nbsp'] . '  ',
+            $base . self::WS['nbsp'] . self::WS['nbsp'] . '  ',
+        ];
+        yield [
+            "\n" . self::WS['ascii'] . self::WS['thsp'] . $base . "\n",
+            $base . "\n",
+        ];
+    }
+
+    public function dataRtrim(): iterable
+    {
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
+
+        yield [
+            self::WS['bom'] . self::WS['nbsp'] . self::WS['nbsp'] . '  ' . $base,
+            self::WS['bom'] . self::WS['nbsp'] . self::WS['nbsp'] . '  ' . $base,
+        ];
+        yield [
+            self::WS['bom'] . $base . "\n    ",
+            self::WS['bom'] . $base,
+        ];
+        yield [
+            PHP_EOL . $base . self::WS['emsp'] . '  ' . PHP_EOL,
+            PHP_EOL . $base,
+        ];
+        yield [
+            "\n" . $base . self::WS['ascii'] . self::WS['thsp'] . "\n",
+            "\n" . $base,
+        ];
+    }
+
+    public function dataTrimPattern(): iterable
+    {
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
+
+        yield [
+            $base . 'aaaa',
+            'a',
+            $base,
+        ];
+        yield [
+            'ьььь' . $base . '我我我我',
+            '我ь',
+            $base,
+        ];
+        yield [
+            '####' . $base . '####',
+            preg_quote('#'),
+            $base,
+        ];
+        yield [
+            '\\\\\\' . $base . '\\\\\\',
+            preg_quote('\\'),
+            $base,
+        ];
+        yield [
+            $base . 'aaa' . "\n",
+            'a',
+            $base . 'aaa' . "\n",
+        ];
+        yield [
+            $base . 'aaa' . PHP_EOL,
+            'a',
+            $base . 'aaa' . PHP_EOL,
+        ];
+        yield [
+            $base . '\\\\\\' . "\n",
+            preg_quote('\\'),
+            $base . '\\\\\\' . "\n",
+        ];
+    }
+
+    public function dataLtrimPattern(): iterable
+    {
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
+
+        yield [
+            'aaaa' . $base,
+            'a',
+            $base,
+        ];
+        yield [
+            'ьььь' . '我我我我' . $base . 'ьььь',
+            '我ь',
+            $base . 'ьььь',
+        ];
+        yield [
+            '####' . $base . '####',
+            preg_quote('#'),
+            $base . '####',
+        ];
+        yield [
+            '\\\\\\' . $base . '\\\\\\',
+            preg_quote('\\'),
+            $base . '\\\\\\',
+        ];
+    }
+
+    public function dataRtrimPattern(): iterable
+    {
+        $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
+
+        yield [
+            $base . 'aaaa',
+            'a',
+            $base,
+        ];
+        yield [
+            'ьььь' . $base . '我我我我' . 'ьььь',
+            '我ь',
+            'ьььь' . $base,
+        ];
+        yield [
+            '####' . $base . '####',
+            preg_quote('#'),
+            '####' . $base,
+        ];
+        yield [
+            '\\\\\\' . $base . '\\\\\\',
+            preg_quote('\\'),
+            '\\\\\\' . $base,
+        ];
+        yield [
+            $base . 'aaa' . "\n",
+            'a',
+            $base . 'aaa' . "\n",
+        ];
+        yield [
+            $base . 'aaa' . PHP_EOL,
+            'a',
+            $base . 'aaa' . PHP_EOL,
+        ];
+        yield [
+            $base . '\\\\\\' . "\n",
+            preg_quote('\\'),
+            $base . '\\\\\\' . "\n",
+        ];
+    }
+
+    /**
+     * @dataProvider dataInvariantTrim
+     * @dataProvider dataTrim
+     */
+    public function testTrim(string|array $string, string|array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::trim($string));
+    }
+
+    /**
+     * @dataProvider dataInvariantTrim
+     * @dataProvider dataLtrim
+     */
+    public function testLtrim(string|array $string, string|array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::ltrim($string));
+    }
+
+    /**
+     * @dataProvider dataInvariantTrim
+     * @dataProvider dataRtrim
+     */
+    public function testRtrim(string|array $string, string|array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::rtrim($string));
+    }
+
+    /**
+     * @dataProvider dataTrimPattern
+     */
+    public function testTrimPattern(string|array $string, string $pattern, string|array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::trim($string, $pattern));
+    }
+
+    /**
+     * @dataProvider dataLtrimPattern
+     */
+    public function testLtrimPattern(string|array $string, string $pattern, string|array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::ltrim($string, $pattern));
+    }
+
+    /**
+     * @dataProvider dataRtrimPattern
+     */
+    public function testRtrimPattern(string|array $string, string $pattern, string|array $expected): void
+    {
+        $this->assertSame($expected, StringHelper::rtrim($string, $pattern));
+    }
+
+    public function testInvalidTrimPattern(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        StringHelper::trim('string', "\xC3\x28");
     }
 }

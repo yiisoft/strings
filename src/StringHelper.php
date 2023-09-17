@@ -14,14 +14,19 @@ use function mb_strlen;
 use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
+use function preg_match;
+use function preg_replace;
 use function str_ends_with;
 use function str_starts_with;
+use function strlen;
 
 /**
  * Provides static methods to work with strings.
  */
 final class StringHelper
 {
+    public const DEFAULT_WHITESPACE_PATTERN = "\pC\pZ";
+
     /**
      * Returns the number of bytes in the given string.
      * This method ensures the string is treated as a byte array even if `mbstring.func_overload` is turned on
@@ -47,7 +52,7 @@ final class StringHelper
      *
      * @return string The extracted part of string, or FALSE on failure or an empty string.
      *
-     * @see http://www.php.net/manual/en/function.substr.php
+     * @see https://www.php.net/manual/en/function.substr.php
      */
     public static function byteSubstring(string $input, int $start, int $length = null): string
     {
@@ -67,7 +72,7 @@ final class StringHelper
      *
      * @return string The trailing name component of the given path.
      *
-     * @see http://www.php.net/manual/en/function.basename.php
+     * @see https://www.php.net/manual/en/function.basename.php
      */
     public static function baseName(string $path, string $suffix = ''): string
     {
@@ -93,7 +98,7 @@ final class StringHelper
      *
      * @return string The parent directory's path.
      *
-     * @see http://www.php.net/manual/en/function.basename.php
+     * @see https://www.php.net/manual/en/function.basename.php
      */
     public static function directoryName(string $path): string
     {
@@ -231,7 +236,7 @@ final class StringHelper
             return true;
         }
 
-        // Warning check, see http://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
+        // Warning check, see https://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
         if (self::byteLength($input) < $bytes) {
             return false;
         }
@@ -472,7 +477,7 @@ final class StringHelper
     public static function split(string $string, string $separator = '\R'): array
     {
         $string = preg_replace('(^\s*|\s*$)', '', $string);
-        return preg_split('~\s*' . $separator . '\s*~', $string, -1, PREG_SPLIT_NO_EMPTY);
+        return preg_split('~\s*' . $separator . '\s*~u', $string, -1, PREG_SPLIT_NO_EMPTY);
     }
 
     /**
@@ -487,6 +492,8 @@ final class StringHelper
      * becomes "\.". Defaults to `false`.
      *
      * @return string[]
+     *
+     * @psalm-return list<string>
      */
     public static function parsePath(
         string $path,
@@ -510,6 +517,7 @@ final class StringHelper
             return [];
         }
 
+        /** @psalm-var non-empty-list<array{0:string, 1:int}> $matches */
         $matches = preg_split(
             sprintf(
                 '/(?<!%1$s)((?>%1$s%1$s)*)%2$s/',
@@ -546,5 +554,90 @@ final class StringHelper
             ),
             $result
         );
+    }
+
+    /**
+     * Strip Unicode whitespace (with Unicode symbol property White_Space=yes) or other characters from the beginning and end of a string.
+     * Input string and pattern are treated as UTF-8.
+     *
+     * @see https://en.wikipedia.org/wiki/Whitespace_character#Unicode
+     * @see https://www.php.net/manual/function.preg-replace
+     *
+     * @param string|string[] $string The string or an array with strings.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
+     *
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
+     */
+    public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
+    {
+        self::ensureUtf8Pattern($pattern);
+
+        return preg_replace("#^[$pattern]+|[$pattern]+$#uD", '', $string);
+    }
+
+    /**
+     * Strip Unicode whitespace (with Unicode symbol property White_Space=yes) or other characters from the beginning of a string.
+     *
+     * @see self::trim()
+     *
+     * @param string|string[] $string The string or an array with strings.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
+     *
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
+     */
+    public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
+    {
+        self::ensureUtf8Pattern($pattern);
+
+        return preg_replace("#^[$pattern]+#u", '', $string);
+    }
+
+    /**
+     * Strip Unicode whitespace (with Unicode symbol property White_Space=yes) or other characters from the end of a string.
+     *
+     * @see self::trim()
+     *
+     * @param string|string[] $string The string or an array with strings.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
+     *
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
+     */
+    public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
+    {
+        self::ensureUtf8Pattern($pattern);
+
+        return preg_replace("#[$pattern]+$#uD", '', $string);
+    }
+
+    /**
+     * Ensure the input string is a valid UTF-8 string.
+     *
+     * @param string $pattern The input string.
+     *
+     * @throws InvalidArgumentException
+     */
+    private static function ensureUtf8Pattern(string $pattern): void
+    {
+        if (!preg_match('##u', $pattern)) {
+            throw new InvalidArgumentException('Pattern is not a valid UTF-8 string.');
+        }
     }
 }

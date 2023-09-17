@@ -1,8 +1,20 @@
 # Yii Strings Change Log
 
-## 2.1.1 under development
+## 2.2.0 under development
 
-- no changes in this release.
+- New #103: Add `MemoizedCombinedRegexp` decorator that caches results of `CombinedRegexp` (@xepozz)
+- Enh #103: Raise required PHP version to `^8.0` (@xepozz)
+- New #102, #106: Add `CombinedRegexp` class (@xepozz, @vjik)
+- Enh #106: Using fully-qualified function calls to improve performance (@vjik)
+- New #104: Add methods `StringHelper::trim()`, `StringHelper::ltrim()`, `StringHelper::rtrim()` (@olegbaturin)
+
+## 2.1.2 July 27, 2023
+
+- Bug #105: Fix incorrect split UTF-8 strings in `StringHelper::split()` method (@vjik)
+
+## 2.1.1 April 28, 2023
+
+- Enh #85: Improve `StringHelper::parsePath()` method annotation (@vjik)
 
 ## 2.1.0 August 20, 2022
 

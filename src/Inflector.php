@@ -20,9 +20,9 @@ final class Inflector
      * `获取到 どちら Українська: ґ,є, Српска: ђ, њ, џ! ¿Español?` will be transliterated to
      * `huò qǔ dào dochira Ukraí̈nsʹka: g̀,ê, Srpska: đ, n̂, d̂! ¿Español?`.
      *
-     * For detailed information see [unicode normalization forms](http://unicode.org/reports/tr15/#Normalization_Forms_Table)
+     * For detailed information see [unicode normalization forms](https://unicode.org/reports/tr15/#Normalization_Forms_Table)
      *
-     * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
+     * @see https://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
     public const TRANSLITERATE_STRICT = 'Any-Latin; NFKD';
@@ -35,7 +35,7 @@ final class Inflector
      * `获取到 どちら Українська: ґ,є, Српска: ђ, њ, џ! ¿Español?` will be transliterated to
      * `huo qu dao dochira Ukrainsʹka: g,e, Srpska: d, n, d! ¿Espanol?`.
      *
-     * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
+     * @see https://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
     public const TRANSLITERATE_MEDIUM = 'Any-Latin; Latin-ASCII';
@@ -49,14 +49,15 @@ final class Inflector
      * `获取到 どちら Українська: ґ,є, Српска: ђ, њ, џ! ¿Español?` will be transliterated to
      * `huo qu dao dochira Ukrainska: g,e, Srpska: d, n, d! Espanol?`.
      *
-     * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
+     * @see https://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
     public const TRANSLITERATE_LOOSE = 'Any-Latin; Latin-ASCII; [\u0080-\uffff] remove';
 
     /**
      * @var string[] The rules for converting a word into its plural form.
-     * @psalm-var array<string,string>
+     *
+     * @psalm-var non-empty-array<non-empty-string,string>
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $pluralizeRules = [
@@ -95,7 +96,8 @@ final class Inflector
 
     /**
      * @var string[] The rules for converting a word into its singular form.
-     * @psalm-var array<string, string>
+     *
+     * @psalm-var non-empty-array<non-empty-string, string>
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $singularizeRules = [
@@ -287,14 +289,17 @@ final class Inflector
      *
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
-    private string|\Transliterator $transliterator = self::TRANSLITERATE_LOOSE;
+    private $transliterator = self::TRANSLITERATE_LOOSE;
 
     private bool $withoutIntl = false;
 
     /**
      * @param string[] $rules The rules for converting a word into its plural form.
-     * @psalm-param array<string, string> $rules
+     *
      * The keys are the regular expressions and the values are the corresponding replacements.
+     * @psalm-param non-empty-array<non-empty-string, string> $rules
+     *
+     * @return self
      */
     public function withPluralizeRules(array $rules): self
     {
@@ -315,7 +320,10 @@ final class Inflector
     /**
      * @param string[] $rules The rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
-     * @psalm-param array<string, string> $rules
+     *
+     * @psalm-param non-empty-array<non-empty-string, string> $rules
+     *
+     * @return self
      */
     public function withSingularizeRules(array $rules): self
     {
@@ -335,8 +343,11 @@ final class Inflector
 
     /**
      * @param string[] $rules The special rules for converting a word between its plural form and singular form.
+     *
      * @psalm-param array<string, string> $rules
      * The keys are the special words in singular form, and the values are the corresponding plural form.
+     *
+     * @return self
      */
     public function withSpecialRules(array $rules): self
     {
@@ -359,9 +370,11 @@ final class Inflector
      * a {@see \Transliterator} can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
      *
+     * @return self
+     *
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
-    public function withTransliterator(string|\Transliterator $transliterator): self
+    public function withTransliterator($transliterator): self
     {
         $new = clone $this;
         $new->transliterator = $transliterator;
@@ -383,6 +396,8 @@ final class Inflector
 
     /**
      * Disables usage of intl for {@see toTransliterated()}.
+     *
+     * @return self
      */
     public function withoutIntl(): self
     {
@@ -442,6 +457,8 @@ final class Inflector
      *
      * @param string $input The string to titleize.
      * @param bool $uppercaseAll Whether to set all words to uppercase.
+     *
+     * @return string
      */
     public function toSentence(string $input, bool $uppercaseAll = false): string
     {
@@ -515,6 +532,8 @@ final class Inflector
      *
      * @param string $input The string to humanize.
      * @param bool $uppercaseWords Whether to set all words to uppercase or not.
+     *
+     * @return string
      */
     public function toHumanReadable(string $input, bool $uppercaseWords = false): string
     {
@@ -531,6 +550,8 @@ final class Inflector
      * "who's online" will be converted to "whoSOnline".
      *
      * @param string $input The word to convert.
+     *
+     * @return string
      */
     public function toCamelCase(string $input): string
     {
@@ -561,6 +582,8 @@ final class Inflector
      * For example, converts "Car" to "cars", "Person" to "people", and "ActionLog" to "action_log".
      *
      * @param string $className the class name for getting related table_name.
+     *
+     * @return string
      */
     public function classToTable(string $className): string
     {
@@ -573,6 +596,8 @@ final class Inflector
      * For example, converts "cars" to "Car", "people" to "Person", and "action_log" to "ActionLog".
      *
      * @param string $tableName
+     *
+     * @return string
      */
     public function tableToClass(string $tableName): string
     {
@@ -616,6 +641,8 @@ final class Inflector
      * @param string|\Transliterator|null $transliterator either a {@see \Transliterator} or a string
      * from which a {@see \Transliterator} can be built. If null, value set with {@see withTransliterator()}
      * or {@see TRANSLITERATE_LOOSE} is used.
+     *
+     * @return string
      */
     public function toTransliterated(string $input, $transliterator = null): string
     {
