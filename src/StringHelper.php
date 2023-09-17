@@ -529,7 +529,7 @@ final class StringHelper
             PREG_SPLIT_OFFSET_CAPTURE
         );
         $result = [];
-        $countResults = is_countable($matches) ? count($matches) : 0;
+        $countResults = count($matches);
         for ($i = 1; $i < $countResults; $i++) {
             $l = $matches[$i][1] - $matches[$i - 1][1] - strlen($matches[$i - 1][0]) - 1;
             $result[] = $matches[$i - 1][0] . ($l > 0 ? str_repeat($escapeCharacter, $l) : '');
