@@ -595,7 +595,6 @@ final class Inflector
      *
      * For example, converts "cars" to "Car", "people" to "Person", and "action_log" to "ActionLog".
      *
-     *
      * @return string
      */
     public function tableToClass(string $tableName): string
