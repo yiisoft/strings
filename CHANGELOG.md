@@ -2,7 +2,6 @@
 
 ## 2.2.0 under development
 
-- Enh: Add composer require checker into CI
 - New #103: Add `MemoizedCombinedRegexp` decorator that caches results of `CombinedRegexp` (@xepozz)
 - Enh #103: Raise required PHP version to `^8.0` (@xepozz)
 - New #102, #106: Add `CombinedRegexp` class (@xepozz, @vjik)
