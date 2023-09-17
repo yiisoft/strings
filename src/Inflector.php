@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings;
 
+use Transliterator;
+
 use function extension_loaded;
 
 /**
@@ -283,13 +285,13 @@ final class Inflector
     ];
 
     /**
-     * @var string|\Transliterator Either a {@see \Transliterator}, or a string from which a {@see \Transliterator}
+     * @var string|Transliterator Either a {@see Transliterator}, or a string from which a {@see Transliterator}
      * can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
      *
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
-    private $transliterator = self::TRANSLITERATE_LOOSE;
+    private string|Transliterator $transliterator = self::TRANSLITERATE_LOOSE;
 
     private bool $withoutIntl = false;
 
@@ -366,7 +368,7 @@ final class Inflector
     }
 
     /**
-     * @param string|\Transliterator $transliterator Either a {@see \Transliterator}, or a string from which
+     * @param string|Transliterator $transliterator Either a {@see \Transliterator}, or a string from which
      * a {@see \Transliterator} can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
      *
@@ -595,8 +597,6 @@ final class Inflector
      *
      * For example, converts "cars" to "Car", "people" to "Person", and "action_log" to "ActionLog".
      *
-     * @param string $tableName
-     *
      * @return string
      */
     public function tableToClass(string $tableName): string
@@ -638,7 +638,7 @@ final class Inflector
      * @noinspection PhpComposerExtensionStubsInspection
      *
      * @param string $input Input string.
-     * @param string|\Transliterator|null $transliterator either a {@see \Transliterator} or a string
+     * @param string|Transliterator|null $transliterator either a {@see \Transliterator} or a string
      * from which a {@see \Transliterator} can be built. If null, value set with {@see withTransliterator()}
      * or {@see TRANSLITERATE_LOOSE} is used.
      *

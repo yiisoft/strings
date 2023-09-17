@@ -95,11 +95,6 @@ final class WildcardPatternTest extends TestCase
 
     /**
      * @dataProvider dataProviderMatchWildcard
-     *
-     * @param string $pattern
-     * @param string $string
-     * @param bool $expectedResult
-     * @param array $options
      */
     public function testMatchWildcard(string $pattern, string $string, bool $expectedResult, array $options = []): void
     {
