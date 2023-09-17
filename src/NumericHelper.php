@@ -20,7 +20,7 @@ final class NumericHelper
      *
      * @param float|int|string $value The number to get its ordinal value.
      */
-    public static function toOrdinal(float|int|string $value): string
+    public static function toOrdinal(mixed $value): string
     {
         if (!is_numeric($value)) {
             $type = gettype($value);
@@ -45,9 +45,11 @@ final class NumericHelper
     /**
      * Returns string representation of a number value without thousands separators and with dot as decimal separator.
      *
+     * @param bool|float|int|string $value
+     *
      * @throws InvalidArgumentException if value is not scalar.
      */
-    public static function normalize(bool|float|int|string $value): string
+    public static function normalize(mixed $value): string
     {
         /** @psalm-suppress DocblockTypeContradiction */
         if (!is_scalar($value)) {
