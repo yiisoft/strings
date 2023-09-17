@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 use InvalidArgumentException;
+
+use function gettype;
 use function in_array;
 use function is_bool;
 
@@ -17,10 +19,8 @@ final class NumericHelper
      * Converts number to its ordinal English form. For example, converts 13 to 13th, 2 to 2nd etc.
      *
      * @param float|int|string $value The number to get its ordinal value.
-     *
-     * @return string
      */
-    public static function toOrdinal($value): string
+    public static function toOrdinal(mixed $value): string
     {
         if (!is_numeric($value)) {
             $type = gettype($value);
@@ -34,16 +34,12 @@ final class NumericHelper
         if (in_array($value % 100, [11, 12, 13], true)) {
             return $value . 'th';
         }
-        switch ($value % 10) {
-            case 1:
-                return $value . 'st';
-            case 2:
-                return $value . 'nd';
-            case 3:
-                return $value . 'rd';
-            default:
-                return $value . 'th';
-        }
+        return match ($value % 10) {
+            1 => $value . 'st',
+            2 => $value . 'nd',
+            3 => $value . 'rd',
+            default => $value . 'th',
+        };
     }
 
     /**
@@ -52,10 +48,8 @@ final class NumericHelper
      * @param bool|float|int|string $value
      *
      * @throws InvalidArgumentException if value is not scalar.
-     *
-     * @return string
      */
-    public static function normalize($value): string
+    public static function normalize(mixed $value): string
     {
         /** @psalm-suppress DocblockTypeContradiction */
         if (!is_scalar($value)) {
@@ -74,12 +68,8 @@ final class NumericHelper
 
     /**
      * Checks whether the given string is an integer number.
-     *
-     * @param mixed $value
-     *
-     * @return bool
      */
-    public static function isInteger($value): bool
+    public static function isInteger(mixed $value): bool
     {
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }

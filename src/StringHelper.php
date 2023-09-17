@@ -14,14 +14,19 @@ use function mb_strlen;
 use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
+use function preg_match;
+use function preg_replace;
 use function str_ends_with;
 use function str_starts_with;
+use function strlen;
 
 /**
  * Provides static methods to work with strings.
  */
 final class StringHelper
 {
+    public const DEFAULT_WHITESPACE_PATTERN = "\pC\pZ";
+
     /**
      * Returns the number of bytes in the given string.
      * This method ensures the string is treated as a byte array even if `mbstring.func_overload` is turned on
@@ -47,7 +52,7 @@ final class StringHelper
      *
      * @return string The extracted part of string, or FALSE on failure or an empty string.
      *
-     * @see http://www.php.net/manual/en/function.substr.php
+     * @see https://www.php.net/manual/en/function.substr.php
      */
     public static function byteSubstring(string $input, int $start, int $length = null): string
     {
@@ -67,7 +72,7 @@ final class StringHelper
      *
      * @return string The trailing name component of the given path.
      *
-     * @see http://www.php.net/manual/en/function.basename.php
+     * @see https://www.php.net/manual/en/function.basename.php
      */
     public static function baseName(string $path, string $suffix = ''): string
     {
@@ -93,7 +98,7 @@ final class StringHelper
      *
      * @return string The parent directory's path.
      *
-     * @see http://www.php.net/manual/en/function.basename.php
+     * @see https://www.php.net/manual/en/function.basename.php
      */
     public static function directoryName(string $path): string
     {
@@ -114,8 +119,6 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.mb-substr.php
-     *
-     * @return string
      */
     public static function substring(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
     {
@@ -136,8 +139,6 @@ final class StringHelper
      * If it is not given, then it will default to the length of the string; i.e. end the replacing at the end of string.
      * If length is zero then this function will have the effect of inserting replacement into string at the given start offset.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
-     *
-     * @return string
      */
     public static function replaceSubstring(string $string, string $replacement, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
     {
@@ -235,7 +236,7 @@ final class StringHelper
             return true;
         }
 
-        // Warning check, see http://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
+        // Warning check, see https://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
         if (self::byteLength($input) < $bytes) {
             return false;
         }
@@ -272,8 +273,6 @@ final class StringHelper
      * @param int $length Maximum length of the truncated string including trim marker.
      * @param string $trimMarker String to append to the beginning.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
-     *
-     * @return string
      */
     public static function truncateBegin(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
@@ -346,9 +345,9 @@ final class StringHelper
      */
     public static function truncateWords(string $input, int $count, string $trimMarker = '…'): string
     {
+        /** @psalm-var list<string> $words */
         $words = preg_split('/(\s+)/u', trim($input), -1, PREG_SPLIT_DELIM_CAPTURE);
         if (count($words) / 2 > $count) {
-            /** @var string[] $words */
             $words = array_slice($words, 0, ($count * 2) - 1);
             return implode('', $words) . $trimMarker;
         }
@@ -363,8 +362,6 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.mb-strlen.php
-     *
-     * @return int
      */
     public static function length(string $string, string $encoding = 'UTF-8'): int
     {
@@ -373,14 +370,12 @@ final class StringHelper
 
     /**
      * Counts words in a string.
-     *
-     * @param string $input
-     *
-     * @return int
      */
     public static function countWords(string $input): int
     {
-        return count(preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY));
+        /** @var array $words */
+        $words = preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY);
+        return count($words);
     }
 
     /**
@@ -390,8 +385,6 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.mb-strtolower.php
-     *
-     * @return string
      */
     public static function lowercase(string $string, string $encoding = 'UTF-8'): string
     {
@@ -405,8 +398,6 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.mb-strtoupper.php
-     *
-     * @return string
      */
     public static function uppercase(string $string, string $encoding = 'UTF-8'): string
     {
@@ -418,8 +409,6 @@ final class StringHelper
      *
      * @param string $string The string to be processed.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
-     *
-     * @return string
      *
      * @see https://php.net/manual/en/function.ucfirst.php
      */
@@ -438,16 +427,17 @@ final class StringHelper
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.ucwords.php
-     *
-     * @return string
      */
     public static function uppercaseFirstCharacterInEachWord(string $string, string $encoding = 'UTF-8'): string
     {
         $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
-        $wordsWithUppercaseFirstCharacter = array_map(static function (string $word) use ($encoding) {
-            return self::uppercaseFirstCharacter($word, $encoding);
-        }, $words);
+        $wordsWithUppercaseFirstCharacter = array_map(
+            static function (string $word) use ($encoding) {
+                return self::uppercaseFirstCharacter($word, $encoding);
+            },
+            $words
+        );
 
         return implode(' ', $wordsWithUppercaseFirstCharacter);
     }
@@ -490,13 +480,11 @@ final class StringHelper
      * @param string $string The input string.
      * @param string $separator The boundary string. It is a part of regular expression
      * so should be taken into account or properly escaped with {@see preg_quote()}.
-     *
-     * @return array
      */
     public static function split(string $string, string $separator = '\R'): array
     {
         $string = preg_replace('(^\s*|\s*$)', '', $string);
-        return preg_split('~\s*' . $separator . '\s*~', $string, -1, PREG_SPLIT_NO_EMPTY);
+        return preg_split('~\s*' . $separator . '\s*~u', $string, -1, PREG_SPLIT_NO_EMPTY);
     }
 
     /**
@@ -511,6 +499,8 @@ final class StringHelper
      * becomes "\.". Defaults to `false`.
      *
      * @return string[]
+     *
+     * @psalm-return list<string>
      */
     public static function parsePath(
         string $path,
@@ -534,6 +524,7 @@ final class StringHelper
             return [];
         }
 
+        /** @psalm-var non-empty-list<array{0:string, 1:int}> $matches */
         $matches = preg_split(
             sprintf(
                 '/(?<!%1$s)((?>%1$s%1$s)*)%2$s/',
@@ -557,20 +548,103 @@ final class StringHelper
         }
 
         return array_map(
-            static function (string $key) use ($delimiter, $escapeCharacter): string {
-                return str_replace(
-                    [
-                        $escapeCharacter . $escapeCharacter,
-                        $escapeCharacter . $delimiter,
-                    ],
-                    [
-                        $escapeCharacter,
-                        $delimiter,
-                    ],
-                    $key
-                );
-            },
+            static fn (string $key): string => str_replace(
+                [
+                    $escapeCharacter . $escapeCharacter,
+                    $escapeCharacter . $delimiter,
+                ],
+                [
+                    $escapeCharacter,
+                    $delimiter,
+                ],
+                $key
+            ),
             $result
         );
+    }
+
+    /**
+     * Strip Unicode whitespace (with Unicode symbol property White_Space=yes) or other characters from the beginning and end of a string.
+     * Input string and pattern are treated as UTF-8.
+     *
+     * @see https://en.wikipedia.org/wiki/Whitespace_character#Unicode
+     * @see https://www.php.net/manual/function.preg-replace
+     *
+     * @param string|string[] $string The string or an array with strings.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
+     *
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
+     */
+    public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
+    {
+        self::ensureUtf8Pattern($pattern);
+
+        return preg_replace("#^[$pattern]+|[$pattern]+$#uD", '', $string);
+    }
+
+    /**
+     * Strip Unicode whitespace (with Unicode symbol property White_Space=yes) or other characters from the beginning of a string.
+     *
+     * @see self::trim()
+     *
+     * @param string|string[] $string The string or an array with strings.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
+     *
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
+     */
+    public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
+    {
+        self::ensureUtf8Pattern($pattern);
+
+        return preg_replace("#^[$pattern]+#u", '', $string);
+    }
+
+    /**
+     * Strip Unicode whitespace (with Unicode symbol property White_Space=yes) or other characters from the end of a string.
+     *
+     * @see self::trim()
+     *
+     * @param string|string[] $string The string or an array with strings.
+     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * special regular expression characters.
+     *
+     * @psalm-template TKey of array-key
+     * @psalm-param string|array<TKey, string> $string
+     * @psalm-param non-empty-string $pattern
+     * @psalm-return ($string is array ? array<TKey, string> : string)
+     *
+     * @return string|string[]
+     */
+    public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
+    {
+        self::ensureUtf8Pattern($pattern);
+
+        return preg_replace("#[$pattern]+$#uD", '', $string);
+    }
+
+    /**
+     * Ensure the input string is a valid UTF-8 string.
+     *
+     * @param string $pattern The input string.
+     *
+     * @throws InvalidArgumentException
+     */
+    private static function ensureUtf8Pattern(string $pattern): void
+    {
+        if (!preg_match('##u', $pattern)) {
+            throw new InvalidArgumentException('Pattern is not a valid UTF-8 string.');
+        }
     }
 }

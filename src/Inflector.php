@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings;
 
+use Transliterator;
+
 use function extension_loaded;
 
 /**
@@ -20,9 +22,9 @@ final class Inflector
      * `获取到 どちら Українська: ґ,є, Српска: ђ, њ, џ! ¿Español?` will be transliterated to
      * `huò qǔ dào dochira Ukraí̈nsʹka: g̀,ê, Srpska: đ, n̂, d̂! ¿Español?`.
      *
-     * For detailed information see [unicode normalization forms](http://unicode.org/reports/tr15/#Normalization_Forms_Table)
+     * For detailed information see [unicode normalization forms](https://unicode.org/reports/tr15/#Normalization_Forms_Table)
      *
-     * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
+     * @see https://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
     public const TRANSLITERATE_STRICT = 'Any-Latin; NFKD';
@@ -35,7 +37,7 @@ final class Inflector
      * `获取到 どちら Українська: ґ,є, Српска: ђ, њ, џ! ¿Español?` will be transliterated to
      * `huo qu dao dochira Ukrainsʹka: g,e, Srpska: d, n, d! ¿Espanol?`.
      *
-     * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
+     * @see https://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
     public const TRANSLITERATE_MEDIUM = 'Any-Latin; Latin-ASCII';
@@ -49,14 +51,15 @@ final class Inflector
      * `获取到 どちら Українська: ґ,є, Српска: ђ, њ, џ! ¿Español?` will be transliterated to
      * `huo qu dao dochira Ukrainska: g,e, Srpska: d, n, d! Espanol?`.
      *
-     * @see http://unicode.org/reports/tr15/#Normalization_Forms_Table
+     * @see https://unicode.org/reports/tr15/#Normalization_Forms_Table
      * @see toTransliterated()
      */
     public const TRANSLITERATE_LOOSE = 'Any-Latin; Latin-ASCII; [\u0080-\uffff] remove';
 
     /**
      * @var string[] The rules for converting a word into its plural form.
-     * @psalm-var array<string,string>
+     *
+     * @psalm-var non-empty-array<non-empty-string,string>
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $pluralizeRules = [
@@ -95,7 +98,8 @@ final class Inflector
 
     /**
      * @var string[] The rules for converting a word into its singular form.
-     * @psalm-var array<string, string>
+     *
+     * @psalm-var non-empty-array<non-empty-string, string>
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $singularizeRules = [
@@ -281,20 +285,21 @@ final class Inflector
     ];
 
     /**
-     * @var string|\Transliterator Either a {@see \Transliterator}, or a string from which a {@see \Transliterator}
+     * @var string|Transliterator Either a {@see Transliterator}, or a string from which a {@see Transliterator}
      * can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
      *
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
-    private $transliterator = self::TRANSLITERATE_LOOSE;
+    private string|Transliterator $transliterator = self::TRANSLITERATE_LOOSE;
 
     private bool $withoutIntl = false;
 
     /**
      * @param string[] $rules The rules for converting a word into its plural form.
-     * @psalm-param array<string, string> $rules
+     *
      * The keys are the regular expressions and the values are the corresponding replacements.
+     * @psalm-param non-empty-array<non-empty-string, string> $rules
      *
      * @return self
      */
@@ -317,7 +322,8 @@ final class Inflector
     /**
      * @param string[] $rules The rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
-     * @psalm-param array<string, string> $rules
+     *
+     * @psalm-param non-empty-array<non-empty-string, string> $rules
      *
      * @return self
      */
@@ -339,6 +345,7 @@ final class Inflector
 
     /**
      * @param string[] $rules The special rules for converting a word between its plural form and singular form.
+     *
      * @psalm-param array<string, string> $rules
      * The keys are the special words in singular form, and the values are the corresponding plural form.
      *
@@ -361,7 +368,7 @@ final class Inflector
     }
 
     /**
-     * @param string|\Transliterator $transliterator Either a {@see \Transliterator}, or a string from which
+     * @param string|Transliterator $transliterator Either a {@see \Transliterator}, or a string from which
      * a {@see \Transliterator} can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
      *
@@ -590,8 +597,6 @@ final class Inflector
      *
      * For example, converts "cars" to "Car", "people" to "Person", and "action_log" to "ActionLog".
      *
-     * @param string $tableName
-     *
      * @return string
      */
     public function tableToClass(string $tableName): string
@@ -633,7 +638,7 @@ final class Inflector
      * @noinspection PhpComposerExtensionStubsInspection
      *
      * @param string $input Input string.
-     * @param string|\Transliterator|null $transliterator either a {@see \Transliterator} or a string
+     * @param string|Transliterator|null $transliterator either a {@see \Transliterator} or a string
      * from which a {@see \Transliterator} can be built. If null, value set with {@see withTransliterator()}
      * or {@see TRANSLITERATE_LOOSE} is used.
      *
