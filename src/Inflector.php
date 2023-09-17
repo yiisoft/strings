@@ -289,7 +289,7 @@ final class Inflector
      *
      * @see https://secure.php.net/manual/en/transliterator.transliterate.php
      */
-    private $transliterator = self::TRANSLITERATE_LOOSE;
+    private string $transliterator = self::TRANSLITERATE_LOOSE;
 
     private bool $withoutIntl = false;
 
@@ -595,7 +595,6 @@ final class Inflector
      *
      * For example, converts "cars" to "Car", "people" to "Person", and "action_log" to "ActionLog".
      *
-     * @param string $tableName
      *
      * @return string
      */
