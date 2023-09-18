@@ -13,12 +13,4 @@ final class CombinedRegexpTest extends AbstractCombinedRegexpTest
     {
         return new CombinedRegexp($patterns, $flags);
     }
-
-    public function testGetFlags()
-    {
-        $patterns = ['/user/[\d+]', '/user/login'];
-
-        $this->assertSame('', (new CombinedRegexp($patterns))->getFlags());
-        $this->assertSame('i', (new CombinedRegexp($patterns, 'i'))->getFlags());
-    }
 }
