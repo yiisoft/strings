@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings;
 
+use function implode;
+use function preg_match;
+use function preg_quote;
+use function preg_replace;
+use function strtr;
+
 /**
  * A wildcard pattern to match strings against.
  *
@@ -106,7 +112,7 @@ final class WildcardPattern
     public static function isDynamic(string $pattern): bool
     {
         $pattern = preg_replace('/\\\\./', '', $pattern);
-        return (bool)preg_match('/[*{?\[]/', $pattern);
+        return preg_match('/[*{?\[]/', $pattern) === 1;
     }
 
     /**

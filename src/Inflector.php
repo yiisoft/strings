@@ -6,7 +6,18 @@ namespace Yiisoft\Strings;
 
 use Transliterator;
 
+use function addslashes;
+use function array_search;
 use function extension_loaded;
+use function mb_strtolower;
+use function mb_substr;
+use function preg_match;
+use function preg_quote;
+use function preg_replace;
+use function str_replace;
+use function strtolower;
+use function strtr;
+use function trim;
 
 /**
  * Inflector provides methods such as {@see pluralize()} or {@see slug()} that derive a new string based on
@@ -441,9 +452,11 @@ final class Inflector
     public function toSingular(string $input): string
     {
         $result = array_search($input, $this->specialRules, true);
+
         if ($result !== false) {
             return $result;
         }
+
         foreach ($this->singularizeRules as $rule => $replacement) {
             if (preg_match($rule, $input)) {
                 return preg_replace($rule, $replacement, $input);
@@ -466,7 +479,9 @@ final class Inflector
     {
         $input = $this->toHumanReadable($this->pascalCaseToId($input, '_'), $uppercaseAll);
 
-        return $uppercaseAll ? StringHelper::uppercaseFirstCharacterInEachWord($input) : StringHelper::uppercaseFirstCharacter($input);
+        return $uppercaseAll
+            ? StringHelper::uppercaseFirstCharacterInEachWord($input)
+            : StringHelper::uppercaseFirstCharacter($input);
     }
 
     /**
@@ -502,6 +517,7 @@ final class Inflector
         $regex = $strict
             ? '/(?<=\p{L})(\p{Lu})/u'
             : '/(?<=\p{L})(?<!\p{Lu})(\p{Lu})/u';
+
         $result = preg_replace($regex, addslashes($separator) . '\1', $input);
 
         if ($separator !== '_') {
@@ -526,7 +542,11 @@ final class Inflector
      */
     public function toPascalCase(string $input): string
     {
-        return str_replace(' ', '', StringHelper::uppercaseFirstCharacterInEachWord(preg_replace('/[^\pL\pN]+/u', ' ', $input)));
+        return str_replace(
+            ' ',
+            '',
+            StringHelper::uppercaseFirstCharacterInEachWord(preg_replace('/[^\pL\pN]+/u', ' ', $input)),
+        );
     }
 
     /**
@@ -541,7 +561,9 @@ final class Inflector
     {
         $input = str_replace('_', ' ', preg_replace('/_id$/', '', $input));
 
-        return $uppercaseWords ? StringHelper::uppercaseFirstCharacterInEachWord($input) : StringHelper::uppercaseFirstCharacter($input);
+        return $uppercaseWords
+            ? StringHelper::uppercaseFirstCharacterInEachWord($input)
+            : StringHelper::uppercaseFirstCharacter($input);
     }
 
     /**
@@ -559,7 +581,7 @@ final class Inflector
     {
         $input = $this->toPascalCase($input);
 
-        return mb_strtolower(mb_substr($input, 0, 1)) . mb_substr($input, 1, null);
+        return mb_strtolower(mb_substr($input, 0, 1)) . mb_substr($input, 1);
     }
 
     /**
@@ -620,10 +642,15 @@ final class Inflector
      */
     public function toSlug(string $input, string $replacement = '-', bool $lowercase = true): string
     {
+        $quotedReplacement = preg_quote($replacement, '/');
         // replace all non words character
-        $input = preg_replace('/[^a-zA-Z0-9]++/u', $replacement, $this->toTransliterated($input));
+        $input = preg_replace('/[^a-zA-Z0-9]+/u', $replacement, $this->toTransliterated($input));
         // remove first and last replacements
-        $input = preg_replace('/^(?:' . preg_quote($replacement, '/') . ')++|(?:' . preg_quote($replacement, '/') . ')++$/u' . ($lowercase ? 'i' : ''), '', $input);
+        $input = preg_replace(
+            "/^(?:$quotedReplacement)+|(?:$quotedReplacement)+$/u" . ($lowercase ? 'i' : ''),
+            '',
+            $input,
+        );
 
         return $lowercase ? strtolower($input) : $input;
     }

@@ -7,7 +7,12 @@ namespace Yiisoft\Strings;
 use Exception;
 use InvalidArgumentException;
 
+use function array_values;
 use function count;
+use function implode;
+use function preg_match;
+use function str_repeat;
+use function strtr;
 
 /**
  * `CombinedRegexp` optimizes matching of multiple regular expressions.
@@ -36,6 +41,7 @@ final class CombinedRegexp extends AbstractCombinedRegexp
         if (empty($patterns)) {
             throw new InvalidArgumentException('At least one pattern should be specified.');
         }
+
         $this->patterns = array_values($patterns);
         $this->compiledPattern = $this->compilePatterns($this->patterns) . $this->flags;
     }
@@ -97,6 +103,7 @@ final class CombinedRegexp extends AbstractCombinedRegexp
         foreach ($patterns as $i => $pattern) {
             $quotedPatterns[] = $pattern . str_repeat('()', $i);
         }
+
         $combinedRegexps = '(?|' . strtr(
             implode('|', $quotedPatterns),
             [self::REGEXP_DELIMITER => self::QUOTE_REPLACER]

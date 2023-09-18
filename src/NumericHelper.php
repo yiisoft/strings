@@ -6,9 +6,15 @@ namespace Yiisoft\Strings;
 
 use InvalidArgumentException;
 
+use function filter_var;
+use function fmod;
 use function gettype;
 use function in_array;
 use function is_bool;
+use function is_numeric;
+use function is_scalar;
+use function preg_replace;
+use function str_replace;
 
 /**
  * Provides static methods to work with numeric strings.
@@ -34,6 +40,7 @@ final class NumericHelper
         if (in_array($value % 100, [11, 12, 13], true)) {
             return $value . 'th';
         }
+
         return match ($value % 10) {
             1 => $value . 'st',
             2 => $value . 'nd',
@@ -58,11 +65,11 @@ final class NumericHelper
         }
 
         if (is_bool($value)) {
-            $value = $value ? '1' : '0';
-        } else {
-            $value = (string)$value;
+            return $value ? '1' : '0';
         }
-        $value = str_replace([' ', ','], ['', '.'], $value);
+
+        $value = str_replace([' ', ','], ['', '.'], (string)$value);
+
         return preg_replace('/\.(?=.*\.)/', '', $value);
     }
 
