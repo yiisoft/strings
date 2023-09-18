@@ -257,8 +257,8 @@ abstract class AbstractCombinedRegexpTest extends TestCase
     {
         $patterns = ['/user/[\d+]', '/user/login'];
 
-        $this->assertSame('', ($this->createCombinedRegexp($patterns))->getFlags());
-        $this->assertSame('i', ($this->createCombinedRegexp($patterns, 'i'))->getFlags());
+        $this->assertSame('', $this->createCombinedRegexp($patterns)->getFlags());
+        $this->assertSame('i', $this->createCombinedRegexp($patterns, 'i')->getFlags());
     }
 
     abstract protected function createCombinedRegexp(array $patterns, string $flags = ''): AbstractCombinedRegexp;
