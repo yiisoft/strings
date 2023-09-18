@@ -8,6 +8,7 @@
 - Enh #106: Using fully-qualified function calls to improve performance (@vjik)
 - New #104: Add methods `StringHelper::trim()`, `StringHelper::ltrim()`, `StringHelper::rtrim()` (@olegbaturin)
 - Enh #83: Make minor refactoring with Rector help (@vjik)
+- Enh #111: Minor refactoring (@Tigrov)
 
 ## 2.1.2 July 27, 2023
 
