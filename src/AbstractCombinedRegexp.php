@@ -6,6 +6,8 @@ namespace Yiisoft\Strings;
 
 use Exception;
 
+use function sprintf;
+
 /**
  * `CombinedRegexp` optimizes matching of multiple regular expressions.
  * Read more about the concept in

@@ -6,19 +6,32 @@ namespace Yiisoft\Strings;
 
 use InvalidArgumentException;
 
+use function array_map;
 use function array_slice;
+use function base64_decode;
+use function base64_encode;
+use function ceil;
 use function count;
-use function function_exists;
+use function implode;
 use function max;
 use function mb_strlen;
+use function mb_strrpos;
 use function mb_strtolower;
 use function mb_strtoupper;
 use function mb_substr;
 use function preg_match;
+use function preg_quote;
 use function preg_replace;
+use function preg_split;
+use function rtrim;
+use function sprintf;
 use function str_ends_with;
+use function str_repeat;
+use function str_replace;
 use function str_starts_with;
 use function strlen;
+use function strtr;
+use function trim;
 
 /**
  * Provides static methods to work with strings.
@@ -36,7 +49,7 @@ final class StringHelper
      *
      * @return int The number of bytes in the given string.
      */
-    public static function byteLength(?string $input): int
+    public static function byteLength(string|null $input): int
     {
         return mb_strlen((string)$input, '8bit');
     }
@@ -140,8 +153,13 @@ final class StringHelper
      * If length is zero then this function will have the effect of inserting replacement into string at the given start offset.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      */
-    public static function replaceSubstring(string $string, string $replacement, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
-    {
+    public static function replaceSubstring(
+        string $string,
+        string $replacement,
+        int $start,
+        int|null $length = null,
+        string $encoding = 'UTF-8',
+    ): string {
         $stringLength = mb_strlen($string, $encoding);
 
         if ($start < 0) {
@@ -160,7 +178,9 @@ final class StringHelper
             $length = $stringLength - $start;
         }
 
-        return mb_substr($string, 0, $start, $encoding) . $replacement . mb_substr($string, $start + $length, $stringLength - $start - $length, $encoding);
+        return mb_substr($string, 0, $start, $encoding)
+            . $replacement
+            . mb_substr($string, $start + $length, $stringLength - $start - $length, $encoding);
     }
 
     /**
@@ -172,22 +192,9 @@ final class StringHelper
      *
      * @return bool Returns true if first input starts with second input, false otherwise.
      */
-    public static function startsWith(string $input, ?string $with): bool
+    public static function startsWith(string $input, string|null $with): bool
     {
-        if ($with === null) {
-            return true;
-        }
-
-        if (function_exists('\str_starts_with')) {
-            return str_starts_with($input, $with);
-        }
-
-        $bytes = self::byteLength($with);
-        if ($bytes === 0) {
-            return true;
-        }
-
-        return strncmp($input, $with, $bytes) === 0;
+        return $with === null || str_starts_with($input, $with);
     }
 
     /**
@@ -199,16 +206,15 @@ final class StringHelper
      *
      * @return bool Returns true if first input starts with second input, false otherwise.
      */
-    public static function startsWithIgnoringCase(string $input, ?string $with): bool
+    public static function startsWithIgnoringCase(string $input, string|null $with): bool
     {
         $bytes = self::byteLength($with);
+
         if ($bytes === 0) {
             return true;
         }
 
-        /**
-         * @psalm-suppress PossiblyNullArgument
-         */
+        /** @psalm-suppress PossiblyNullArgument */
         return self::lowercase(self::substring($input, 0, $bytes, '8bit')) === self::lowercase($with);
     }
 
@@ -221,27 +227,9 @@ final class StringHelper
      *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
-    public static function endsWith(string $input, ?string $with): bool
+    public static function endsWith(string $input, string|null $with): bool
     {
-        if ($with === null) {
-            return true;
-        }
-
-        if (function_exists('\str_ends_with')) {
-            return str_ends_with($input, $with);
-        }
-
-        $bytes = self::byteLength($with);
-        if ($bytes === 0) {
-            return true;
-        }
-
-        // Warning check, see https://php.net/manual/en/function.substr-compare.php#refsect1-function.substr-compare-returnvalues
-        if (self::byteLength($input) < $bytes) {
-            return false;
-        }
-
-        return substr_compare($input, $with, -$bytes, $bytes) === 0;
+        return $with === null || str_ends_with($input, $with);
     }
 
     /**
@@ -253,16 +241,15 @@ final class StringHelper
      *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
-    public static function endsWithIgnoringCase(string $input, ?string $with): bool
+    public static function endsWithIgnoringCase(string $input, string|null $with): bool
     {
         $bytes = self::byteLength($with);
+
         if ($bytes === 0) {
             return true;
         }
 
-        /**
-         * @psalm-suppress PossiblyNullArgument
-         */
+        /** @psalm-suppress PossiblyNullArgument */
         return self::lowercase(mb_substr($input, -$bytes, mb_strlen($input, '8bit'), '8bit')) === self::lowercase($with);
     }
 
@@ -433,9 +420,7 @@ final class StringHelper
         $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
         $wordsWithUppercaseFirstCharacter = array_map(
-            static function (string $word) use ($encoding) {
-                return self::uppercaseFirstCharacter($word, $encoding);
-            },
+            static fn (string $word) => self::uppercaseFirstCharacter($word, $encoding),
             $words
         );
 
