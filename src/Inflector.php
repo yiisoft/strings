@@ -592,7 +592,7 @@ final class Inflector
      * so "who's online" will be converted to "who_s_online".
      *
      * @param string $input The word to convert.
-     * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to false.
+     * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to true.
      *
      * @return string The "snake_cased" string.
      */
