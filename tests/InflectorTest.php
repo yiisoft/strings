@@ -162,17 +162,28 @@ final class InflectorTest extends TestCase
         $this->assertEquals('ひらがなHepimiz', $inflector->toCamelCase('ひらがな_hepimiz'));
     }
 
-    public function testToSnakeCase(): void
+    public function dataToSnakeCase(): array
+    {
+        return [
+            [['input' => 'userName'], 'user_name'],
+            [['input' => 'travelSGuide'], 'travel_s_guide'],
+            [['input' => 'ひらがなHepimiz'], 'ひらがな_hepimiz'],
+            [['input' => 'Let\'s say "Hello, World!" yii 3 😂'], 'let_s_say_hello_world_yii_3'],
+            [['input' => 'HTML'], 'h_t_m_l'],
+            [['input' => 'createMyDTO'], 'create_my_d_t_o'],
+            [['input' => 'HTML', 'strict' => false], 'html'],
+            [['input' => 'createMyDTO', 'strict' => false], 'create_my_dto'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataToSnakeCase
+     */
+    public function testToSnakeCase(array $arguments, string $expectedOutput): void
     {
         $inflector = new Inflector();
 
-        $this->assertEquals('user_name', $inflector->toSnakeCase('userName'));
-        $this->assertEquals('travel_s_guide', $inflector->toSnakeCase('travelSGuide'));
-        $this->assertEquals('ひらがな_hepimiz', $inflector->toSnakeCase('ひらがなHepimiz'));
-        $this->assertEquals(
-            'let_s_say_hello_world_yii_3',
-            $inflector->toSnakeCase('Let\'s say "Hello, World!" yii 3 😂')
-        );
+        $this->assertEquals($expectedOutput, $inflector->toSnakeCase(...$arguments));
     }
 
     public function testToTable(): void
