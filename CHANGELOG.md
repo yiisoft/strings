@@ -1,14 +1,14 @@
 # Yii Strings Change Log
 
-## 2.2.0 under development
+## 2.2.0 September 20, 2023
 
-- New #103: Add `MemoizedCombinedRegexp` decorator that caches results of `CombinedRegexp` (@xepozz)
-- Enh #103: Raise required PHP version to `^8.0` (@xepozz)
 - New #102, #106: Add `CombinedRegexp` class (@xepozz, @vjik)
-- Enh #106: Using fully-qualified function calls to improve performance (@vjik)
+- New #103: Add `MemoizedCombinedRegexp` decorator that caches results of `CombinedRegexp` (@xepozz)
 - New #104: Add methods `StringHelper::trim()`, `StringHelper::ltrim()`, `StringHelper::rtrim()` (@olegbaturin)
-- Enh #83: Make minor refactoring with Rector help (@vjik)
+- Enh #103: Raise required PHP version to `^8.0` (@xepozz)
+- Enh #106: Using fully-qualified function calls to improve performance (@vjik)
 - Enh #111: Minor refactoring (@Tigrov)
+- Enh #83: Make minor refactoring with Rector help (@vjik)
 - Enh #92: Add `$strict` parameter to `Inflector::toSnakeCase()` method (@arogachev)
 
 ## 2.1.2 July 27, 2023
