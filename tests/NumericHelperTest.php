@@ -50,7 +50,7 @@ final class NumericHelperTest extends TestCase
             'Int' => [10, '10'],
             'True' => [true, '1'],
             'False' => [false, '0'],
-            'Stringable' => [new StringableObject('test'), 'test'],
+            'Stringable' => [new StringableObject('7 500,25'), '7500.25'],
         ];
     }
 
