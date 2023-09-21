@@ -6,6 +6,7 @@ namespace Yiisoft\Strings\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\NumericHelper;
+use Yiisoft\Strings\Tests\Support\StringableObject;
 
 final class NumericHelperTest extends TestCase
 {
@@ -49,6 +50,7 @@ final class NumericHelperTest extends TestCase
             'Int' => [10, '10'],
             'True' => [true, '1'],
             'False' => [false, '0'],
+            'Stringable' => [new StringableObject('test'), 'test'],
         ];
     }
 
