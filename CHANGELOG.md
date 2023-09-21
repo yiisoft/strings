@@ -2,7 +2,7 @@
 
 ## 2.2.1 under development
 
-- no changes in this release.
+- Enh #114: Add stringable object support to `NumericHelper::normalize()` (@vjik)
 
 ## 2.2.0 September 20, 2023
 

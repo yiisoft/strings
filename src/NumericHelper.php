@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Strings;
 
 use InvalidArgumentException;
+use Stringable;
 
 use function filter_var;
 use function fmod;
@@ -52,14 +53,14 @@ final class NumericHelper
     /**
      * Returns string representation of a number value without thousands separators and with dot as decimal separator.
      *
-     * @param bool|float|int|string $value
+     * @param bool|float|int|string|Stringable $value
      *
      * @throws InvalidArgumentException if value is not scalar.
      */
     public static function normalize(mixed $value): string
     {
         /** @psalm-suppress DocblockTypeContradiction */
-        if (!is_scalar($value)) {
+        if (!is_scalar($value) && !$value instanceof Stringable) {
             $type = gettype($value);
             throw new InvalidArgumentException("Value must be scalar. $type given.");
         }
