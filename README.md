@@ -27,11 +27,12 @@ The package provides:
 ## Requirements
 
 - PHP 8.0 or higher.
+- `mbstring` PHP extension.
 
 ## Installation
 
-```
-composer require yiisoft/strings --prefer-dist
+```shell
+composer require yiisoft/strings
 ```
 
 ## StringHelper usage
@@ -249,10 +250,11 @@ The package is tested with [PHPUnit](https://phpunit.de/). To run tests:
 
 ### Mutation testing
 
-The package tests are checked with [Infection](https://infection.github.io/) mutation framework. To run it:
+The package tests are checked with [Infection](https://infection.github.io/) mutation framework with
+[Infection Static Analysis Plugin](https://github.com/Roave/infection-static-analysis-plugin). To run it:
 
 ```shell
-./vendor/bin/infection
+./vendor/bin/roave-infection-static-analysis-plugin
 ```
 
 ### Static analysis
@@ -262,6 +264,20 @@ The code is statically analyzed with [Psalm](https://psalm.dev/). To run static 
 ```shell
 ./vendor/bin/psalm
 ```
+
+### Code style
+
+Use [Rector](https://github.com/rectorphp/rector) to make codebase follow some specific rules or
+use either newest or any specific version of PHP:
+
+```shell
+./vendor/bin/rector
+```
+
+### Dependencies
+
+Use [ComposerRequireChecker](https://github.com/maglnet/ComposerRequireChecker) to detect transitive
+[Composer](https://getcomposer.org/) dependencies.
 
 ## License
 
