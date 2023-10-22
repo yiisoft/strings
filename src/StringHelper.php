@@ -636,13 +636,10 @@ final class StringHelper
      */
     public static function implode(string $separator, iterable $array, ?callable $prepare = null): string
     {
-        if ($prepare === null) {
-            $implodeArray = is_array($array) ? $array : iterator_to_array($array, false);
-        } else {
-            $implodeArray = [];
-            foreach ($array as $item) {
-                $implodeArray[] = $prepare($item);
-            }
+        $implodeArray = is_array($array) ? $array : iterator_to_array($array, false);
+
+        if ($prepare !== null) {
+            $implodeArray = array_map($prepare, $implodeArray);
         }
 
         /** @psalm-suppress MixedArgumentTypeCoercion We don't check array values type */
