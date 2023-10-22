@@ -13,6 +13,7 @@ use function base64_encode;
 use function ceil;
 use function count;
 use function implode;
+use function is_array;
 use function max;
 use function mb_strlen;
 use function mb_strrpos;
@@ -617,6 +618,35 @@ final class StringHelper
         self::ensureUtf8Pattern($pattern);
 
         return preg_replace("#[$pattern]+$#uD", '', $string);
+    }
+
+    /**
+     * Join array elements or iterable object elements with a string.
+     *
+     * @see https://www.php.net/manual/function.implode.php
+     *
+     * @param string $separator The separator string.
+     * @param iterable $array The array or the iterable object for join.
+     * @param callable|null $prepare The closure for process element.
+     *
+     * @return string A string containing a string representation of all the array or the iterable object elements
+     * processed by {@see $prepare} closure in the same order, with the separator string between each element.
+     *
+     * @psalm-param null|Closure(mixed):mixed $prepare
+     */
+    public static function implode(string $separator, iterable $array, ?callable $prepare = null): string
+    {
+        if ($prepare === null) {
+            $implodeArray = is_array($array) ? $array : iterator_to_array($array, false);
+        } else {
+            $implodeArray = [];
+            foreach ($array as $item) {
+                $implodeArray[] = $prepare($item);
+            }
+        }
+
+        /** @psalm-suppress MixedArgumentTypeCoercion We don't check array values type */
+        return implode($separator, $implodeArray);
     }
 
     /**

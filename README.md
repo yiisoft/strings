@@ -93,6 +93,7 @@ Overall the helper has the following method groups.
 
 ### Other
 
+- implode
 - parsePath
 - split
 

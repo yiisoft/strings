@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests;
 
+use ArrayIterator;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\StringHelper;
+use Yiisoft\Strings\Tests\Support\StringableObject;
 
 final class StringHelperTest extends TestCase
 {
@@ -762,5 +764,58 @@ final class StringHelperTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         StringHelper::trim('string', "\xC3\x28");
+    }
+
+    public function dataImplode(): array
+    {
+        return [
+            'array of strings' => [
+                'one-two-three',
+                '-',
+                ['one', 'two', 'three'],
+            ],
+            'array of integers' => [
+                '1-2-3',
+                '-',
+                [1, 2, 3],
+            ],
+            'array of stringable objects' => [
+                'one-two-three',
+                '-',
+                [new StringableObject('one'), new StringableObject('two'), new StringableObject('three')],
+            ],
+            'array of mixed values' => [
+                'one-2-three',
+                '-',
+                ['one', 2, new StringableObject('three')],
+            ],
+            'iterator' => [
+                'one-two-three',
+                '-',
+                new ArrayIterator(['one', 'two', 'three']),
+            ],
+            'prepare values in array' => [
+                '(one), (two), (three)',
+                ', ',
+                ['one', 'two', 'three'],
+                static fn($item) => '(' . $item . ')',
+            ],
+            'prepare values in iterator' => [
+                '(one), (two), (three)',
+                ', ',
+                new ArrayIterator(['one', 'two', 'three']),
+                static fn($item) => '(' . $item . ')',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataImplode
+     */
+    public function testImplode(string $expected, string $separator, iterable $array, ?callable $prepare = null): void
+    {
+        $result = StringHelper::implode($separator, $array, $prepare);
+
+        $this->assertSame($expected, $result);
     }
 }
