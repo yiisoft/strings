@@ -2,7 +2,7 @@
 
 ## 2.2.1 under development
 
-- New #82: Add `StringHelper::implode()` method that koin array elements or iterable object elements with a string. 
+- New #82: Add `StringHelper::implode()` method that join array elements or iterable object elements with a string. 
   Optionally method allow to prepare each element before join. (@vjik)
 - Enh #114: Add stringable object support to `NumericHelper::normalize()` (@vjik)
 
