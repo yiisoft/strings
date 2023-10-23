@@ -1,6 +1,6 @@
 # Yii Strings Change Log
 
-## 2.2.1 under development
+## 2.3.0 October 23, 2023
 
 - Enh #114: Add stringable object support to `NumericHelper::normalize()` (@vjik)
 
