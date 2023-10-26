@@ -92,6 +92,9 @@ final class WildcardPattern
         return preg_replace('#([\\\\?*\\[\\]])#', '\\\\$1', $string);
     }
 
+    /**
+     * @return non-empty-string
+     */
     private function getPatternPrepared(): string
     {
         if ($this->patternPrepared === null) {
