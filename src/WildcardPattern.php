@@ -26,6 +26,10 @@ use function strtr;
 final class WildcardPattern
 {
     private bool $ignoreCase = false;
+
+    /**
+     * @psalm-var non-empty-string|null
+     */
     private ?string $patternPrepared = null;
 
     /**
@@ -97,45 +101,47 @@ final class WildcardPattern
      */
     private function getPatternPrepared(): string
     {
-        if ($this->patternPrepared === null) {
-            $replacements = [
-                '\*\*' => '.*',
-                '\\\\\\\\' => '\\\\',
-                '\\\\\\*' => '[*]',
-                '\\\\\\?' => '[?]',
-                '\\\\\\[' => '[\[]',
-                '\\\\\\]' => '[\]]',
-            ];
-
-            if ($this->delimiters === []) {
-                $replacements += [
-                    '\*' => '.*',
-                    '\?' => '?',
-                ];
-            } else {
-                $notDelimiters = '[^' . preg_quote(implode('', $this->delimiters), '#') . ']';
-                $replacements += [
-                    '\*' => "$notDelimiters*",
-                    '\?' => $notDelimiters,
-                ];
-            }
-
-            $replacements += [
-                '\[\!' => '[^',
-                '\[' => '[',
-                '\]' => ']',
-                '\-' => '-',
-            ];
-
-            $pattern = strtr(preg_quote($this->pattern, '#'), $replacements);
-            $pattern = '#^' . $pattern . '$#us';
-
-            if ($this->ignoreCase) {
-                $pattern .= 'i';
-            }
-
-            $this->patternPrepared = $pattern;
+        if ($this->patternPrepared !== null) {
+            return $this->patternPrepared;
         }
+
+        $replacements = [
+            '\*\*' => '.*',
+            '\\\\\\\\' => '\\\\',
+            '\\\\\\*' => '[*]',
+            '\\\\\\?' => '[?]',
+            '\\\\\\[' => '[\[]',
+            '\\\\\\]' => '[\]]',
+        ];
+
+        if ($this->delimiters === []) {
+            $replacements += [
+                '\*' => '.*',
+                '\?' => '?',
+            ];
+        } else {
+            $notDelimiters = '[^' . preg_quote(implode('', $this->delimiters), '#') . ']';
+            $replacements += [
+                '\*' => "$notDelimiters*",
+                '\?' => $notDelimiters,
+            ];
+        }
+
+        $replacements += [
+            '\[\!' => '[^',
+            '\[' => '[',
+            '\]' => ']',
+            '\-' => '-',
+        ];
+
+        $pattern = strtr(preg_quote($this->pattern, '#'), $replacements);
+        $pattern = '#^' . $pattern . '$#us';
+
+        if ($this->ignoreCase) {
+            $pattern .= 'i';
+        }
+
+        $this->patternPrepared = $pattern;
 
         return $this->patternPrepared;
     }
