@@ -15,7 +15,7 @@ use function strtr;
  *
  * - `\` escapes other special characters if usage of escape character is not turned off.
  * - `*` matches any string including the empty string except it has a delimiter (`/` and `\` by default).
-  * - `**` matches any string including the empty string and delimiters.
+ * - `**` matches any string including the empty string and delimiters.
  * - `?` matches any single character.
  * - `[seq]` matches any character in seq.
  * - `[a-z]` matches any character from a to z.
@@ -26,6 +26,7 @@ use function strtr;
 final class WildcardPattern
 {
     private bool $ignoreCase = false;
+    private ?string $patternPrepared = null;
 
     /**
      * @param string $pattern The shell wildcard pattern to match against.
@@ -50,45 +51,7 @@ final class WildcardPattern
             return true;
         }
 
-        $pattern = $this->pattern;
-
-        $replacements = [
-            '\*\*' => '.*',
-            '\\\\\\\\' => '\\\\',
-            '\\\\\\*' => '[*]',
-            '\\\\\\?' => '[?]',
-            '\\\\\\[' => '[\[]',
-            '\\\\\\]' => '[\]]',
-        ];
-
-        if ($this->delimiters === []) {
-            $replacements += [
-                '\*' => '.*',
-                '\?' => '?',
-            ];
-        } else {
-            $notDelimiters = '[^' . preg_quote(implode('', $this->delimiters), '#') . ']';
-            $replacements += [
-                '\*' => "$notDelimiters*",
-                '\?' => $notDelimiters,
-            ];
-        }
-
-        $replacements += [
-            '\[\!' => '[^',
-            '\[' => '[',
-            '\]' => ']',
-            '\-' => '-',
-        ];
-
-        $pattern = strtr(preg_quote($pattern, '#'), $replacements);
-        $pattern = '#^' . $pattern . '$#us';
-
-        if ($this->ignoreCase) {
-            $pattern .= 'i';
-        }
-
-        return preg_match($pattern, $string) === 1;
+        return preg_match($this->getPatternPrepared(), $string) === 1;
     }
 
     /**
@@ -97,7 +60,9 @@ final class WildcardPattern
     public function ignoreCase(bool $flag = true): self
     {
         $new = clone $this;
+        $new->patternPrepared = null;
         $new->ignoreCase = $flag;
+
         return $new;
     }
 
@@ -125,5 +90,50 @@ final class WildcardPattern
     public static function quote(string $string): string
     {
         return preg_replace('#([\\\\?*\\[\\]])#', '\\\\$1', $string);
+    }
+
+    private function getPatternPrepared(): string
+    {
+        if ($this->patternPrepared === null) {
+            $replacements = [
+                '\*\*' => '.*',
+                '\\\\\\\\' => '\\\\',
+                '\\\\\\*' => '[*]',
+                '\\\\\\?' => '[?]',
+                '\\\\\\[' => '[\[]',
+                '\\\\\\]' => '[\]]',
+            ];
+
+            if ($this->delimiters === []) {
+                $replacements += [
+                    '\*' => '.*',
+                    '\?' => '?',
+                ];
+            } else {
+                $notDelimiters = '[^' . preg_quote(implode('', $this->delimiters), '#') . ']';
+                $replacements += [
+                    '\*' => "$notDelimiters*",
+                    '\?' => $notDelimiters,
+                ];
+            }
+
+            $replacements += [
+                '\[\!' => '[^',
+                '\[' => '[',
+                '\]' => ']',
+                '\-' => '-',
+            ];
+
+            $pattern = strtr(preg_quote($this->pattern, '#'), $replacements);
+            $pattern = '#^' . $pattern . '$#us';
+
+            if ($this->ignoreCase) {
+                $pattern .= 'i';
+            }
+
+            $this->patternPrepared = $pattern;
+        }
+
+        return $this->patternPrepared;
     }
 }
