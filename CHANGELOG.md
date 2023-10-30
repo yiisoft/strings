@@ -1,6 +1,6 @@
 # Yii Strings Change Log
 
-## 2.3.1 under development
+## 2.3.1 October 30, 2023
 
 - Enh #117: `WildcardPatters` uses memoization and accelerates ~2 times on repeated calls (@viktorprogger)
 
