@@ -620,6 +620,35 @@ final class StringHelper
     }
 
     /**
+     * Returns the portion of the string that lies between the first occurrence of the start string
+     * and the last occurrence of the end string after that.
+     *
+     * @param string $string The input string.
+     * @param string $start The string marking the start of the portion to extract.
+     * @param string $end The string marking the end of the portion to extract.
+     * @return string|null The portion of the string between the first occurrence of
+     * start and the last occurrence of end, or null if either start or end cannot be found.
+     */
+    public static function findBetween(string $string, string $start, string $end): ?string
+    {
+        $startPos = mb_strpos($string, $start);
+
+        if ($startPos === false) {
+            return null;
+        }
+
+        // Cut the string from the start position
+        $subString = mb_substr($string, $startPos + mb_strlen($start));
+        $endPos = mb_strrpos($subString, $end);
+
+        if ($endPos === false) {
+            return null;
+        }
+
+        return mb_substr($subString, 0, $endPos);
+    }
+
+    /**
      * Ensure the input string is a valid UTF-8 string.
      *
      * @param string $pattern The input string.
