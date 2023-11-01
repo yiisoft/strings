@@ -648,6 +648,61 @@ final class StringHelper
     }
 
     /**
+     * Returns the portion of the string between the initial occurrence of the 'start' string
+     * and the next occurrence of the 'end' string.
+     *
+     * @param string $string The input string.
+     * @param string $start The string marking the beginning of the segment to extract.
+     * @param string $end The string marking the termination of the segment.
+     * @return string|null Extracted segment, or null if 'start' or 'end' is not present.
+     */
+    public static function findBetweenFirst(string $string, string $start, string $end): ?string
+    {
+        $startPos = mb_strpos($string, $start);
+
+        if ($startPos === false) {
+            return null;
+        }
+
+        $startPos += mb_strlen($start);
+        $endPos = mb_strpos($string, $end, $startPos);
+
+        if ($endPos === false) {
+            return null;
+        }
+
+        return mb_substr($string, $startPos, $endPos - $startPos);
+    }
+
+    /**
+     * Returns the portion of the string between the latest 'start' string
+     * and the subsequent 'end' string.
+     *
+     * @param string $string The input string.
+     * @param string $start The string marking the beginning of the segment to extract.
+     * @param string $end The string marking the termination of the segment.
+     * @return string|null Extracted segment, or null if 'start' or 'end' is not present.
+     */
+    public static function findBetweenLast(string $string, string $start, string $end): ?string
+    {
+        $endPos = mb_strrpos($string, $end);
+
+        if ($endPos === false) {
+            return null;
+        }
+
+        $startPos = mb_strrpos(mb_substr($string, 0, $endPos), $start);
+
+        if ($startPos === false) {
+            return null;
+        }
+
+        $startPos += mb_strlen($start);
+
+        return mb_substr($string, $startPos, $endPos - $startPos);
+    }
+
+    /**
      * Ensure the input string is a valid UTF-8 string.
      *
      * @param string $pattern The input string.
