@@ -7,7 +7,8 @@
 ## 2.3.1 October 30, 2023
 
 - Enh #117: `WildcardPatters` uses memoization and accelerates ~2 times on repeated calls (@viktorprogger)
-- Enh #118: Added `findBetween()`, `findBetweenFirst()` and `findBetweenLast()` methods to `StringHelper` to retrieve a substring that lies between two strings (salehhashemi1992)
+- Enh #118: Added `findBetween()`, `findBetweenFirst()` and `findBetweenLast()` methods to `StringHelper` to retrieve
+  a substring that lies between two strings (@salehhashemi1992)
 
 ## 2.3.0 October 23, 2023
 
