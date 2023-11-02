@@ -63,6 +63,9 @@ Overall the helper has the following method groups.
 - startsWithIgnoringCase
 - endsWith
 - endsWithIgnoringCase
+- findBetween
+- findBetweenFirst
+- findBetweenLast
 
 ### Truncation
 

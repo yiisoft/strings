@@ -763,4 +763,92 @@ final class StringHelperTest extends TestCase
 
         StringHelper::trim('string', "\xC3\x28");
     }
+
+    /**
+     * @dataProvider dataProviderFindBetween
+     */
+    public function testFindBetween(string $string, string $start, ?string $end, ?string $expectedResult): void
+    {
+        $this->assertSame($expectedResult, StringHelper::findBetween($string, $start, $end));
+    }
+
+    public function dataProviderFindBetween(): array
+    {
+        return [
+            ['hello world hello', ' hello', ' world', null],  // end before start
+            ['This is a sample string', ' is ', ' string', 'a sample'],  // normal case
+            ['startendstart', 'start', 'end', ''],  // end before start
+            ['startmiddleend', 'start', 'end', 'middle'],  // normal case
+            ['startend', 'start', 'end', ''],  // end immediately follows start
+            ['multiple start start end end', 'start ', ' end', 'start end'],  // multiple starts and ends
+            ['', 'start', 'end', null],  // empty string
+            ['no delimiters here', 'start', 'end', null],  // no start and end
+            ['start only', 'start', 'end', null], // start found but no end
+            ['end only', 'start', 'end', null], // end found but no start
+            ['a1a2a3a', 'a', 'a', '1a2a3'], // same start and end
+            ['a1a2a3a', 'a', null, '1a2a3'], // end is null
+            ['spécial !@#$%^&*()', 'spé', '&*()', 'cial !@#$%^'],  // Special characters
+            ['من صالح هاشمی هستم', 'من ', ' هستم', 'صالح هاشمی'], // other languages
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderFindBetweenFirst
+     */
+    public function testFindBetweenFirst(string $string, string $start, ?string $end, ?string $expectedResult): void
+    {
+        $this->assertSame($expectedResult, StringHelper::findBetweenFirst($string, $start, $end));
+    }
+
+    public function dataProviderFindBetweenFirst(): array
+    {
+        return [
+            ['[a][b][c]', '[', ']', 'a'], // normal case
+            ['[a]m[b]n[c]', '[', ']', 'a'], // normal case
+            ['hello world hello', ' hello', ' world', null],  // end before start
+            ['This is a sample string string', ' is ', ' string', 'a sample'],  // normal case
+            ['startendstartend', 'start', 'end', ''],  // end before start
+            ['startmiddleend', 'start', 'end', 'middle'],  // normal case
+            ['startend', 'start', 'end', ''],  // end immediately follows start
+            ['multiple start start end end', 'start ', ' end', 'start'],  // multiple starts and ends
+            ['', 'start', 'end', null],  // empty string
+            ['no delimiters here', 'start', 'end', null],  // no start and end
+            ['start only', 'start', 'end', null], // start found but no end
+            ['end only', 'start', 'end', null], // end found but no start
+            ['a1a2a3a', 'a', 'a', '1'], // same start and end
+            ['a1a2a3a', 'a', null, '1'], // end is null
+            ['spécial !@#$%^&*()', 'spé', '&*()', 'cial !@#$%^'],  // Special characters
+            ['من صالح هاشمی هستم هستم', 'من ', ' هستم', 'صالح هاشمی'], // other languages
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderFindBetweenLast
+     */
+    public function testFindBetweenLast(string $string, string $start, ?string $end, ?string $expectedResult): void
+    {
+        $this->assertSame($expectedResult, StringHelper::findBetweenLast($string, $start, $end));
+    }
+
+    public function dataProviderFindBetweenLast(): array
+    {
+        return [
+            ['[a][b][c]', '[', ']', 'c'], // normal case
+            ['[a]m[b]n[c]', '[', ']', 'c'], // normal case
+            ['hello world hello', ' hello', ' world', null],  // end before start
+            ['This is is a sample string string', ' is ', ' string', 'a sample string'],  // normal case
+            ['startendstartend', 'start', 'end', ''],  // end before start
+            ['startmiddleend', 'start', 'end', 'middle'],  // normal case
+            ['startend', 'start', 'end', ''],  // end immediately follows start
+            ['multiple start start end end', 'start ', ' end', 'end'],  // multiple starts and ends
+            ['', 'start', 'end', null],  // empty string
+            ['no delimiters here', 'start', 'end', null],  // no start and end
+            ['start only', 'start', 'end', null], // start found but no end
+            ['end only', 'start', 'end', null], // end found but no start
+            ['a1a2a3a', 'a', 'a', '3'], // same start and end
+            ['a1a2a3a', 'a', null, '3'], // end is null
+            ['spécial !@#$%^&*()', 'spé', '&*()', 'cial !@#$%^'],  // Special characters
+            ['من صالح هاشمی هستم هستم', 'من ', ' هستم', 'صالح هاشمی هستم'], // other languages
+        ];
+    }
 }
