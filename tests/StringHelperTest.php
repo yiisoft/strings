@@ -767,7 +767,7 @@ final class StringHelperTest extends TestCase
     /**
      * @dataProvider dataProviderFindBetween
      */
-    public function testFindBetween(string $string, string $start, string $end, ?string $expectedResult): void
+    public function testFindBetween(string $string, string $start, ?string $end, ?string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::findBetween($string, $start, $end));
     }
@@ -786,6 +786,7 @@ final class StringHelperTest extends TestCase
             ['start only', 'start', 'end', null], // start found but no end
             ['end only', 'start', 'end', null], // end found but no start
             ['a1a2a3a', 'a', 'a', '1a2a3'], // same start and end
+            ['a1a2a3a', 'a', null, '1a2a3'], // end is null
             ['spécial !@#$%^&*()', 'spé', '&*()', 'cial !@#$%^'],  // Special characters
             ['من صالح هاشمی هستم', 'من ', ' هستم', 'صالح هاشمی'], // other languages
         ];
@@ -794,7 +795,7 @@ final class StringHelperTest extends TestCase
     /**
      * @dataProvider dataProviderFindBetweenFirst
      */
-    public function testFindBetweenFirst(string $string, string $start, string $end, ?string $expectedResult): void
+    public function testFindBetweenFirst(string $string, string $start, ?string $end, ?string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::findBetweenFirst($string, $start, $end));
     }
@@ -815,6 +816,7 @@ final class StringHelperTest extends TestCase
             ['start only', 'start', 'end', null], // start found but no end
             ['end only', 'start', 'end', null], // end found but no start
             ['a1a2a3a', 'a', 'a', '1'], // same start and end
+            ['a1a2a3a', 'a', null, '1'], // end is null
             ['spécial !@#$%^&*()', 'spé', '&*()', 'cial !@#$%^'],  // Special characters
             ['من صالح هاشمی هستم هستم', 'من ', ' هستم', 'صالح هاشمی'], // other languages
         ];
@@ -823,7 +825,7 @@ final class StringHelperTest extends TestCase
     /**
      * @dataProvider dataProviderFindBetweenLast
      */
-    public function testFindBetweenLast(string $string, string $start, string $end, ?string $expectedResult): void
+    public function testFindBetweenLast(string $string, string $start, ?string $end, ?string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::findBetweenLast($string, $start, $end));
     }
@@ -844,6 +846,7 @@ final class StringHelperTest extends TestCase
             ['start only', 'start', 'end', null], // start found but no end
             ['end only', 'start', 'end', null], // end found but no start
             ['a1a2a3a', 'a', 'a', '3'], // same start and end
+            ['a1a2a3a', 'a', null, '3'], // end is null
             ['spécial !@#$%^&*()', 'spé', '&*()', 'cial !@#$%^'],  // Special characters
             ['من صالح هاشمی هستم هستم', 'من ', ' هستم', 'صالح هاشمی هستم'], // other languages
         ];
