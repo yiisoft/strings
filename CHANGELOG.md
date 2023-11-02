@@ -1,14 +1,13 @@
 # Yii Strings Change Log
 
-## 2.3.2 under development
+## 2.4.0 under development
 
-- no changes in this release.
+- New #118: Add `findBetween()`, `findBetweenFirst()` and `findBetweenLast()` methods to `StringHelper` to retrieve
+  a substring that lies between two strings (@salehhashemi1992)
 
 ## 2.3.1 October 30, 2023
 
 - Enh #117: `WildcardPatters` uses memoization and accelerates ~2 times on repeated calls (@viktorprogger)
-- New #118: Add `findBetween()`, `findBetweenFirst()` and `findBetweenLast()` methods to `StringHelper` to retrieve
-  a substring that lies between two strings (@salehhashemi1992)
 
 ## 2.3.0 October 23, 2023
 
