@@ -101,6 +101,7 @@ final class Inflector
         '/(alias)$/i' => '\1es',
         '/(ax|cris|test)is$/i' => '\1es',
         '/(currenc)y$/' => '\1ies',
+        '/^(\w*ion)$/i' => '\1s',
         '/on$/i' => 'a',
         '/s$/' => 's',
         '/^$/' => '',
