@@ -447,6 +447,7 @@ final class StringHelperTest extends TestCase
             ['key1\.', '.', '\\', false, ['key1.']],
             ['key1~.', '.', '~', false, ['key1.']],
             ['key1~~', '.', '~', false, ['key1~']],
+            ['key1~~', '.', '~', true, ['key1~~']],
             ['key1\\\\', '.', '\\', false, ['key1\\']],
             ['key1~~.key2', '.', '~', false, ['key1~', 'key2']],
             ['key1\\\\.key2', '.', '\\', false, ['key1\\', 'key2']],
