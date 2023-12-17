@@ -4,7 +4,7 @@
 
 - New #118: Add `findBetween()`, `findBetweenFirst()` and `findBetweenLast()` methods to `StringHelper` to retrieve
   a substring that lies between two strings (@salehhashemi1992)
-- Enh #119: Don't use regexp if there is no delimeter in the path in StringHelper::parsePath() (@viktorprogger)
+- Enh #119: Don't use regexp if there is no delimeter in the path in `StringHelper::parsePath()` (@viktorprogger)
 
 ## 2.3.1 October 30, 2023
 
