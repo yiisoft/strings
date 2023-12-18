@@ -509,6 +509,14 @@ final class StringHelper
             return [];
         }
 
+        if (!str_contains($path, $delimiter)) {
+            if ($preserveDelimiterEscaping) {
+                return [$path];
+            }
+
+            return [str_replace($escapeCharacter . $escapeCharacter, $escapeCharacter, $path)];
+        }
+
         /** @psalm-var non-empty-list<array{0:string, 1:int}> $matches */
         $matches = preg_split(
             sprintf(
