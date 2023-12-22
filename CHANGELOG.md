@@ -1,5 +1,9 @@
 # Yii Strings Change Log
 
+## 2.4.1 under development
+
+- no changes in this release.
+
 ## 2.4.0 December 22, 2023
 
 - New #118: Add `findBetween()`, `findBetweenFirst()` and `findBetweenLast()` methods to `StringHelper` to retrieve
