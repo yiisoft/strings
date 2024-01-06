@@ -8,7 +8,18 @@ In a big application however there may be more things to consider, which are exp
 > Note: The following upgrading instructions are cumulative. That is, if you want to upgrade from a version A to version
 > C and there is a version B between A and C, you need to follow the instructions for both A and B.
 
-## Upgrade from 1.2.0
+## Upgrade from 2.x to 3.x
+
+Default value of `$strict` parameter in `Inflector::toSnakeCase()` changed to `false`. To keep previous behaviour add 
+`strict: true` to call methods `Inflector::toSnakeCase()` without `strict` argument. For example:
+
+```php
+Inflector::toSnakeCase($name);
+// change to
+Inflector::toSnakeCase($name, true);
+```
+
+## Upgrade from 1.x to 2.x
 
 `\Yiisoft\Strings\WildCardPattern` was changed.
 
