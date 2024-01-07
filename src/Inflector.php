@@ -592,11 +592,11 @@ final class Inflector
      * so "who's online" will be converted to "who_s_online".
      *
      * @param string $input The word to convert.
-     * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to true.
+     * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to false.
      *
      * @return string The "snake_cased" string.
      */
-    public function toSnakeCase(string $input, bool $strict = true): string
+    public function toSnakeCase(string $input, bool $strict = false): string
     {
         return $this->pascalCaseToId(preg_replace('/[^\pL\pN]+/u', '_', $input), '_', $strict);
     }

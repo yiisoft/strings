@@ -1,8 +1,8 @@
 # Yii Strings Change Log
 
-## 2.4.1 under development
+## 3.0.0 under development
 
-- no changes in this release.
+- Chg #112: Change default value of `$strict` parameter in `Inflector::toSnakeCase()` to `false` (@vjik)
 
 ## 2.4.0 December 22, 2023
 

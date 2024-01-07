@@ -166,13 +166,13 @@ final class InflectorTest extends TestCase
     {
         return [
             [['input' => 'userName'], 'user_name'],
-            [['input' => 'travelSGuide'], 'travel_s_guide'],
+            [['input' => 'travelSGuide', 'strict' => true], 'travel_s_guide'],
             [['input' => 'ひらがなHepimiz'], 'ひらがな_hepimiz'],
             [['input' => 'Let\'s say "Hello, World!" yii 3 😂'], 'let_s_say_hello_world_yii_3'],
-            [['input' => 'HTML'], 'h_t_m_l'],
-            [['input' => 'createMyDTO'], 'create_my_d_t_o'],
-            [['input' => 'HTML', 'strict' => false], 'html'],
-            [['input' => 'createMyDTO', 'strict' => false], 'create_my_dto'],
+            [['input' => 'HTML', 'strict' => true], 'h_t_m_l'],
+            [['input' => 'createMyDTO', 'strict' => true], 'create_my_d_t_o'],
+            [['input' => 'HTML'], 'html'],
+            [['input' => 'createMyDTO'], 'create_my_dto'],
         ];
     }
 
