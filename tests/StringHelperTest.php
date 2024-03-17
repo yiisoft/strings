@@ -252,13 +252,14 @@ final class StringHelperTest extends TestCase
         $this->assertEquals($output, $decoded);
     }
 
-    public function base64UrlEncodedStringsProvider(): array
+    public static function base64UrlEncodedStringsProvider(): array
     {
         return [
             'Regular string' => ['This is an encoded string', 'VGhpcyBpcyBhbiBlbmNvZGVkIHN0cmluZw=='],
             '? and _ characters' => ['subjects?_d=1', 'c3ViamVjdHM_X2Q9MQ=='],
             '> character' => ['subjects>_d=1', 'c3ViamVjdHM-X2Q9MQ=='],
             'Unicode' => ['Это закодированная строка', '0K3RgtC-INC30LDQutC-0LTQuNGA0L7QstCw0L3QvdCw0Y8g0YHRgtGA0L7QutCw'],
+            'empty string' => ['', ''],
         ];
     }
 

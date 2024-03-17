@@ -2,7 +2,7 @@
 
 ## 2.4.1 under development
 
-- no changes in this release.
+- Enh #128: Add more specific psalm type for result of `StringHelper::base64UrlEncode()` method (@vjik) 
 
 ## 2.4.0 December 22, 2023
 

@@ -438,6 +438,10 @@ final class StringHelper
      * @param string $input The string to encode.
      *
      * @return string Encoded string.
+     *
+     * @psalm-template T as string
+     * @psalm-param T $input
+     * @psalm-return (T is non-empty-string ? non-empty-string : "")
      */
     public static function base64UrlEncode(string $input): string
     {
