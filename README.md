@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://github.com/yiisoft" target="_blank">
-        <img src="https://yiisoft.github.io/docs/images/yii_logo.svg" height="100px">
+        <img src="https://yiisoft.github.io/docs/images/yii_logo.svg" height="100px" alt="Yii">
     </a>
     <h1 align="center">Yii Strings</h1>
     <br>
@@ -21,7 +21,7 @@ The package provides:
 - `NumericHelper` that has static methods to work with numeric strings;
 - `Inflector` provides methods such as `toPlural()` or `toSlug()` that derive a new string based on the string given;
 - `WildcardPattern` is a shell wildcard pattern to match strings against;
-- `CombinedRegexp` is a wrapper that optimizes multiple regular expressions matching and 
+- `CombinedRegexp` is a wrapper that optimizes multiple regular expressions matching and
   `MemoizedCombinedRegexp` is a decorator that caches results of `CombinedRegexp` to speed up matching.
 
 ## Requirements
@@ -157,7 +157,7 @@ Overall the inflector has the following method groups.
 
 ## WildcardPattern usage
 
-`WildcardPattern` allows a simple POSIX-style string matching. 
+`WildcardPattern` allows a simple POSIX-style string matching.
 
 ```php
 use \Yiisoft\Strings\WildcardPattern;
