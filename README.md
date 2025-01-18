@@ -97,6 +97,7 @@ Overall the helper has the following method groups.
 
 ### Other
 
+- isStringMatchingAnyPattern
 - parsePath
 - split
 

@@ -730,6 +730,27 @@ final class StringHelper
     }
 
     /**
+     * Checks if a given string matches any of the provided patterns.
+     *
+     * Note that patterns should be provided without delimiters on both sides. For example, `te(s|x)t`.
+     *
+     * @see https://www.php.net/manual/reference.pcre.pattern.syntax.php
+     * @see https://www.php.net/manual/reference.pcre.pattern.modifiers.php
+     *
+     * @param string $string The string to match against the patterns.
+     * @param string[] $patterns Regular expressions without delimiters on both sides.
+     * @param string $flags Flags to apply to all regular expressions.
+     */
+    public static function isStringMatchingAnyPattern(string $string, array $patterns, string $flags = ''): bool
+    {
+        if (empty($patterns)) {
+            return false;
+        }
+
+        return (new CombinedRegexp($patterns, $flags))->matches($string);
+    }
+
+    /**
      * Ensure the input string is a valid UTF-8 string.
      *
      * @param string $pattern The input string.
