@@ -741,7 +741,7 @@ final class StringHelper
      * @param string[] $patterns Regular expressions without delimiters on both sides.
      * @param string $flags Flags to apply to all regular expressions.
      */
-    public static function isStringMatchingAnyPattern(string $string, array $patterns, string $flags = ''): bool
+    public static function matchAnyRegex(string $string, array $patterns, string $flags = ''): bool
     {
         if (empty($patterns)) {
             return false;

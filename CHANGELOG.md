@@ -2,7 +2,7 @@
 
 ## 2.4.1 under development
 
-- New #137: Add `StringHelper::isStringMatchingAnyPattern()` method as a facade for `CombinedRegexp` (@vjik)
+- New #137: Add `StringHelper::matchAnyRegex()` method as a facade for `CombinedRegexp` (@vjik)
 - Enh #128: Add more specific psalm type for result of `StringHelper::base64UrlEncode()` method (@vjik) 
 
 ## 2.4.0 December 22, 2023

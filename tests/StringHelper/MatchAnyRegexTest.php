@@ -7,7 +7,7 @@ namespace Yiisoft\Strings\Tests\StringHelper;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\StringHelper;
 
-final class IsStringMatchingAnyPatternTest extends TestCase
+final class MatchAnyRegexTest extends TestCase
 {
     public static function dataBase(): array
     {
@@ -24,7 +24,7 @@ final class IsStringMatchingAnyPatternTest extends TestCase
      */
     public function testBase(bool $expected, string $string, array $patterns, string $flags = ''): void
     {
-        $result = StringHelper::isStringMatchingAnyPattern($string, $patterns, $flags);
+        $result = StringHelper::matchAnyRegex($string, $patterns, $flags);
         $this->assertSame($expected, $result);
     }
 
@@ -34,13 +34,13 @@ final class IsStringMatchingAnyPatternTest extends TestCase
      */
     public function testWithoutFlags(bool $expected, string $string): void
     {
-        $result = StringHelper::isStringMatchingAnyPattern($string, ['te[sx]t', 'm(o|a)n']);
+        $result = StringHelper::matchAnyRegex($string, ['te[sx]t', 'm(o|a)n']);
         $this->assertSame($expected, $result);
     }
 
     public function testWithoutPatterns(): void
     {
-        $result = StringHelper::isStringMatchingAnyPattern('test', []);
+        $result = StringHelper::matchAnyRegex('test', []);
         $this->assertFalse($result);
     }
 }
