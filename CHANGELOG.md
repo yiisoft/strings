@@ -1,5 +1,9 @@
 # Yii Strings Change Log
 
+## 2.5.1 under development
+
+- no changes in this release.
+
 ## 2.5.0 January 19, 2025
 
 - New #137: Add `StringHelper::matchAnyRegex()` method as a facade for `CombinedRegexp` (@vjik)
