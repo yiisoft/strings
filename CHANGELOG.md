@@ -1,9 +1,9 @@
 # Yii Strings Change Log
 
-## 2.4.1 under development
+## 2.5.0 January 19, 2025
 
 - New #137: Add `StringHelper::matchAnyRegex()` method as a facade for `CombinedRegexp` (@vjik)
-- Enh #128: Add more specific psalm type for result of `StringHelper::base64UrlEncode()` method (@vjik) 
+- Enh #128: Add more specific psalm type for result of `StringHelper::base64UrlEncode()` method (@vjik)
 
 ## 2.4.0 December 22, 2023
 
