@@ -67,7 +67,7 @@ final class StringHelper
      *
      * @see https://www.php.net/manual/en/function.substr.php
      */
-    public static function byteSubstring(string $input, int $start, int $length = null): string
+    public static function byteSubstring(string $input, int $start, ?int $length = null): string
     {
         return mb_substr($input, $start, $length ?? mb_strlen($input, '8bit'), '8bit');
     }
@@ -133,7 +133,7 @@ final class StringHelper
      *
      * @see https://php.net/manual/en/function.mb-substr.php
      */
-    public static function substring(string $string, int $start, int $length = null, string $encoding = 'UTF-8'): string
+    public static function substring(string $string, int $start, ?int $length = null, string $encoding = 'UTF-8'): string
     {
         return mb_substr($string, $start, $length, $encoding);
     }

@@ -2,7 +2,7 @@
 
 ## 2.5.1 under development
 
-- no changes in this release.
+- Bug #138: Explicitly mark nullable parameters (@ferrumfist)
 
 ## 2.5.0 January 19, 2025
 
