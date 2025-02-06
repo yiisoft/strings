@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\NumericHelper;
 use Yiisoft\Strings\Tests\Support\StringableObject;
@@ -38,7 +39,7 @@ final class NumericHelperTest extends TestCase
         NumericHelper::toOrdinal('bla-bla');
     }
 
-    public function dataNormalize(): array
+    public static function dataNormalize(): array
     {
         return [
             'French' => ['4 294 967 295,000', '4294967295.000'],
@@ -54,9 +55,7 @@ final class NumericHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataNormalize
-     */
+    #[DataProvider('dataNormalize')]
     public function testNormalize(mixed $input, string $expected): void
     {
         $this->assertSame($expected, NumericHelper::normalize($input));
@@ -68,7 +67,7 @@ final class NumericHelperTest extends TestCase
         NumericHelper::normalize([]);
     }
 
-    public function dataIsInteger(): array
+    public static function dataIsInteger(): array
     {
         return [
             [new \stdClass(), false],
@@ -83,9 +82,7 @@ final class NumericHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataIsInteger
-     */
+    #[DataProvider('dataIsInteger')]
     public function testIsInteger(mixed $value, bool $expected): void
     {
         $this->assertSame($expected, NumericHelper::isInteger($value));

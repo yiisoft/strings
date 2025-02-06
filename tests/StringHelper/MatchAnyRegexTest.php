@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests\StringHelper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\StringHelper;
 
@@ -19,9 +20,7 @@ final class MatchAnyRegexTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataBase
-     */
+    #[DataProvider('dataBase')]
     public function testBase(bool $expected, string $string, array $patterns, string $flags = ''): void
     {
         $result = StringHelper::matchAnyRegex($string, $patterns, $flags);

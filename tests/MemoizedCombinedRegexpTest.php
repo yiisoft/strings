@@ -8,7 +8,7 @@ use Yiisoft\Strings\AbstractCombinedRegexp;
 use Yiisoft\Strings\CombinedRegexp;
 use Yiisoft\Strings\MemoizedCombinedRegexp;
 
-final class MemoizedCombinedRegexpTest extends AbstractCombinedRegexpTest
+final class MemoizedCombinedRegexpTest extends AbstractCombinedRegexpTestCase
 {
     protected function createCombinedRegexp(array $patterns, string $flags = ''): AbstractCombinedRegexp
     {
