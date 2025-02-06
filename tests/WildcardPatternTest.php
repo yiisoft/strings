@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\WildcardPattern;
 
@@ -14,7 +15,7 @@ final class WildcardPatternTest extends TestCase
      *
      * @return array test data.
      */
-    public function dataProviderMatchWildcard(): array
+    public static function dataProviderMatchWildcard(): array
     {
         return [
             // *
@@ -93,9 +94,7 @@ final class WildcardPatternTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderMatchWildcard
-     */
+    #[DataProvider('dataProviderMatchWildcard')]
     public function testMatchWildcard(string $pattern, string $string, bool $expectedResult, array $options = []): void
     {
         $wildcardPattern = $this->getWildcardPattern($pattern, $options);
@@ -126,15 +125,13 @@ final class WildcardPatternTest extends TestCase
         $this->assertNotSame($original, $original->ignoreCase());
     }
 
-    /**
-     * @dataProvider isDynamicDataProvider
-     */
+    #[DataProvider('isDynamicDataProvider')]
     public function testIsDynamic(string $pattern, bool $expected): void
     {
         $this->assertSame($expected, WildcardPattern::isDynamic($pattern));
     }
 
-    public function isDynamicDataProvider(): array
+    public static function isDynamicDataProvider(): array
     {
         return [
             'not-dynamic' => ['just-some-string', false],
@@ -145,7 +142,7 @@ final class WildcardPatternTest extends TestCase
         ];
     }
 
-    public function customDelimitersProvider(): array
+    public static function customDelimitersProvider(): array
     {
         return [
             'empty' => ['begin*end', 'begin/end', [], true],
@@ -154,16 +151,14 @@ final class WildcardPatternTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider customDelimitersProvider
-     */
+    #[DataProvider('customDelimitersProvider')]
     public function testCustomDelimiters(string $pattern, string $string, array $delimiters, bool $expected): void
     {
         $wildcardPattern = $wildcardPattern = new WildcardPattern($pattern, $delimiters);
         $this->assertSame($expected, $wildcardPattern->match($string));
     }
 
-    public function quoteDataProvider(): array
+    public static function quoteDataProvider(): array
     {
         return [
             'no-pattern' => ['test', 'test'],
@@ -171,9 +166,7 @@ final class WildcardPatternTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider quoteDataProvider
-     */
+    #[DataProvider('quoteDataProvider')]
     public function testQuote(string $string, string $expected): void
     {
         $this->assertSame($expected, WildcardPattern::quote($string));

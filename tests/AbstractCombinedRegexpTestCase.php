@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\AbstractCombinedRegexp;
 
-abstract class AbstractCombinedRegexpTest extends TestCase
+abstract class AbstractCombinedRegexpTestCase extends TestCase
 {
-    /**
-     * @dataProvider dataMatchAny
-     */
+    #[DataProvider('dataMatchAny')]
     public function testMatchAny(array $patterns, string $string, bool $expectedResult): void
     {
         $regexp = $this->createCombinedRegexp($patterns);
@@ -106,9 +105,7 @@ abstract class AbstractCombinedRegexpTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataMatchingPattern
-     */
+    #[DataProvider('dataMatchingPattern')]
     public function testMatchingPattern(array $patterns, string $string, string $expectedResult): void
     {
         $regexp = $this->createCombinedRegexp($patterns);
@@ -153,9 +150,7 @@ abstract class AbstractCombinedRegexpTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataMatchingPatternPosition
-     */
+    #[DataProvider('dataMatchingPatternPosition')]
     public function testMatchingPatternPosition(array $patterns, string $string, int $expectedResult): void
     {
         $regexp = $this->createCombinedRegexp($patterns);
@@ -200,9 +195,7 @@ abstract class AbstractCombinedRegexpTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataMatchDifferentDelimiters
-     */
+    #[DataProvider('dataMatchDifferentDelimiters')]
     public function testMatchDifferentDelimiters(
         array $patterns,
         string $flags,
