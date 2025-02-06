@@ -3,7 +3,7 @@
 ## 2.5.1 under development
 
 - Bug #138: Explicitly mark nullable parameters (@ferrumfist)
-- Chg #140: Bump minimal required PHP version to 8.1 (@vjik)
+- Chg #140: Bump minimal required PHP version to 8.1 and minor refactoring (@vjik)
 
 ## 2.5.0 January 19, 2025
 
