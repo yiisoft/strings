@@ -417,6 +417,9 @@ final class StringHelper
      */
     public static function uppercaseFirstCharacterInEachWord(string $string, string $encoding = 'UTF-8'): string
     {
+        /**
+         * @var array $words We assume that `$string` is valid UTF-8 string, so `preg_split()` never returns `false`.
+         */
         $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
         $wordsWithUppercaseFirstCharacter = array_map(
@@ -472,7 +475,16 @@ final class StringHelper
      */
     public static function split(string $string, string $separator = '\R'): array
     {
+        /**
+         * @var string $string We assume that `$string` is valid UTF-8 string, so `preg_replace()` never returns
+         * `false`.
+         */
         $string = preg_replace('(^\s*|\s*$)', '', $string);
+
+        /**
+         * @var array We assume that $separator is prepared by `preg_quote()` and $string is valid UTF-8 string,
+         * so `preg_split()` never returns `false`.
+         */
         return preg_split('~\s*' . $separator . '\s*~u', $string, -1, PREG_SPLIT_NO_EMPTY);
     }
 
