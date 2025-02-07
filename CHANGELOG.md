@@ -5,6 +5,7 @@
 - Bug #138: Explicitly mark nullable parameters (@ferrumfist)
 - Chg #140: Bump minimal required PHP version to 8.1 and minor refactoring (@vjik)
 - Bug #142: Check string on a valid UTF-8 in `StringHelper` methods: `trim()`, `ltrim()` and `rtrim()` (@vjik)
+- Bug #141: `StringHelper::parsePath()` for empty string returns path `['']` instead of `[]` before (@vjik)
 
 ## 2.5.0 January 19, 2025
 
