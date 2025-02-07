@@ -489,7 +489,7 @@ final class StringHelper
      *
      * @return string[]
      *
-     * @psalm-return list<string>
+     * @psalm-return non-empty-list<string>
      */
     public static function parsePath(
         string $path,
