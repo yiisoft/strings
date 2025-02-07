@@ -69,8 +69,11 @@ final class NumericHelper
             return $value ? '1' : '0';
         }
 
-        $value = str_replace([' ', ','], ['', '.'], (string)$value);
+        $value = str_replace([' ', ','], ['', '.'], (string) $value);
 
+        /**
+         * @var string We assume that `$value` is valid UTF-8 string, so `preg_replace()` never returns `false`.
+         */
         return preg_replace('/\.(?=.*\.)/', '', $value);
     }
 
