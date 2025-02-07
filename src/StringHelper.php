@@ -489,7 +489,7 @@ final class StringHelper
      *
      * @return string[]
      *
-     * @psalm-return list<string>
+     * @psalm-return non-empty-list<string>
      */
     public static function parsePath(
         string $path,
@@ -510,7 +510,7 @@ final class StringHelper
         }
 
         if ($path === '') {
-            return [];
+            return [''];
         }
 
         if (!str_contains($path, $delimiter)) {
@@ -580,8 +580,13 @@ final class StringHelper
      */
     public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
+        self::ensureUtf8String($string);
         self::ensureUtf8Pattern($pattern);
 
+        /**
+         * @var string|string[] `$string` is correct UTF-8 string and `$pattern` is correct (it should be passed
+         * already prepared), so `preg_replace` never returns `null`.
+         */
         return preg_replace("#^[$pattern]+|[$pattern]+$#uD", '', $string);
     }
 
@@ -603,8 +608,13 @@ final class StringHelper
      */
     public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
+        self::ensureUtf8String($string);
         self::ensureUtf8Pattern($pattern);
 
+        /**
+         * @var string|string[] `$string` is correct UTF-8 string and `$pattern` is correct (it should be passed
+         * already prepared), so `preg_replace` never returns `null`.
+         */
         return preg_replace("#^[$pattern]+#u", '', $string);
     }
 
@@ -626,8 +636,13 @@ final class StringHelper
      */
     public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
+        self::ensureUtf8String($string);
         self::ensureUtf8Pattern($pattern);
 
+        /**
+         * @var string|string[] `$string` is correct UTF-8 string and `$pattern` is correct (it should be passed
+         * already prepared), so `preg_replace` never returns `null`.
+         */
         return preg_replace("#[$pattern]+$#uD", '', $string);
     }
 
@@ -751,9 +766,9 @@ final class StringHelper
     }
 
     /**
-     * Ensure the input string is a valid UTF-8 string.
+     * Ensure the pattern is a valid UTF-8 string.
      *
-     * @param string $pattern The input string.
+     * @param string $pattern The pattern.
      *
      * @throws InvalidArgumentException
      */
@@ -761,6 +776,24 @@ final class StringHelper
     {
         if (!preg_match('##u', $pattern)) {
             throw new InvalidArgumentException('Pattern is not a valid UTF-8 string.');
+        }
+    }
+
+    /**
+     * Ensure the string is a valid UTF-8 string.
+     *
+     * @param array|string $string The string.
+     *
+     * @throws InvalidArgumentException
+     *
+     * @psalm-param string|string[] $string
+     */
+    private static function ensureUtf8String(string|array $string): void
+    {
+        foreach ((array) $string as $s) {
+            if (!preg_match('##u', $s)) {
+                throw new InvalidArgumentException('String is not a valid UTF-8 string.');
+            }
         }
     }
 }
