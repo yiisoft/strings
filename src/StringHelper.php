@@ -782,7 +782,7 @@ final class StringHelper
     /**
      * Ensure the string is a valid UTF-8 string.
      *
-     * @param string|array $string The string.
+     * @param array|string $string The string.
      *
      * @throws InvalidArgumentException
      *
