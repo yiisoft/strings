@@ -6,6 +6,7 @@ namespace Yiisoft\Strings\Tests;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\StringHelper;
 
@@ -726,8 +727,49 @@ final class StringHelperTest extends TestCase
     public function testInvalidTrimPattern(): void
     {
         $this->expectException(InvalidArgumentException::class);
-
+        $this->expectExceptionMessage('Pattern is not a valid UTF-8 string.');
         StringHelper::trim('string', "\xC3\x28");
+    }
+
+    #[TestWith(["abc\xFF"])]
+    #[TestWith([['hello', "abc\xFF"]])]
+    public function testInvalidTrimString(string|array $string): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('String is not a valid UTF-8 string.');
+        StringHelper::trim($string);
+    }
+
+    public function testInvalidLtrimPattern(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Pattern is not a valid UTF-8 string.');
+        StringHelper::ltrim('string', "\xC3\x28");
+    }
+
+    #[TestWith(["abc\xFF"])]
+    #[TestWith([['hello', "abc\xFF"]])]
+    public function testInvalidLtrimString(string|array $string): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('String is not a valid UTF-8 string.');
+        StringHelper::ltrim($string);
+    }
+
+    public function testInvalidRtrimPattern(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Pattern is not a valid UTF-8 string.');
+        StringHelper::ltrim('string', "\xC3\x28");
+    }
+
+    #[TestWith(["abc\xFF"])]
+    #[TestWith([['hello', "abc\xFF"]])]
+    public function testInvalidRtrimString(string|array $string): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('String is not a valid UTF-8 string.');
+        StringHelper::rtrim($string);
     }
 
     #[DataProvider('dataProviderFindBetween')]
