@@ -443,8 +443,8 @@ final class StringHelperTest extends TestCase
             ['.key1.key2', '.', '\\', false, ['', 'key1', 'key2']],
             ['~key1~key2', '~', '\\', false, ['', 'key1', 'key2']],
 
-            ['', '.', '\\', false, []],
-            ['', '.', '\\', true, []],
+            ['', '.', '\\', false, ['']],
+            ['', '.', '\\', true, ['']],
         ];
     }
 

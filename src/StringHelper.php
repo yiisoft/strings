@@ -510,7 +510,7 @@ final class StringHelper
         }
 
         if ($path === '') {
-            return [];
+            return [''];
         }
 
         if (!str_contains($path, $delimiter)) {
