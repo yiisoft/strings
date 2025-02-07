@@ -4,7 +4,8 @@
 
 - Bug #138: Explicitly mark nullable parameters (@ferrumfist)
 - Chg #140: Bump minimal required PHP version to 8.1 and minor refactoring (@vjik)
-
+- Chg #143: Change PHP constraint in `composer.json` to `~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0` (@vjik)
+ 
 ## 2.5.0 January 19, 2025
 
 - New #137: Add `StringHelper::matchAnyRegex()` method as a facade for `CombinedRegexp` (@vjik)

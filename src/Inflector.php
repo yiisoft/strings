@@ -435,6 +435,7 @@ final class Inflector
         }
         foreach ($this->pluralizeRules as $rule => $replacement) {
             if (preg_match($rule, $input)) {
+                /** @var string `$rule` and `$replacement` always correct, so `preg_replace` always returns string */
                 return preg_replace($rule, $replacement, $input);
             }
         }
@@ -459,6 +460,7 @@ final class Inflector
 
         foreach ($this->singularizeRules as $rule => $replacement) {
             if (preg_match($rule, $input)) {
+                /** @var string `$rule` and `$replacement` always correct, so `preg_replace` always returns string */
                 return preg_replace($rule, $replacement, $input);
             }
         }
