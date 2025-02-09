@@ -490,7 +490,7 @@ final class Inflector
      * Converts a string into space-separated words.
      * For example, 'PostTag' will be converted to 'Post Tag'.
      *
-     * @param string $input The string to be converted.
+     * @param string $input The string to be converted. It must be valid UTF-8 string.
      *
      * @return string The resulting words.
      */
@@ -513,7 +513,7 @@ final class Inflector
      * For example, 'PostTag' will be converted to 'post-tag'.
      *
      * @param string $input The string to be converted.
-     * @param string $separator The character used to concatenate the words in the ID.
+     * @param string $separator The character used to concatenate the words in the ID. It must be valid UTF-8 string.
      * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to false.
      *
      * @return string The resulting ID.
@@ -544,7 +544,7 @@ final class Inflector
      * will remove non alphanumeric character from the word, so
      * "who's online" will be converted to "WhoSOnline".
      *
-     * @param string $input The word to PascalCase.
+     * @param string $input The word to PascalCase. It must be valid UTF-8 string.
      *
      * @return string PascalCased string.
      *
@@ -566,7 +566,7 @@ final class Inflector
     /**
      * Returns a human-readable string.
      *
-     * @param string $input The string to humanize.
+     * @param string $input The string to humanize. It must be valid UTF-8 string.
      * @param bool $uppercaseWords Whether to set all words to uppercase or not.
      */
     public function toHumanReadable(string $input, bool $uppercaseWords = false): string
@@ -607,7 +607,7 @@ final class Inflector
      * It will remove non-alphanumeric character from the word,
      * so "who's online" will be converted to "who_s_online".
      *
-     * @param string $input The word to convert.
+     * @param string $input The word to convert. It must be valid UTF-8 string.
      * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to true.
      *
      * @return string The "snake_cased" string.
@@ -655,8 +655,8 @@ final class Inflector
      * and removes the rest. You may customize characters map via $transliteration property
      * of the helper.
      *
-     * @param string $input An arbitrary string to convert.
-     * @param string $replacement The replacement to use for spaces.
+     * @param string $input An arbitrary string to convert. It must be valid UTF-8 string.
+     * @param string $replacement The replacement to use for spaces. It must be valid UTF-8 string.
      * @param bool $lowercase whether to return the string in lowercase or not. Defaults to `true`.
      *
      * @return string The converted string.
@@ -697,7 +697,7 @@ final class Inflector
      *
      * @noinspection PhpComposerExtensionStubsInspection
      *
-     * @param string $input Input string.
+     * @param string $input Input string. It must be valid UTF-8 string.
      * @param string|Transliterator|null $transliterator either a {@see \Transliterator} or a string
      * from which a {@see \Transliterator} can be built. If null, value set with {@see withTransliterator()}
      * or {@see TRANSLITERATE_LOOSE} is used.
