@@ -410,13 +410,16 @@ final class StringHelper
     /**
      * Uppercase the first character of each word in a string.
      *
-     * @param string $string The string to be processed.
+     * @param string $string The valid UTF-8 string to be processed.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.ucwords.php
      */
     public static function uppercaseFirstCharacterInEachWord(string $string, string $encoding = 'UTF-8'): string
     {
+        /**
+         * @var array $words We assume that `$string` is valid UTF-8 string, so `preg_split()` never returns `false`.
+         */
         $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
         $wordsWithUppercaseFirstCharacter = array_map(
@@ -466,13 +469,22 @@ final class StringHelper
      * Split a string to array with non-empty lines.
      * Whitespace from the beginning and end of a each line will be stripped.
      *
-     * @param string $string The input string.
+     * @param string $string The input string. It must be valid UTF-8 string.
      * @param string $separator The boundary string. It is a part of regular expression
-     * so should be taken into account or properly escaped with {@see preg_quote()}.
+     * so should be taken into account or properly escaped with {@see preg_quote()}. It must be valid UTF-8 string.
      */
     public static function split(string $string, string $separator = '\R'): array
     {
+        /**
+         * @var string $string We assume that `$string` is valid UTF-8 string, so `preg_replace()` never returns
+         * `false`.
+         */
         $string = preg_replace('(^\s*|\s*$)', '', $string);
+
+        /**
+         * @var array We assume that $separator is prepared by `preg_quote()` and $string is valid UTF-8 string,
+         * so `preg_split()` never returns `false`.
+         */
         return preg_split('~\s*' . $separator . '\s*~u', $string, -1, PREG_SPLIT_NO_EMPTY);
     }
 
