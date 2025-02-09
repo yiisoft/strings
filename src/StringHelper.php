@@ -410,7 +410,7 @@ final class StringHelper
     /**
      * Uppercase the first character of each word in a string.
      *
-     * @param string $string The string to be processed. It must be valid UTF-8 string.
+     * @param string $string The valid UTF-8 string to be processed.
      * @param string $encoding The encoding to use, defaults to "UTF-8".
      *
      * @see https://php.net/manual/en/function.ucwords.php

@@ -566,7 +566,7 @@ final class Inflector
     /**
      * Returns a human-readable string.
      *
-     * @param string $input The string to humanize. It must be valid UTF-8 string.
+     * @param string $input The valid UTF-8 string to humanize.
      * @param bool $uppercaseWords Whether to set all words to uppercase or not.
      */
     public function toHumanReadable(string $input, bool $uppercaseWords = false): string
@@ -655,7 +655,7 @@ final class Inflector
      * and removes the rest. You may customize characters map via $transliteration property
      * of the helper.
      *
-     * @param string $input An arbitrary string to convert. It must be valid UTF-8 string.
+     * @param string $input An arbitrary valid UTF-8 string to convert.
      * @param string $replacement The replacement to use for spaces. It must be valid UTF-8 string.
      * @param bool $lowercase whether to return the string in lowercase or not. Defaults to `true`.
      *
