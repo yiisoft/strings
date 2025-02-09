@@ -490,7 +490,7 @@ final class Inflector
      * Converts a string into space-separated words.
      * For example, 'PostTag' will be converted to 'Post Tag'.
      *
-     * @param string $input The string to be converted. It must be valid UTF-8 string.
+     * @param string $input The valid UTF-8 string to be converted.
      *
      * @return string The resulting words.
      */
