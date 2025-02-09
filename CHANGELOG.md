@@ -1,5 +1,9 @@
 # Yii Strings Change Log
 
+## 2.6.1 under development
+
+- no changes in this release.
+
 ## 2.6.0 February 09, 2025
 
 - Chg #140: Bump minimal required PHP version to 8.1 and minor refactoring (@vjik)
