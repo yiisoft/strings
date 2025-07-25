@@ -17,8 +17,8 @@ use Yiisoft\Strings\MemoizedCombinedRegexp;
  */
 final class CombinedRegexpBench
 {
-    private CombinedRegexp $combinedRegexp;
-    private MemoizedCombinedRegexp $memoizedCombinedRegexp;
+    private readonly CombinedRegexp $combinedRegexp;
+    private readonly MemoizedCombinedRegexp $memoizedCombinedRegexp;
 
     public function __construct()
     {

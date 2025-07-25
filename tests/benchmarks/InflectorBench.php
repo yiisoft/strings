@@ -16,7 +16,7 @@ use Yiisoft\Strings\Inflector;
  */
 final class InflectorBench
 {
-    private Inflector $inflector;
+    private readonly Inflector $inflector;
 
     public function __construct()
     {

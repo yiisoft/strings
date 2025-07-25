@@ -16,7 +16,7 @@ use Yiisoft\Strings\WildcardPattern;
  */
 final class WildcardPatternBench
 {
-    private WildcardPattern $wildcardPattern;
+    private readonly WildcardPattern $wildcardPattern;
 
     public function __construct()
     {
