@@ -48,7 +48,7 @@ final class InflectorBench
     public function benchToWords(): void
     {
         $this->inflector->toWords('some_string_to_convert');
-        $this->inflector->toWords('someStringToconvert');
+        $this->inflector->toWords('someStringToConvert');
     }
 
     public function benchPascalCaseToId(): void
