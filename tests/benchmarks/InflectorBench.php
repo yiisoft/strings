@@ -42,7 +42,7 @@ final class InflectorBench
     public function benchToSentence(): void
     {
         $this->inflector->toSentence('some_string_to_convert');
-        $this->inflector->toSentence('someStringToconvert');
+        $this->inflector->toSentence('someStringToConvert');
     }
 
     public function benchToWords(): void
