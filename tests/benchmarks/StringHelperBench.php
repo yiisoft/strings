@@ -95,7 +95,7 @@ final class StringHelperBench
     {
         StringHelper::findBetween('<a>b</a>', '<a>', '</a>');
     }
-    
+
     public function benchMatchAnyRegex(): void
     {
         StringHelper::matchAnyRegex('string', ['/[a-z]+/', '/[0-9]+/']);
