@@ -2,7 +2,7 @@
 
 ## 2.6.1 under development
 
-- Bug #119: Fix incorrect pluralization of words ending in "ion" (@copilot)
+- Bug #119: Fix incorrect pluralization of words ending in "ion" (@samdark)
 
 ## 2.6.0 February 09, 2025
 
