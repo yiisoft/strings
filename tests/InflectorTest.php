@@ -39,6 +39,7 @@ final class InflectorTest extends TestCase
             'analysis' => 'analyses',
             'datum' => 'data',
             'schema' => 'schemas',
+            'nation' => 'nations',
         ];
     }
 
