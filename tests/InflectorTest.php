@@ -40,6 +40,21 @@ final class InflectorTest extends TestCase
             'datum' => 'data',
             'schema' => 'schemas',
             'nation' => 'nations',
+            'action' => 'actions',
+            'creation' => 'creations',
+            'decision' => 'decisions',
+            'vision' => 'visions',
+            'explosion' => 'explosions',
+            'legion' => 'legions',
+            'region' => 'regions',
+            'information' => 'information', // special case - already ends in 'tion' but is uncountable
+            'education' => 'educations',
+            'attention' => 'attentions',
+            'function' => 'functions',
+            'junction' => 'junctions',
+            // Test words ending in 'on' (not 'ion') that should use '/on$/i' => 'a' rule
+            'baron' => 'bara',
+            'demon' => 'dema',
         ];
     }
 
