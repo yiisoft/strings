@@ -2,7 +2,7 @@
 
 ## 2.6.1 under development
 
-- no changes in this release.
+- Bug #119: Fix incorrect pluralization of words ending in "ion" (@copilot)
 
 ## 2.6.0 February 09, 2025
 
