@@ -27,7 +27,6 @@ composer.phar
 /phpunit.phar
 /phpunit.xml
 /.phpunit.cache
-.phpunit.result.cache
 
 # PHPBench
 .phpbench
