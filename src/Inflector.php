@@ -146,6 +146,7 @@ final class Inflector
         '/(^analy)ses$/i' => '\1sis',
         '/(analy|diagno|^ba|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i' => '\1\2sis',
         '/criteria$/i' => 'criterion',
+        '/(bar|dem)a$/i' => '\1on',
         '/([ti])a$/i' => '\1um',
         '/(p)eople$/i' => '\1\2erson',
         '/(m)en$/i' => '\1an',
