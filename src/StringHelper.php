@@ -359,12 +359,24 @@ final class StringHelper
     public static function truncateWordsByLength(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
         $inputLength = mb_strlen($input, $encoding);
+        $trimmedInput = rtrim($input);
+        $trimmedInputLength = mb_strlen($trimmedInput, $encoding);
+        
+        // If trimmed input is empty (only spaces), return empty string
+        if ($trimmedInputLength === 0) {
+            return '';
+        }
+        
+        // If input has trailing spaces and trimmed version would fit with marker, add marker
+        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
+        if ($inputLength > $trimmedInputLength && $trimmedInputLength + $trimMarkerLength <= $length) {
+            return $trimmedInput . $trimMarker;
+        }
 
         if ($inputLength <= $length) {
             return $input;
         }
 
-        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
         $maxContentLength = $length - $trimMarkerLength;
 
         if ($maxContentLength <= 0) {
