@@ -345,7 +345,7 @@ final class StringHelper
 
     /**
      * Truncates a string to the specified character length while preserving word boundaries.
-     * 
+     *
      * Unlike {@see truncateEnd()}, this method will not break words in the middle.
      * Unlike {@see truncateWords()}, this method limits by character count, not word count.
      *
@@ -373,20 +373,20 @@ final class StringHelper
 
         // Get substring up to the maximum content length
         $truncated = mb_substr($input, 0, $maxContentLength, $encoding);
-        
+
         // Find the last space to avoid breaking words
         $lastSpacePos = mb_strrpos($truncated, ' ', 0, $encoding);
-        
+
         if ($lastSpacePos !== false) {
             $truncated = mb_substr($truncated, 0, $lastSpacePos, $encoding);
         }
-        
+
         // If the result after trimming is empty (input was only spaces), return empty string
         $finalTruncated = rtrim($truncated);
         if ($finalTruncated === '') {
             return '';
         }
-        
+
         return $finalTruncated . $trimMarker;
     }
 
