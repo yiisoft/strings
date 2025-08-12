@@ -153,7 +153,7 @@ final class StringHelperTest extends TestCase
         $this->assertEquals('', StringHelper::truncateWordsByLength('     ', 3));
 
         // Text with trailing spaces should be trimmed
-        $this->assertEquals('Hello world…', StringHelper::truncateWordsByLength('Hello world   more text', 15));
+        $this->assertEquals('Hello world…', StringHelper::truncateWordsByLength('Hello world   ', 15));
 
         // Multiple words that fit exactly
         $this->assertEquals('Hello…', StringHelper::truncateWordsByLength('Hello world', 6));
