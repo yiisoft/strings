@@ -142,7 +142,7 @@ final class StringHelperTest extends TestCase
         // Very short limit with marker
         $this->assertEquals('A…', StringHelper::truncateWordsByLength('A long sentence', 2));
 
-        // Limit smaller than marker
+        // Limit with the same length as marker
         $this->assertEquals('…', StringHelper::truncateWordsByLength('Some text', 1));
 
         // Empty string
