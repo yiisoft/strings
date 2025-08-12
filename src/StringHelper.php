@@ -357,7 +357,7 @@ final class StringHelper
     {
         $trimmedInput = rtrim($input);
 
-        // If trimmed input is empty (only spaces), return empty string
+        // If trimmed input is empty (only spaces), return empty string.
         if ($trimmedInput === '') {
             return '';
         }
@@ -366,7 +366,7 @@ final class StringHelper
         $inputLength = mb_strlen($input, $encoding);
         $trimmedInputLength = mb_strlen($trimmedInput, $encoding);
 
-        // If input has trailing spaces and trimmed version would fit with marker, add marker
+        // If input has trailing spaces and trimmed version would fit with marker, add marker.
         if ($inputLength > $trimmedInputLength && $trimmedInputLength + $trimMarkerLength <= $length) {
             return $trimmedInput . $trimMarker;
         }
@@ -381,17 +381,17 @@ final class StringHelper
             return mb_substr($trimMarker, 0, $length, $encoding);
         }
 
-        // Get substring up to the maximum content length
+        // Get substring up to the maximum content length.
         $truncated = mb_substr($input, 0, $maxContentLength, $encoding);
 
-        // Find the last space to avoid breaking words
+        // Find the last space to avoid breaking words.
         $lastSpacePos = mb_strrpos($truncated, ' ', 0, $encoding);
 
         if ($lastSpacePos !== false) {
             $truncated = mb_substr($truncated, 0, $lastSpacePos, $encoding);
             $truncated = rtrim($truncated);
 
-            // If the result after trimming is empty, return empty string
+            // If the result after trimming is empty, return empty string.
             if ($truncated === '') {
                 return '';
             }
