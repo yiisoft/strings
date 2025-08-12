@@ -391,9 +391,9 @@ final class StringHelper
             $truncated = mb_substr($truncated, 0, $lastSpacePos, $encoding);
             $truncated = rtrim($truncated);
 
-            // If the result after trimming is empty, return empty string.
+            // If the result after trimming is empty, return just the marker.
             if ($truncated === '') {
-                return '';
+                return mb_substr($trimMarker, 0, $length, $encoding);
             }
         }
 
