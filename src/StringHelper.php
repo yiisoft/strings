@@ -15,6 +15,7 @@ use function count;
 use function implode;
 use function max;
 use function mb_strlen;
+use function mb_strpos;
 use function mb_strrpos;
 use function mb_strtolower;
 use function mb_strtoupper;
@@ -340,6 +341,53 @@ final class StringHelper
         }
 
         return $input;
+    }
+
+    /**
+     * Truncates a string to the specified character length while preserving word boundaries.
+     * 
+     * Unlike {@see truncateEnd()}, this method will not break words in the middle.
+     * Unlike {@see truncateWords()}, this method limits by character count, not word count.
+     *
+     * @param string $input The string to truncate.
+     * @param int $length Maximum length of the truncated string including trim marker.
+     * @param string $trimMarker String to append to the end of truncated string.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
+     * @return string The truncated string.
+     */
+    public static function truncateWordsByLength(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
+    {
+        $inputLength = mb_strlen($input, $encoding);
+
+        if ($inputLength <= $length) {
+            return $input;
+        }
+
+        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
+        $maxContentLength = $length - $trimMarkerLength;
+
+        if ($maxContentLength <= 0) {
+            return mb_substr($trimMarker, 0, $length, $encoding);
+        }
+
+        // Get substring up to the maximum content length
+        $truncated = mb_substr($input, 0, $maxContentLength, $encoding);
+        
+        // Find the last space to avoid breaking words
+        $lastSpacePos = mb_strrpos($truncated, ' ', 0, $encoding);
+        
+        if ($lastSpacePos !== false) {
+            $truncated = mb_substr($truncated, 0, $lastSpacePos, $encoding);
+        }
+        
+        // If the result after trimming is empty (input was only spaces), return empty string
+        $finalTruncated = rtrim($truncated);
+        if ($finalTruncated === '') {
+            return '';
+        }
+        
+        return $finalTruncated . $trimMarker;
     }
 
     /**

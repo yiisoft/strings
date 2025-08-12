@@ -120,6 +120,45 @@ final class StringHelperTest extends TestCase
         $this->assertEquals('это строка с          неожиданными…', StringHelper::truncateWords(' это строка с          неожиданными пробелами ', 4));
     }
 
+    public function testTruncateWordsByLength(): void
+    {
+        // Basic functionality - example from the GitHub issue
+        $this->assertEquals('Do you like drink…', StringHelper::truncateWordsByLength('Do you like drink coffee at work?', 20));
+        
+        // String shorter than limit should return as-is
+        $this->assertEquals('Short text', StringHelper::truncateWordsByLength('Short text', 20));
+        
+        // String exactly at limit should return as-is
+        $this->assertEquals('Exact length text', StringHelper::truncateWordsByLength('Exact length text', 17));
+        
+        // Custom trim marker
+        $this->assertEquals('Do you like drink!!!', StringHelper::truncateWordsByLength('Do you like drink coffee at work?', 23, '!!!'));
+        
+        // Multibyte characters
+        $this->assertEquals('это тестовая…', StringHelper::truncateWordsByLength('это тестовая multibyte строка', 15));
+        
+        // No spaces (single word) - should break the word
+        $this->assertEquals('verylongwo…', StringHelper::truncateWordsByLength('verylongword', 11));
+        
+        // Very short limit with marker
+        $this->assertEquals('A…', StringHelper::truncateWordsByLength('A long sentence', 2));
+        
+        // Limit smaller than marker
+        $this->assertEquals('…', StringHelper::truncateWordsByLength('Some text', 1));
+        
+        // Empty string
+        $this->assertEquals('', StringHelper::truncateWordsByLength('', 10));
+        
+        // Only spaces that exceed limit - should truncate to empty
+        $this->assertEquals('', StringHelper::truncateWordsByLength('     ', 3));
+        
+        // Text with trailing spaces should be trimmed
+        $this->assertEquals('Hello world…', StringHelper::truncateWordsByLength('Hello world   more text', 15));
+        
+        // Multiple words that fit exactly
+        $this->assertEquals('Hello…', StringHelper::truncateWordsByLength('Hello world', 6));
+    }
+
     #[DataProvider('providerStartsWith')]
     public function testStartsWith(bool $result, string $string, ?string $with): void
     {
