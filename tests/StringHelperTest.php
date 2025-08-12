@@ -122,7 +122,6 @@ final class StringHelperTest extends TestCase
 
     public function testTruncateWordsByLength(): void
     {
-        // Basic functionality - example from the GitHub issue
         $this->assertEquals('Do you like drink…', StringHelper::truncateWordsByLength('Do you like drink coffee at work?', 20));
 
         // String shorter than limit should return as-is
