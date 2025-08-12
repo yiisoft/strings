@@ -39,6 +39,21 @@ final class InflectorTest extends TestCase
             'analysis' => 'analyses',
             'datum' => 'data',
             'schema' => 'schemas',
+            'nation' => 'nations',
+            'action' => 'actions',
+            'creation' => 'creations',
+            'decision' => 'decisions',
+            'vision' => 'visions',
+            'explosion' => 'explosions',
+            'legion' => 'legions',
+            'region' => 'regions',
+            'information' => 'information', // special case - already ends in 'tion' but is uncountable
+            'education' => 'educations',
+            'attention' => 'attentions',
+            'function' => 'functions',
+            'junction' => 'junctions',
+            'baron' => 'barons',
+            'demon' => 'demons',
         ];
     }
 
