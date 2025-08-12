@@ -356,7 +356,7 @@ final class StringHelper
     public static function truncateWordsByLength(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
         $trimmedInput = rtrim($input);
-        
+
         // If trimmed input is empty (only spaces), return empty string
         if ($trimmedInput === '') {
             return '';
@@ -390,7 +390,7 @@ final class StringHelper
         if ($lastSpacePos !== false) {
             $truncated = mb_substr($truncated, 0, $lastSpacePos, $encoding);
             $truncated = rtrim($truncated);
-            
+
             // If the result after trimming is empty, return empty string
             if ($truncated === '') {
                 return '';
