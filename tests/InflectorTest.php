@@ -53,7 +53,7 @@ final class InflectorTest extends TestCase
             'function' => 'functions',
             'junction' => 'junctions',
             // Test words ending in 'on' (not 'ion') that should use '/on$/i' => 'a' rule
-            'baron' => 'bara',
+            'baron' => 'barons',
             'demon' => 'dema',
         ];
     }
