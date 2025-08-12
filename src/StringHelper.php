@@ -355,17 +355,18 @@ final class StringHelper
      */
     public static function truncateWordsByLength(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
-        $inputLength = mb_strlen($input, $encoding);
         $trimmedInput = rtrim($input);
-        $trimmedInputLength = mb_strlen($trimmedInput, $encoding);
-
+        
         // If trimmed input is empty (only spaces), return empty string
-        if ($trimmedInputLength === 0) {
+        if ($trimmedInput === '') {
             return '';
         }
 
-        // If input has trailing spaces and trimmed version would fit with marker, add marker
         $trimMarkerLength = mb_strlen($trimMarker, $encoding);
+        $inputLength = mb_strlen($input, $encoding);
+        $trimmedInputLength = mb_strlen($trimmedInput, $encoding);
+
+        // If input has trailing spaces and trimmed version would fit with marker, add marker
         if ($inputLength > $trimmedInputLength && $trimmedInputLength + $trimMarkerLength <= $length) {
             return $trimmedInput . $trimMarker;
         }
@@ -388,15 +389,15 @@ final class StringHelper
 
         if ($lastSpacePos !== false) {
             $truncated = mb_substr($truncated, 0, $lastSpacePos, $encoding);
+            $truncated = rtrim($truncated);
+            
+            // If the result after trimming is empty, return empty string
+            if ($truncated === '') {
+                return '';
+            }
         }
 
-        // If the result after trimming is empty (input was only spaces), return empty string
-        $finalTruncated = rtrim($truncated);
-        if ($finalTruncated === '') {
-            return '';
-        }
-
-        return $finalTruncated . $trimMarker;
+        return $truncated . $trimMarker;
     }
 
     /**
