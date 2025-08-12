@@ -346,9 +346,6 @@ final class StringHelper
     /**
      * Truncates a string to the specified character length while preserving word boundaries.
      *
-     * Unlike {@see truncateEnd()}, this method will not break words in the middle.
-     * Unlike {@see truncateWords()}, this method limits by character count, not word count.
-     *
      * @param string $input The string to truncate.
      * @param int $length Maximum length of the truncated string including trim marker.
      * @param string $trimMarker String to append to the end of truncated string.
