@@ -361,12 +361,12 @@ final class StringHelper
         $inputLength = mb_strlen($input, $encoding);
         $trimmedInput = rtrim($input);
         $trimmedInputLength = mb_strlen($trimmedInput, $encoding);
-        
+
         // If trimmed input is empty (only spaces), return empty string
         if ($trimmedInputLength === 0) {
             return '';
         }
-        
+
         // If input has trailing spaces and trimmed version would fit with marker, add marker
         $trimMarkerLength = mb_strlen($trimMarker, $encoding);
         if ($inputLength > $trimmedInputLength && $trimmedInputLength + $trimMarkerLength <= $length) {
