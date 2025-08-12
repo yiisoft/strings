@@ -148,7 +148,7 @@ final class StringHelperTest extends TestCase
         // Empty string
         $this->assertEquals('', StringHelper::truncateWordsByLength('', 10));
 
-        // Only spaces that exceed limit - should truncate to empty
+        // Spaces that exceed limit should truncate to empty
         $this->assertEquals('', StringHelper::truncateWordsByLength('     ', 3));
 
         // Text with trailing spaces should be trimmed
