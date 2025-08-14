@@ -366,9 +366,15 @@ final class StringHelper
         $inputLength = mb_strlen($input, $encoding);
         $trimmedInputLength = mb_strlen($trimmedInput, $encoding);
 
-        // If input has trailing spaces and trimmed version would fit with marker, add marker.
-        if ($inputLength > $trimmedInputLength && $trimmedInputLength + $trimMarkerLength <= $length) {
-            return $trimmedInput . $trimMarker;
+        // If input has trailing spaces, work with the trimmed version
+        if ($inputLength > $trimmedInputLength) {
+            // If trimmed input fits within limit, return it without marker
+            if ($trimmedInputLength <= $length) {
+                return $trimmedInput;
+            }
+            // Otherwise, proceed with truncation logic using trimmed input
+            $input = $trimmedInput;
+            $inputLength = $trimmedInputLength;
         }
 
         if ($inputLength <= $length) {
