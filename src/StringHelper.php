@@ -224,7 +224,7 @@ final class StringHelper
      * Binary and multibyte safe.
      *
      * @param string $input Input string to check.
-     * @param string|null $with Part to search inside of the $string.
+     * @param string|null $with Part to search inside the $string.
      *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
@@ -238,7 +238,7 @@ final class StringHelper
      * Binary and multibyte safe.
      *
      * @param string $input Input string to check.
-     * @param string|null $with Part to search inside of the $string.
+     * @param string|null $with Part to search inside the $string.
      *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
@@ -362,7 +362,6 @@ final class StringHelper
             return '';
         }
 
-        $trimMarkerLength = mb_strlen($trimMarker, $encoding);
         $inputLength = mb_strlen($input, $encoding);
         $trimmedInputLength = mb_strlen($trimmedInput, $encoding);
 
@@ -381,7 +380,7 @@ final class StringHelper
             return $input;
         }
 
-        $maxContentLength = $length - $trimMarkerLength;
+        $maxContentLength = $length - mb_strlen($trimMarker, $encoding);
 
         if ($maxContentLength <= 0) {
             return mb_substr($trimMarker, 0, $length, $encoding);
@@ -531,7 +530,7 @@ final class StringHelper
 
     /**
      * Split a string to array with non-empty lines.
-     * Whitespace from the beginning and end of a each line will be stripped.
+     * Whitespace from the beginning and end of each line will be stripped.
      *
      * @param string $string The input string. It must be valid UTF-8 string.
      * @param string $separator The boundary string. It is a part of regular expression
