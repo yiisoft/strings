@@ -403,10 +403,10 @@ final class StringHelper
         } else {
             // No space found in truncated content
             // Check if there are spaces in the original input (multiple words)
-            if (mb_strpos($input, ' ', 0, $encoding) !== false) {
+            $firstSpaceInOriginal = mb_strpos($input, ' ', 0, $encoding);
+            if ($firstSpaceInOriginal !== false) {
                 // Multiple words exist but we can only fit part of the first word
                 // Check if we took the entire first word - if so, truncate it more
-                $firstSpaceInOriginal = mb_strpos($input, ' ', 0, $encoding);
                 $firstWord = mb_substr($input, 0, $firstSpaceInOriginal, $encoding);
 
                 // If our truncated content is the complete first word, make it shorter
