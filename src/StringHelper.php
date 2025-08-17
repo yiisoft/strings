@@ -408,7 +408,7 @@ final class StringHelper
                 // Check if we took the entire first word - if so, truncate it more
                 $firstSpaceInOriginal = mb_strpos($input, ' ', 0, $encoding);
                 $firstWord = mb_substr($input, 0, $firstSpaceInOriginal, $encoding);
-                
+
                 // If our truncated content is the complete first word, make it shorter
                 if ($truncated === $firstWord) {
                     $truncated = mb_substr($truncated, 0, max(1, mb_strlen($truncated, $encoding) - 2), $encoding);
