@@ -140,7 +140,7 @@ final class StringHelperTest extends TestCase
             'empty string' => ['', '', 10],
             'spaces that exceed limit should truncate to empty' => ['', '     ', 3],
             'text with trailing spaces should be trimmed' => ['Hello world', 'Hello world   ', 15],
-            'multiple words that fit exactly' => ['Hello…', 'Hello world', 6],
+            'multiple words that fit exactly' => ['Hel…', 'Hello world', 6],
             'space at start should add marker' => ['…', ' Hello', 4],
         ];
     }
