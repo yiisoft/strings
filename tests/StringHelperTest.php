@@ -142,6 +142,7 @@ final class StringHelperTest extends TestCase
             'text with trailing spaces should be trimmed' => ['Hello world', 'Hello world   ', 15],
             'multiple words that fit exactly' => ['Hel…', 'Hello world', 6],
             'space at start should add marker' => ['Hel…', ' Hello', 4],
+            'spaces at start should be trimmed' => ['  Hello  ', 'Hello', 100],
         ];
     }
 
