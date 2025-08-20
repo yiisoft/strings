@@ -356,51 +356,33 @@ final class StringHelper
     public static function truncateWordsByLength(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
         $input = trim($input);
-
         if ($input === '') {
             return '';
         }
 
-        $inputLength = mb_strlen($input, $encoding);
-
-        if ($inputLength <= $length) {
+        if (mb_strlen($input, $encoding) <= $length) {
             return $input;
         }
 
+        $marker = mb_substr($trimMarker, 0, $length, $encoding);
         $maxContentLength = $length - mb_strlen($trimMarker, $encoding);
-
         if ($maxContentLength <= 0) {
-            return mb_substr($trimMarker, 0, $length, $encoding);
+            return $marker;
         }
 
-        // Get substring up to the maximum content length.
         $truncated = mb_substr($input, 0, $maxContentLength, $encoding);
 
-        // Find the last space to avoid breaking words.
-        $lastSpacePos = mb_strrpos($truncated, ' ', 0, $encoding);
+        // Prefer not to break words if there's a space within the snippet.
+        $lastSpace = mb_strrpos($truncated, ' ', 0, $encoding);
+        if ($lastSpace !== false) {
+            $cut = rtrim(mb_substr($truncated, 0, $lastSpace, $encoding));
+            return $cut === '' ? $marker : $cut . $trimMarker;
+        }
 
-        if ($lastSpacePos !== false) {
-            $truncated = mb_substr($truncated, 0, $lastSpacePos, $encoding);
-            $truncated = rtrim($truncated);
-
-            // If the result after trimming is empty, return just the marker.
-            if ($truncated === '') {
-                return mb_substr($trimMarker, 0, $length, $encoding);
-            }
-        } else {
-            // No space found in truncated content
-            // Check if there are spaces in the original input (multiple words)
-            $firstSpaceInOriginal = mb_strpos($input, ' ', 0, $encoding);
-            if ($firstSpaceInOriginal !== false) {
-                // Multiple words exist, but we can only fit part of the first word
-                // Check if we took the entire first word - if so, truncate it more
-                $firstWord = mb_substr($input, 0, $firstSpaceInOriginal, $encoding);
-
-                // If our truncated content is the complete first word, make it shorter
-                if ($truncated === $firstWord) {
-                    $truncated = mb_substr($truncated, 0, max(1, mb_strlen($truncated, $encoding) - 2), $encoding);
-                }
-            }
+        // No space inside snippet; if original has multiple words and snippet equals the first word,
+        // shorten it so the marker doesn't look detached.
+        if (mb_strpos($input, ' ', 0, $encoding) === $maxContentLength) {
+            $truncated = mb_substr($truncated, 0, max(1, $maxContentLength - 2), $encoding);
         }
 
         return $truncated . $trimMarker;
