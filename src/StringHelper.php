@@ -355,26 +355,13 @@ final class StringHelper
      */
     public static function truncateWordsByLength(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
     {
-        $trimmedInput = trim($input);
+        $input = trim($input);
 
-        // If trimmed input is empty (only spaces), return empty string.
-        if ($trimmedInput === '') {
+        if ($input === '') {
             return '';
         }
 
         $inputLength = mb_strlen($input, $encoding);
-        $trimmedInputLength = mb_strlen($trimmedInput, $encoding);
-
-        // If input has trailing spaces, work with the trimmed version
-        if ($inputLength > $trimmedInputLength) {
-            // If trimmed input fits within limit, return it without marker
-            if ($trimmedInputLength <= $length) {
-                return $trimmedInput;
-            }
-            // Otherwise, proceed with truncation logic using trimmed input
-            $input = $trimmedInput;
-            $inputLength = $trimmedInputLength;
-        }
 
         if ($inputLength <= $length) {
             return $input;
@@ -405,7 +392,7 @@ final class StringHelper
             // Check if there are spaces in the original input (multiple words)
             $firstSpaceInOriginal = mb_strpos($input, ' ', 0, $encoding);
             if ($firstSpaceInOriginal !== false) {
-                // Multiple words exist but we can only fit part of the first word
+                // Multiple words exist, but we can only fit part of the first word
                 // Check if we took the entire first word - if so, truncate it more
                 $firstWord = mb_substr($input, 0, $firstSpaceInOriginal, $encoding);
 
