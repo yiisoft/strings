@@ -364,19 +364,20 @@ final class StringHelper
             return $input;
         }
 
-        $marker = mb_substr($trimMarker, 0, $length, $encoding);
-        $maxContentLength = $length - mb_strlen($trimMarker, $encoding);
-        if ($maxContentLength <= 0) {
-            return $marker;
+        $markerLength = mb_strlen($trimMarker, $encoding);
+        if ($length <= $markerLength) {
+            return mb_substr($trimMarker, 0, $length, $encoding);
         }
 
-        $truncated = mb_substr($input, 0, $maxContentLength, $encoding);
+        $truncated = mb_substr($input, 0, $length - $markerLength, $encoding);
 
         // Prefer not to break words if there's a space within the snippet.
         $lastSpace = mb_strrpos($truncated, ' ', 0, $encoding);
         if ($lastSpace !== false) {
             $cut = rtrim(mb_substr($truncated, 0, $lastSpace, $encoding));
-            return $cut === '' ? $marker : $cut . $trimMarker;
+            return $cut === ''
+                ? mb_substr($trimMarker, 0, $length, $encoding)
+                : $cut . $trimMarker;
         }
 
         return $truncated . $trimMarker;
