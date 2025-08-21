@@ -379,12 +379,6 @@ final class StringHelper
             return $cut === '' ? $marker : $cut . $trimMarker;
         }
 
-        // No space inside snippet; if original has multiple words and snippet equals the first word,
-        // shorten it so the marker doesn't look detached.
-        if (mb_strpos($input, ' ', 0, $encoding) === $maxContentLength) {
-            $truncated = mb_substr($truncated, 0, max(1, $maxContentLength - 2), $encoding);
-        }
-
         return $truncated . $trimMarker;
     }
 
