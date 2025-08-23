@@ -358,8 +358,7 @@ final class StringHelper
         int $length,
         string $trimMarker = '…',
         string $encoding = 'UTF-8',
-    ): string
-    {
+    ): string {
         $input = trim($input);
         if ($input === '') {
             return '';
