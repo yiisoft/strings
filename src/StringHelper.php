@@ -353,7 +353,12 @@ final class StringHelper
      *
      * @return string The truncated string.
      */
-    public static function truncateWordsByLength(string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): string
+    public static function truncateWordsByLength(
+        string $input,
+        int $length,
+        string $trimMarker = '…',
+        string $encoding = 'UTF-8',
+    ): string
     {
         $input = trim($input);
         if ($input === '') {

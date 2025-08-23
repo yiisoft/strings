@@ -143,6 +143,7 @@ final class StringHelperTest extends TestCase
             'multiple words that fit exactly' => ['Hello…', 'Hello world', 6],
             'space at start should add marker' => ['Hel…', ' Hello', 4],
             'spaces should be trimmed' => ['Hello', '  Hello  ', 100],
+            'nested spaces should be trimmed' => ['Hello…', 'Hello   World', 8],
         ];
     }
 
