@@ -15,6 +15,7 @@ use function count;
 use function implode;
 use function max;
 use function mb_strlen;
+use function mb_strpos;
 use function mb_strrpos;
 use function mb_strtolower;
 use function mb_strtoupper;
@@ -223,7 +224,7 @@ final class StringHelper
      * Binary and multibyte safe.
      *
      * @param string $input Input string to check.
-     * @param string|null $with Part to search inside of the $string.
+     * @param string|null $with Part to search inside the $string.
      *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
@@ -237,7 +238,7 @@ final class StringHelper
      * Binary and multibyte safe.
      *
      * @param string $input Input string to check.
-     * @param string|null $with Part to search inside of the $string.
+     * @param string|null $with Part to search inside the $string.
      *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
@@ -340,6 +341,50 @@ final class StringHelper
         }
 
         return $input;
+    }
+
+    /**
+     * Truncates a string to the specified character length while preserving word boundaries.
+     *
+     * @param string $input The string to truncate.
+     * @param int $length Maximum length of the truncated string including trim marker.
+     * @param string $trimMarker String to append to the end of truncated string.
+     * @param string $encoding The encoding to use, defaults to "UTF-8".
+     *
+     * @return string The truncated string.
+     */
+    public static function truncateWordsByLength(
+        string $input,
+        int $length,
+        string $trimMarker = '…',
+        string $encoding = 'UTF-8',
+    ): string {
+        $input = trim($input);
+        if ($input === '') {
+            return '';
+        }
+
+        if (mb_strlen($input, $encoding) <= $length) {
+            return $input;
+        }
+
+        $markerLength = mb_strlen($trimMarker, $encoding);
+        if ($length <= $markerLength) {
+            return mb_substr($trimMarker, 0, $length, $encoding);
+        }
+
+        $truncated = mb_substr($input, 0, $length - $markerLength, $encoding);
+
+        // Prefer not to break words if there's a space within the snippet.
+        $lastSpace = mb_strrpos($truncated, ' ', 0, $encoding);
+        if ($lastSpace !== false) {
+            $cut = rtrim(mb_substr($truncated, 0, $lastSpace, $encoding));
+            return $cut === ''
+                ? mb_substr($trimMarker, 0, $length, $encoding)
+                : $cut . $trimMarker;
+        }
+
+        return $truncated . $trimMarker;
     }
 
     /**
@@ -467,7 +512,7 @@ final class StringHelper
 
     /**
      * Split a string to array with non-empty lines.
-     * Whitespace from the beginning and end of a each line will be stripped.
+     * Whitespace from the beginning and end of each line will be stripped.
      *
      * @param string $string The input string. It must be valid UTF-8 string.
      * @param string $separator The boundary string. It is a part of regular expression
