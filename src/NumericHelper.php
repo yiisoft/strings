@@ -96,18 +96,11 @@ final class NumericHelper
      */
     public static function convertIniSizeToBytes(string $string): int
     {
-        switch (substr($string, -1)) {
-            case 'M':
-            case 'm':
-                return (int) $string * 1048576;
-            case 'K':
-            case 'k':
-                return (int) $string * 1024;
-            case 'G':
-            case 'g':
-                return (int) $string * 1073741824;
-            default:
-                return (int) $string;
-        }
+        return match (substr($string, -1)) {
+            'M', 'm' => (int) $string * 1048576,
+            'K', 'k' => (int) $string * 1024,
+            'G', 'g' => (int) $string * 1073741824,
+            default => (int) $string,
+        };
     }
 }
