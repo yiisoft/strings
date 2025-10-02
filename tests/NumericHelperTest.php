@@ -95,7 +95,7 @@ final class NumericHelperTest extends TestCase
             ['1024', 1024],
             ['9223372036854775807', 9223372036854775807],
             ['18446744073709551615', 18446744073709551615],
-            // Single-character suffix
+            // Single-character postfix
             ['512K', 524288],
             ['512k', 524288],
             ['2.5k', 2560],
@@ -116,7 +116,7 @@ final class NumericHelperTest extends TestCase
             ['3P', 3377699720527872],
             ['3.5p', 3940649673949184],
             ['3.5P', 3940649673949184],
-            // Two-character suffix
+            // Two-character postfix
             ['2kB', 2000],
             ['2.5kB', 2500],
             ['1MB', 1000000],
@@ -127,7 +127,7 @@ final class NumericHelperTest extends TestCase
             ['4.9TB', 4900000000000],
             ['7PB', 7000000000000000],
             ['7.7PB', 7700000000000000],
-            // Three-character suffix
+            // Three-character postfix
             ['512KiB', 524288],
             ['2.5KiB', 2560],
             ['128MiB', 134217728],
@@ -151,11 +151,11 @@ final class NumericHelperTest extends TestCase
     {
         return [
             ['12cKib', 'Incorrect input string: 12cKib'],
-            ['12Kcb', 'Not supported suffix \'Kcb\' in input string: 12Kcb'],
+            ['12Kcb', 'Not supported postfix \'Kcb\' in input string: 12Kcb'],
             ['1c2kB', 'Incorrect input string: 1c2kB'],
-            ['12Kc', 'Not supported suffix \'Kc\' in input string: 12Kc'],
+            ['12Kc', 'Not supported postfix \'Kc\' in input string: 12Kc'],
             ['1c2k', 'Incorrect input string: 1c2k'],
-            ['123n', 'Not supported suffix \'n\' in input string: 123n'],
+            ['123n', 'Not supported postfix \'n\' in input string: 123n'],
             ['k', 'Incorrect input string: k'],
             ['K', 'Incorrect input string: K'],
             ['m', 'Incorrect input string: m'],
