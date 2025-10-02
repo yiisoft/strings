@@ -26,7 +26,7 @@ final class NumericHelper
     /**
      * @psalm-var array<int, array<string, int>>
      */
-    private const SUPPORTED_FILESYSTEM_SIZE_POSTFIXES = [
+    private const FILESYSTEM_SIZE_POSTFIXES = [
         3 => [
             'KiB' => 1024,
             'MiB' => 1048576,
@@ -124,7 +124,7 @@ final class NumericHelper
      * Converts human readable size to bytes.
      *
      * @param string $string human readable size. Examples: `1024`, `1kB`, `1.5M`, `1GiB`. Full
-     * list of postfixes in {@see SUPPORTED_FILESYSTEM_SIZE_POSTFIXES}.
+     * list of supported postfixes in {@see FILESYSTEM_SIZE_POSTFIXES}.
      *
      * @throws InvalidArgumentException when the string is invalid.
      *
@@ -138,7 +138,7 @@ final class NumericHelper
             return (float) $string;
         }
 
-        foreach (self::SUPPORTED_FILESYSTEM_SIZE_POSTFIXES as $postfixLength => $postfixes) {
+        foreach (self::FILESYSTEM_SIZE_POSTFIXES as $postfixLength => $postfixes) {
             $postfix = substr($string, -$postfixLength);
             if ($postfix === '' || preg_match('/\\d/', $postfix) === 1) {
                 continue;
