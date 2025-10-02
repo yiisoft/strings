@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\NumericHelper;
@@ -168,7 +167,7 @@ final class NumericHelperTest extends TestCase
     #[DataProvider('dataConvertHumanReadableSizeToBytesWithInvalidStrings')]
     public function testConvertHumanReadableSizeToBytesWithInvalidStrings(string $string, string $message): void
     {
-        $this->expectExceptionObject(new InvalidArgumentException($message));
+        $this->expectExceptionObject(new \InvalidArgumentException($message));
         NumericHelper::convertHumanReadableSizeToBytes($string);
     }
 }
