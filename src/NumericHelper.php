@@ -16,6 +16,7 @@ use function is_numeric;
 use function is_scalar;
 use function preg_replace;
 use function str_replace;
+use function substr;
 
 /**
  * Provides static methods to work with numeric strings.
@@ -85,5 +86,28 @@ final class NumericHelper
     public static function isInteger(mixed $value): bool
     {
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
+    }
+
+    /**
+     * Converts php.ini style size to bytes.
+     *
+     * @param string $string php.ini style size. Examples: `512M`, `1024K`, `1G`, `256`.
+     * @return int the number of bytes equivalent to the specified string.
+     */
+    public static function convertIniSizeToBytes(string $string): int
+    {
+        switch (substr($string, -1)) {
+            case 'M':
+            case 'm':
+                return (int) $string * 1048576;
+            case 'K':
+            case 'k':
+                return (int) $string * 1024;
+            case 'G':
+            case 'g':
+                return (int) $string * 1073741824;
+            default:
+                return (int) $string;
+        }
     }
 }

@@ -87,4 +87,23 @@ final class NumericHelperTest extends TestCase
     {
         $this->assertSame($expected, NumericHelper::isInteger($value));
     }
+
+    public static function dataConvertIniSizeToBytes(): array
+    {
+        return [
+            ['1024', 1024],
+            ['512K', 524288],
+            ['512k', 524288],
+            ['128M', 134217728],
+            ['128m', 134217728],
+            ['2G', 2147483648],
+            ['2g', 2147483648],
+        ];
+    }
+
+    #[DataProvider('dataConvertIniSizeToBytes')]
+    public function testConvertIniSizeToBytes(string $string, int $expected): void
+    {
+        $this->assertSame($expected, NumericHelper::convertIniSizeToBytes($string));
+    }
 }
