@@ -24,6 +24,38 @@ use function substr;
 final class NumericHelper
 {
     /**
+     * @psalm-var array<int, array<string, int>>
+     */
+    private const SUPPORTED_FILESYSTEM_SIZE_SUFFIXES = [
+        3 => [
+            'KiB' => 1024,
+            'MiB' => 1048576,
+            'GiB' => 1073741824,
+            'TiB' => 1099511627776,
+            'PiB' => 1125899906842624,
+        ],
+        2 => [
+            'kB' => 1000,
+            'MB' => 1000000,
+            'GB' => 1000000000,
+            'TB' => 1000000000000,
+            'PB' => 1000000000000000,
+        ],
+        1 => [
+            'k' => 1024,
+            'K' => 1024,
+            'm' => 1048576,
+            'M' => 1048576,
+            'g' => 1073741824,
+            'G' => 1073741824,
+            't' => 1099511627776,
+            'T' => 1099511627776,
+            'p' => 1125899906842624,
+            'P' => 1125899906842624,
+        ],
+    ];
+
+    /**
      * Converts number to its ordinal English form. For example, converts 13 to 13th, 2 to 2nd etc.
      *
      * @param float|int|string $value The number to get its ordinal value.
@@ -89,18 +121,42 @@ final class NumericHelper
     }
 
     /**
-     * Converts php.ini style size to bytes.
+     * Converts human readable size to bytes.
      *
-     * @param string $string php.ini style size. Examples: `512M`, `1024K`, `1G`, `256`.
-     * @return int the number of bytes equivalent to the specified string.
+     * @param string $string human readable size. Examples: `1024`, `1kB`, `1.5M`, `1GiB`. Full
+     * list of suffixes in {@see SUPPORTED_FILESYSTEM_SIZE_SUFFIXES}.
+     *
+     * @throws InvalidArgumentException when the string is invalid.
+     *
+     * @return float the number of bytes equivalent to the specified string.
+     *
+     * @see https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
      */
-    public static function convertIniSizeToBytes(string $string): int
+    public static function convertHumanReadableSizeToBytes(string $string): float
     {
-        return match (substr($string, -1)) {
-            'M', 'm' => (int) $string * 1048576,
-            'K', 'k' => (int) $string * 1024,
-            'G', 'g' => (int) $string * 1073741824,
-            default => (int) $string,
-        };
+        if (is_numeric($string)) {
+            return (float) $string;
+        }
+
+        foreach (self::SUPPORTED_FILESYSTEM_SIZE_SUFFIXES as $suffixLength => $suffixes) {
+            $suffix = substr($string, -$suffixLength);
+            if ($suffix === '' || preg_match('/\\d/', $suffix) === 1) {
+                continue;
+            }
+
+            $numericPart = substr($string, 0, -$suffixLength);
+            if (!is_numeric($numericPart)) {
+                throw new InvalidArgumentException("Incorrect input string: $string");
+            }
+
+            $suffixMultiplier = $suffixes[$suffix] ?? null;
+            if ($suffixMultiplier === null) {
+                throw new InvalidArgumentException("Not supported suffix '$suffix' in input string: $string");
+            }
+
+            return (float) $numericPart * $suffixMultiplier;
+        }
+
+        throw new InvalidArgumentException("Incorrect input string: $string");
     }
 }
