@@ -26,7 +26,7 @@ final class NumericHelper
     /**
      * @psalm-var array<int, array<string, int>>
      */
-    private const SUPPORTED_FILESYSTEM_SIZE_SUFFIXES = [
+    private const SUPPORTED_FILESYSTEM_SIZE_POSTFIXES = [
         3 => [
             'KiB' => 1024,
             'MiB' => 1048576,
@@ -124,7 +124,7 @@ final class NumericHelper
      * Converts human readable size to bytes.
      *
      * @param string $string human readable size. Examples: `1024`, `1kB`, `1.5M`, `1GiB`. Full
-     * list of suffixes in {@see SUPPORTED_FILESYSTEM_SIZE_SUFFIXES}.
+     * list of postfixes in {@see SUPPORTED_FILESYSTEM_SIZE_POSTFIXES}.
      *
      * @throws InvalidArgumentException when the string is invalid.
      *
@@ -138,23 +138,23 @@ final class NumericHelper
             return (float) $string;
         }
 
-        foreach (self::SUPPORTED_FILESYSTEM_SIZE_SUFFIXES as $suffixLength => $suffixes) {
-            $suffix = substr($string, -$suffixLength);
-            if ($suffix === '' || preg_match('/\\d/', $suffix) === 1) {
+        foreach (self::SUPPORTED_FILESYSTEM_SIZE_POSTFIXES as $postfixLength => $postfixes) {
+            $postfix = substr($string, -$postfixLength);
+            if ($postfix === '' || preg_match('/\\d/', $postfix) === 1) {
                 continue;
             }
 
-            $numericPart = substr($string, 0, -$suffixLength);
+            $numericPart = substr($string, 0, -$postfixLength);
             if (!is_numeric($numericPart)) {
                 throw new InvalidArgumentException("Incorrect input string: $string");
             }
 
-            $suffixMultiplier = $suffixes[$suffix] ?? null;
-            if ($suffixMultiplier === null) {
-                throw new InvalidArgumentException("Not supported suffix '$suffix' in input string: $string");
+            $postfixMultiplier = $postfixes[$postfix] ?? null;
+            if ($postfixMultiplier === null) {
+                throw new InvalidArgumentException("Not supported postfix '$postfix' in input string: $string");
             }
 
-            return (float) $numericPart * $suffixMultiplier;
+            return (float) $numericPart * $postfixMultiplier;
         }
 
         throw new InvalidArgumentException("Incorrect input string: $string");
