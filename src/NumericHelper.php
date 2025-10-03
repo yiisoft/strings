@@ -123,19 +123,20 @@ final class NumericHelper
     /**
      * Converts human readable size to bytes.
      *
-     * @param string $string human readable size. Examples: `1024`, `1kB`, `1.5M`, `1GiB`. Full
+     * @param string $string human readable size. Examples: `1024`, `1kB`, `1M`, `1GiB`. Full
      * list of supported postfixes in {@see FILESYSTEM_SIZE_POSTFIXES}.
+     * Note: This parameter cannot be greater than `8192T`.
      *
      * @throws InvalidArgumentException when the string is invalid.
      *
-     * @return float the number of bytes equivalent to the specified string.
+     * @return int the number of bytes equivalent to the specified string.
      *
      * @see https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
      */
-    public static function convertHumanReadableSizeToBytes(string $string): float
+    public static function convertHumanReadableSizeToBytes(string $string): int
     {
         if (is_numeric($string)) {
-            return (float) $string;
+            return (int) $string;
         }
 
         foreach (self::FILESYSTEM_SIZE_POSTFIXES as $postfixLength => $postfixes) {
@@ -154,7 +155,7 @@ final class NumericHelper
                 throw new InvalidArgumentException("Not supported postfix '$postfix' in input string: $string");
             }
 
-            return (float) $numericPart * $postfixMultiplier;
+            return (int) $numericPart * $postfixMultiplier;
         }
 
         throw new InvalidArgumentException("Incorrect input string: $string");
