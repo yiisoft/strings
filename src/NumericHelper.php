@@ -123,7 +123,7 @@ final class NumericHelper
     /**
      * Converts human readable size to bytes.
      *
-     * @param string $string human readable size. Examples: `1024`, `1kB`, `1M`, `1GiB`. Full
+     * @param string $string human readable size. Examples: `1024`, `1kB`, `1.5M`, `1GiB`. Full
      * list of supported postfixes in {@see FILESYSTEM_SIZE_POSTFIXES}.
      * Note: This parameter cannot be greater than `8192T`.
      *
@@ -155,7 +155,7 @@ final class NumericHelper
                 throw new InvalidArgumentException("Not supported postfix '$postfix' in input string: $string");
             }
 
-            return (int) $numericPart * $postfixMultiplier;
+            return (int) ((float) $numericPart * $postfixMultiplier);
         }
 
         throw new InvalidArgumentException("Incorrect input string: $string");
