@@ -87,4 +87,87 @@ final class NumericHelperTest extends TestCase
     {
         $this->assertSame($expected, NumericHelper::isInteger($value));
     }
+
+    public static function dataConvertHumanReadableSizeToBytes(): array
+    {
+        return [
+            // Only numbers
+            ['1024', 1024],
+            ['9223372036854775807', 9223372036854775807],
+            // Single-character postfix
+            ['512K', 524288],
+            ['512k', 524288],
+            ['2.5k', 2560],
+            ['2.5K', 2560],
+            ['128M', 134217728],
+            ['128m', 134217728],
+            ['4.5m', 4718592],
+            ['4.5M', 4718592],
+            ['2G', 2147483648],
+            ['2g', 2147483648],
+            ['2.5g', 2684354560],
+            ['2.5G', 2684354560],
+            ['1.1G', 1181116006],
+            ['2t', 2199023255552],
+            ['2T', 2199023255552],
+            ['6.5t', 7146825580544],
+            ['6.5T', 7146825580544],
+            ['3p', 3377699720527872],
+            ['3P', 3377699720527872],
+            ['3.5p', 3940649673949184],
+            ['3.5P', 3940649673949184],
+            // Two-character postfix
+            ['2kB', 2000],
+            ['2.5kB', 2500],
+            ['1MB', 1000000],
+            ['3.3MB', 3300000],
+            ['6GB', 6000000000],
+            ['7.4GB', 7400000000],
+            ['4TB', 4000000000000],
+            ['4.9TB', 4900000000000],
+            ['7PB', 7000000000000000],
+            ['7.7PB', 7700000000000000],
+            // Three-character postfix
+            ['512KiB', 524288],
+            ['2.5KiB', 2560],
+            ['128MiB', 134217728],
+            ['4.5MiB', 4718592],
+            ['2GiB', 2147483648],
+            ['2.5GiB', 2684354560],
+            ['2TiB', 2199023255552],
+            ['6.5TiB', 7146825580544],
+            ['3PiB', 3377699720527872],
+            ['3.5PiB', 3940649673949184],
+        ];
+    }
+
+    #[DataProvider('dataConvertHumanReadableSizeToBytes')]
+    public function testConvertHumanReadableSizeToBytes(string $string, int $expected): void
+    {
+        $this->assertSame($expected, NumericHelper::convertHumanReadableSizeToBytes($string));
+    }
+
+    public static function dataConvertHumanReadableSizeToBytesWithInvalidStrings(): array
+    {
+        return [
+            ['12cKib', 'Incorrect input string: 12cKib'],
+            ['12Kcb', 'Not supported postfix \'Kcb\' in input string: 12Kcb'],
+            ['1c2kB', 'Incorrect input string: 1c2kB'],
+            ['12Kc', 'Not supported postfix \'Kc\' in input string: 12Kc'],
+            ['1c2k', 'Incorrect input string: 1c2k'],
+            ['123n', 'Not supported postfix \'n\' in input string: 123n'],
+            ['k', 'Incorrect input string: k'],
+            ['K', 'Incorrect input string: K'],
+            ['m', 'Incorrect input string: m'],
+            ['M', 'Incorrect input string: M'],
+            ['', 'Incorrect input string: '],
+        ];
+    }
+
+    #[DataProvider('dataConvertHumanReadableSizeToBytesWithInvalidStrings')]
+    public function testConvertHumanReadableSizeToBytesWithInvalidStrings(string $string, string $message): void
+    {
+        $this->expectExceptionObject(new \InvalidArgumentException($message));
+        NumericHelper::convertHumanReadableSizeToBytes($string);
+    }
 }

@@ -4,6 +4,7 @@
 
 - New #3: Add `StringHelper::truncateWordsByLength()` method to truncate text by character length while preserving word boundaries (@samdark)
 - Bug #119: Fix incorrect pluralization of words ending in "tion", "sion" and "gion" (@samdark)
+- New #148: Add `NumericHelper::convertHumanReadableSizeToBytes()` method (@max-s-lab)
 
 ## 2.6.0 February 09, 2025
 

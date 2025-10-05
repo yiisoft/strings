@@ -115,6 +115,7 @@ The following methods are available:
 - toOrdinal
 - normalize
 - isInteger
+- convertHumanReadableSizeToBytes
 
 ## Inflector usage
 
