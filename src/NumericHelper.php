@@ -125,13 +125,12 @@ final class NumericHelper
      *
      * @param string $string Human readable size. Examples: `1024`, `1kB`, `1.5M`, `1GiB`. Full
      * list of supported postfixes in {@see FILESYSTEM_SIZE_POSTFIXES}.
-     *
-     * Note: This parameter cannot be greater than `8192P - 1 byte` on 64-bit systems
-     * and `2G - 1 byte` on 32-bit systems.
+
+     * Note: This parameter must be less than `8192P` on 64-bit systems and `2G` on 32-bit systems.
      *
      * @throws InvalidArgumentException when the string is invalid.
      *
-     * @return int the number of bytes equivalent to the specified string.
+     * @return int The number of bytes equivalent to the specified string.
      *
      * @see https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
      */
