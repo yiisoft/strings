@@ -14,6 +14,7 @@ use function in_array;
 use function is_bool;
 use function is_numeric;
 use function is_scalar;
+use function preg_match;
 use function preg_replace;
 use function str_replace;
 use function substr;
