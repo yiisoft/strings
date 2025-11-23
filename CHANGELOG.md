@@ -1,5 +1,9 @@
 # Yii Strings Change Log
 
+## 2.7.1 under development
+
+- no changes in this release.
+
 ## 2.7.0 November 23, 2025
 
 - New #148, #149: Add `NumericHelper::convertHumanReadableSizeToBytes()` method (@mspirkov)
