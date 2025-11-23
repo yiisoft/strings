@@ -1,12 +1,12 @@
 # Yii Strings Change Log
 
-## 2.6.1 under development
+## 2.7.0 November 23, 2025
 
+- New #148, #149: Add `NumericHelper::convertHumanReadableSizeToBytes()` method (@mspirkov)
 - New #3: Add `StringHelper::truncateWordsByLength()` method to truncate text by character length while preserving word 
   boundaries (@samdark)
-- Bug #119: Fix incorrect pluralization of words ending in "tion", "sion" and "gion" (@samdark)
-- New #148, #149: Add `NumericHelper::convertHumanReadableSizeToBytes()` method (@mspirkov)
 - Enh #150: Add PHP 8.5 support (@vjik)
+- Bug #119: Fix incorrect pluralization of words ending in "tion", "sion" and "gion" (@samdark)
 
 ## 2.6.0 February 09, 2025
 
