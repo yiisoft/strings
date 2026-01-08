@@ -171,7 +171,7 @@ final class NumericHelperTest extends TestCase
         NumericHelper::convertHumanReadableSizeToBytes($string);
     }
 
-    public static function decimalZerosProvider(): array
+    public static function dataTrimDecimalZeros(): array
     {
         return [
             'no decimals in integer with zeros' => ['390', '390'],
@@ -187,7 +187,7 @@ final class NumericHelperTest extends TestCase
         ];
     }
 
-    #[DataProvider('decimalZerosProvider')]
+    #[DataProvider('dataTrimDecimalZeros')]
     public function testTrimDecimalZeros(?string $input, ?string $expected): void
     {
         $this->assertSame($expected, NumericHelper::trimDecimalZeros($input));
