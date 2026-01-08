@@ -187,9 +187,7 @@ final class NumericHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider decimalZerosProvider
-     */
+    #[DataProvider('decimalZerosProvider')]
     public function testTrimDecimalZeros(?string $input, ?string $expected): void
     {
         $this->assertSame($expected, NumericHelper::trimDecimalZeros($input));
