@@ -2,7 +2,7 @@
 
 ## 2.7.1 under development
 
-- no changes in this release.
+- New #xxx: Add `NumericHelper::trimDecimalZeros()` (@samdark)
 
 ## 2.7.0 November 23, 2025
 

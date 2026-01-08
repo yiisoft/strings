@@ -170,4 +170,28 @@ final class NumericHelperTest extends TestCase
         $this->expectExceptionObject(new \InvalidArgumentException($message));
         NumericHelper::convertHumanReadableSizeToBytes($string);
     }
+
+    public static function decimalZerosProvider(): array
+    {
+        return [
+            'no decimals in integer with zeros' => ['390', '390'],
+            'all zeros' => ['390.000', '390'],
+            'no zeros' => ['3.14', '3.14'],
+            'some zeros' => ['42.010', '42.01'],
+            'null' => [null, null],
+            'zeros' => ['0.0', '0'],
+            'empty' => ['', ''],
+            'decimal only' => ['.5', '.5'],
+            'start with zero' => ['0.25', '0.25'],
+            'negative' => ['-3.000', '-3'],
+        ];
+    }
+
+    /**
+     * @dataProvider decimalZerosProvider
+     */
+    public function testTrimDecimalZeros(?string $input, ?string $expected): void
+    {
+        $this->assertSame($expected, NumericHelper::trimDecimalZeros($input));
+    }
 }
