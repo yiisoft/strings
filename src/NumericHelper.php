@@ -85,7 +85,31 @@ final class NumericHelper
     }
 
     /**
-     * Trims decimal zeros including fractional part if it contains zeros only. Keeps `null` as is.
+     * Trims trailing decimal zeros from a numeric-like string.
+     *
+     * If the fractional part consists only of zeros, the decimal separator is removed as well.
+     * The value `null` is returned as-is.
+     *
+     * This method does not validate that the input is a valid numeric string; it operates purely
+     * on the textual representation:
+     *
+     * - If `$value` is `null`, `null` is returned.
+     * - If `$value` does not contain a dot (`.`), it is returned unchanged.
+     * - If `$value` contains a dot, trailing `0` characters are removed from the end of the
+     *   string; if that leaves a trailing dot, the dot is removed as well.
+     *
+     * Examples:
+     * - `trimDecimalZeros('1.2300')` returns `'1.23'`
+     * - `trimDecimalZeros('10.000')` returns `'10'`
+     * - `trimDecimalZeros('0.000')` returns `'0'`
+     * - `trimDecimalZeros('-5.500')` returns `'-5.5'`
+     * - `trimDecimalZeros('abc.000')` returns `'abc'`
+     *
+     * @param string|null $value String representation of a number or any string potentially
+     * containing a decimal part.
+     *
+     * @return string|null The input string with trailing decimal zeros (and a trailing decimal
+     * separator, if any) removed, or `null` if the input was `null`.
      */
     public static function trimDecimalZeros(?string $value): ?string
     {
