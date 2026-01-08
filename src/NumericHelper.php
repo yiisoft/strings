@@ -116,6 +116,6 @@ final class NumericHelper
         if ($value === null || !str_contains($value, '.')) {
             return $value;
         }
-        return trim(rtrim($value, '0'), '.');
+        return rtrim(rtrim($value, '0'), '.');
     }
 }
