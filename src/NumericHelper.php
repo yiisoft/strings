@@ -16,6 +16,9 @@ use function is_numeric;
 use function is_scalar;
 use function preg_match;
 use function preg_replace;
+use function rtrim;
+use function str_contains;
+use function str_ends_with;
 use function str_replace;
 use function substr;
 
