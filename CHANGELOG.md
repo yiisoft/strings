@@ -2,6 +2,7 @@
 
 ## 3.0.0 under development
 
+- New #153: Add `NumericHelper::trimDecimalZeros()` (@samdark)
 - Chg #112: Change default value of `$strict` parameter in `Inflector::toSnakeCase()` to `false` (@vjik)
 
 ## 2.4.0 December 22, 2023
