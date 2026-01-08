@@ -97,6 +97,7 @@ final class NumericHelper
      * - If `$value` does not contain a dot (`.`), it is returned unchanged.
      * - If `$value` contains a dot, trailing `0` characters are removed from the end of the
      *   string; if that leaves a trailing dot, the dot is removed as well.
+     * - If the result after trimming is empty (e.g., for `.0` or `.00`), `'0'` is returned.
      *
      * Examples:
      * - `trimDecimalZeros('1.2300')` returns `'1.23'`
@@ -104,6 +105,8 @@ final class NumericHelper
      * - `trimDecimalZeros('0.000')` returns `'0'`
      * - `trimDecimalZeros('-5.500')` returns `'-5.5'`
      * - `trimDecimalZeros('abc.000')` returns `'abc'`
+     * - `trimDecimalZeros('.0')` returns `'0'`
+     * - `trimDecimalZeros('.00')` returns `'0'`
      *
      * @param string|null $value String representation of a number or any string potentially
      * containing a decimal part.
@@ -116,6 +119,7 @@ final class NumericHelper
         if ($value === null || !str_contains($value, '.')) {
             return $value;
         }
-        return trim(rtrim($value, '0'), '.');
+        $result = trim(rtrim($value, '0'), '.');
+        return $result === '' ? '0' : $result;
     }
 }

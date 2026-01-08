@@ -99,6 +99,10 @@ final class NumericHelperTest extends TestCase
             'no zeros' => ['3.14', '3.14'],
             'some zeros' => ['42.010', '42.01'],
             'null' => [null, null],
+            'edge case: only decimal point and zero' => ['.0', '0'],
+            'edge case: only decimal point and multiple zeros' => ['.00', '0'],
+            'edge case: zero with decimal and zero' => ['0.0', '0'],
+            'edge case: zero with decimal and multiple zeros' => ['0.00', '0'],
         ];
     }
 
