@@ -83,4 +83,15 @@ final class NumericHelper
     {
         return filter_var($value, FILTER_VALIDATE_INT) !== false;
     }
+
+    /**
+     * Trims decimal zeros including fractional part if it contains zeros only. Keeps `null` as is.
+     */
+    public static function trimDecimalZeros(?string $value): ?string
+    {
+        if ($value === null || !str_contains($value, '.')) {
+            return $value;
+        }
+        return trim(rtrim($value, '0'), '.');
+    }
 }

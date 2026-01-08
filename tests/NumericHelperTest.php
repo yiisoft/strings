@@ -90,4 +90,23 @@ final class NumericHelperTest extends TestCase
     {
         $this->assertSame($expected, NumericHelper::isInteger($value));
     }
+
+    public static function decimalZerosProvider(): array
+    {
+        return [
+            'no decimals in integer with zeros' => ['390', '390'],
+            'all zeros' => ['390.000', '390'],
+            'no zeros' => ['3.14', '3.14'],
+            'some zeros' => ['42.010', '42.01'],
+            'null' => [null, null],
+        ];
+    }
+
+    /**
+     * @dataProvider decimalZerosProvider
+     */
+    public function testTrimDecimalZeros(?string $input, ?string $expected): void
+    {
+        $this->assertSame($expected, NumericHelper::trimDecimalZeros($input));
+    }
 }
