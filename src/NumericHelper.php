@@ -186,7 +186,7 @@ final class NumericHelper
         /** @psalm-suppress PossiblyNullArgument */
         $value = rtrim($value, '0');
 
-        if ($value === '' || !str_ends_with($value, '.')) {
+        if (!str_ends_with($value, '.')) {
             return $value;
         }
 
