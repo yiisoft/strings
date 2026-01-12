@@ -16,9 +16,6 @@ use function is_numeric;
 use function is_scalar;
 use function preg_match;
 use function preg_replace;
-use function rtrim;
-use function str_contains;
-use function str_ends_with;
 use function str_replace;
 use function substr;
 
@@ -176,7 +173,7 @@ final class NumericHelper
      * containing a decimal part.
      *
      * @return string|null The input string with trailing decimal zeros (and a trailing decimal
-     * separator, if any) removed, or `null` if the input was `null`.
+     * separator, if any) removed, or `null` if the input was `null` or an empty string.
      */
     public static function trimDecimalZeros(?string $value): ?string
     {
