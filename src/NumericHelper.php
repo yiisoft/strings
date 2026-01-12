@@ -180,7 +180,16 @@ final class NumericHelper
      */
     public static function trimDecimalZeros(?string $value): ?string
     {
-        if ($value === null || !str_contains($value, '.')) {
+        if ($value === null) {
+            return null;
+        }
+
+        $value = trim($value);
+        if ($value === '') {
+            return null;
+        }
+
+        if (!str_contains($value, '.')) {
             return $value;
         }
         /** @psalm-suppress PossiblyNullArgument */

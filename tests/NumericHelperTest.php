@@ -180,7 +180,7 @@ final class NumericHelperTest extends TestCase
             'some zeros' => ['42.010', '42.01'],
             'null' => [null, null],
             'zeros' => ['0.0', '0'],
-            'empty' => ['', ''],
+            'empty' => ['', null],
             'decimal only' => ['.5', '.5'],
             'start with zero' => ['0.25', '0.25'],
             'negative' => ['-3.000', '-3'],
