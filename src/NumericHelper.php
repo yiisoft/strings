@@ -186,26 +186,16 @@ final class NumericHelper
             return null;
         }
 
-        $decimalPosition = strpos($value, '.');
-        if ($decimalPosition === false) {
+        if (!str_contains($value, '.')) {
+            return $value;
+        }
+        /** @psalm-suppress PossiblyNullArgument */
+        $value = rtrim($value, '0');
+
+        if ($value === '' || !str_ends_with($value, '.')) {
             return $value;
         }
 
-        $length = strlen($value);
-        $index = $length - 1;
-
-        while ($index > $decimalPosition && $value[$index] === '0') {
-            $index--;
-        }
-
-        if ($index === $length - 1) {
-            return $value;
-        }
-
-        if ($index === $decimalPosition) {
-            return substr($value, 0, $decimalPosition);
-        }
-
-        return substr($value, 0, $index + 1);
+        return substr($value, 0, -1);
     }
 }
