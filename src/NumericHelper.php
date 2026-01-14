@@ -182,7 +182,7 @@ final class NumericHelper
         }
 
         $value = trim($value);
-        if ($value === '') {
+        if ($value === '' || $value === '.') {
             return null;
         }
 
@@ -191,6 +191,10 @@ final class NumericHelper
         }
         /** @psalm-suppress PossiblyNullArgument */
         $value = rtrim($value, '0');
+
+        if ($value === '.') {
+            return '0';
+        }
 
         if (!str_ends_with($value, '.')) {
             return $value;
