@@ -186,6 +186,10 @@ final class NumericHelper
             return $value;
         }
 
+        if (str_ends_with($value, ' .0')) {
+            return substr($value, 0, -2) . '0';
+        }
+
         if (!str_contains($value, '.')) {
             return $value;
         }
