@@ -186,6 +186,7 @@ final class NumericHelperTest extends TestCase
 
             'not numeric with int' => ['hello 42', 'hello 42'],
             'not numeric with decimals' => ['hello 3.00', 'hello 3'],
+            'not numeric with decimal zero' => ['hello .0', 'hello '],
             'not numeric' => ['hello', 'hello'],
 
             // edge cases
