@@ -164,16 +164,17 @@ final class NumericHelper
     }
 
     /**
-     * Trims trailing decimal zeros from a numeric-like string.
+     * Trims trailing decimal zeros from a numeric string.
      *
-     * If the fractional part consists only of zeros, the decimal separator is removed as well.
-     * The value that is `null` or empty is returned as-is.
+     * If the fractional part consists only of zeros, the decimal dot separator is removed as well.
+     * The value that is `null` is returned as-is.
      *
-     * @param string|null $value String representation of a number or any string potentially
-     * containing a decimal part.
+     * @param string|null $value Numeric string or null.
      *
      * @return string|null The input string with trailing decimal zeros (and a trailing decimal
-     * separator, if any) removed, or `null` if the input was `null` or an empty string.
+     * dot separator, if any) removed, or `null` if the input was `null`.
+     *
+     * @see is_numeric()
      */
     public static function trimDecimalZeros(?string $value): ?string
     {
@@ -181,29 +182,24 @@ final class NumericHelper
             return null;
         }
 
-        $trimmedValue = trim($value);
-        if ($trimmedValue === '' || $trimmedValue === '.') {
-            return $value;
+        if (!is_numeric($value)) {
+            throw new InvalidArgumentException(
+                sprintf('Value must be numeric string or null. "%s" given.', $value)
+            );
         }
 
-        if (preg_match('/^(.+)\s\.0+$/', $value, $matches) === 1) {
-            return $matches[1] . ' 0';
-        }
+        $value = trim($value);
 
         if (!str_contains($value, '.')) {
             return $value;
         }
-        /** @psalm-suppress PossiblyNullArgument */
-        $value = rtrim($value, '0');
 
-        if ($value === '.') {
-            return '0';
-        }
+        $value = rtrim($value, '0');
 
         if (!str_ends_with($value, '.')) {
             return $value;
         }
 
-        return substr($value, 0, -1);
+        return $value === '.' ? '0' : substr($value, 0, -1);
     }
 }

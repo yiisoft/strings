@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\NumericHelper;
@@ -35,7 +36,7 @@ final class NumericHelperTest extends TestCase
 
     public function testToOrdinalWithIncorrectType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         NumericHelper::toOrdinal('bla-bla');
     }
 
@@ -63,7 +64,7 @@ final class NumericHelperTest extends TestCase
 
     public function testNormalizeWithIncorrectType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         NumericHelper::normalize([]);
     }
 
@@ -167,7 +168,7 @@ final class NumericHelperTest extends TestCase
     #[DataProvider('dataConvertHumanReadableSizeToBytesWithInvalidStrings')]
     public function testConvertHumanReadableSizeToBytesWithInvalidStrings(string $string, string $message): void
     {
-        $this->expectExceptionObject(new \InvalidArgumentException($message));
+        $this->expectExceptionObject(new InvalidArgumentException($message));
         NumericHelper::convertHumanReadableSizeToBytes($string);
     }
 
@@ -183,20 +184,10 @@ final class NumericHelperTest extends TestCase
             'decimal zero' => ['.0', '0'],
             'start with zero' => ['0.25', '0.25'],
             'negative' => ['-3.000', '-3'],
-
-            'not numeric with int' => ['hello 42', 'hello 42'],
-            'not numeric with decimals' => ['hello 3.00', 'hello 3'],
-            'not numeric with decimal zero' => ['hello .0', 'hello 0'],
-            'not numeric' => ['hello', 'hello'],
-
-            // edge cases
             'null' => [null, null],
-            'empty' => ['', ''],
-            'spaces' => ['   ', '   '],
-            'dot' => ['.', '.'],
-            'dot and zero with spaces' => ['. 00', '. '],
-            'decimal in front of non numeric' => ['3.00 hello', '3.00 hello'],
-            'dot zero in front of non numeric' => ['hello .00', 'hello 0'],
+            'starts with zero' => ['02471', '02471'],
+            'exponent' => ['1337e0', '1337e0'],
+            'spaces' => ['3.140  ', '3.14'],
         ];
     }
 
@@ -204,5 +195,11 @@ final class NumericHelperTest extends TestCase
     public function testTrimDecimalZeros(?string $input, ?string $expected): void
     {
         $this->assertSame($expected, NumericHelper::trimDecimalZeros($input));
+    }
+
+    public function trimDecimalZerosWithNonNumericString(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        NumericHelper::trimDecimalZeros('hello');
     }
 }
