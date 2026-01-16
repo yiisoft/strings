@@ -196,6 +196,7 @@ final class NumericHelperTest extends TestCase
             'dot' => ['.', '.'],
             'dot and zero with spaces' => ['. 00', '. '],
             'decimal in front of non numeric' => ['3.00 hello', '3.00 hello'],
+            'dot zero in front of non numeric' => ['hello .00', 'hello 0'],
         ];
     }
 

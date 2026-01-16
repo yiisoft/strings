@@ -186,8 +186,8 @@ final class NumericHelper
             return $value;
         }
 
-        if (str_ends_with($value, ' .0')) {
-            return substr($value, 0, -2) . '0';
+        if (preg_match('/^(.+)\s\.0+$/', $value, $matches) === 1) {
+            return $matches[1] . ' 0';
         }
 
         if (!str_contains($value, '.')) {
