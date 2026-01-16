@@ -195,11 +195,8 @@ final class NumericHelper
         }
 
         $value = rtrim($value, '0');
+        $value = rtrim($value, '.');
 
-        if (!str_ends_with($value, '.')) {
-            return $value;
-        }
-
-        return $value === '.' ? '0' : substr($value, 0, -1);
+        return $value ?: '0';
     }
 }
