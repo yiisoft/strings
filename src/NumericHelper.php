@@ -164,14 +164,14 @@ final class NumericHelper
     }
 
     /**
-     * Trims trailing decimal zeros from a numeric string.
+     * Trims spaces and trailing decimal zeros from a numeric string.
      *
      * If the fractional part consists only of zeros, the decimal dot separator is removed as well.
      * The value that is `null` is returned as-is.
      *
      * @param string|null $value Numeric string or null.
      *
-     * @return string|null The input string with trailing decimal zeros (and a trailing decimal
+     * @return string|null The input string with spaces, trailing decimal zeros (and a trailing decimal
      * dot separator, if any) removed, or `null` if the input was `null`.
      *
      * @see is_numeric()
