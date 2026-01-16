@@ -184,11 +184,17 @@ final class NumericHelperTest extends TestCase
             'start with zero' => ['0.25', '0.25'],
             'negative' => ['-3.000', '-3'],
 
-            // empty values
+            'not numeric with int' => ['hello 42', 'hello 42'],
+            'not numeric with decimals' => ['hello 3.00', 'hello 3'],
+            'not numeric' => ['hello', 'hello'],
+
+            // edge cases
             'null' => [null, null],
-            'empty' => ['', null],
-            'spaces' => ['   ', null],
-            'dot' => ['.', null],
+            'empty' => ['', ''],
+            'spaces' => ['   ', '   '],
+            'dot' => ['.', '.'],
+            'dot and zero with spaces' => ['. 00', '. '],
+            'decimal in front of non numeric' => ['3.00 hello', '3.00 hello'],
         ];
     }
 

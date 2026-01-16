@@ -181,9 +181,9 @@ final class NumericHelper
             return null;
         }
 
-        $value = trim($value);
-        if ($value === '' || $value === '.') {
-            return null;
+        $trimmedValue = trim($value);
+        if ($trimmedValue === '' || $trimmedValue === '.') {
+            return $value;
         }
 
         if (!str_contains($value, '.')) {
