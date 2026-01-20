@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\NumericHelper;
@@ -35,7 +36,7 @@ final class NumericHelperTest extends TestCase
 
     public function testToOrdinalWithIncorrectType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         NumericHelper::toOrdinal('bla-bla');
     }
 
@@ -63,7 +64,7 @@ final class NumericHelperTest extends TestCase
 
     public function testNormalizeWithIncorrectType(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         NumericHelper::normalize([]);
     }
 
@@ -167,7 +168,38 @@ final class NumericHelperTest extends TestCase
     #[DataProvider('dataConvertHumanReadableSizeToBytesWithInvalidStrings')]
     public function testConvertHumanReadableSizeToBytesWithInvalidStrings(string $string, string $message): void
     {
-        $this->expectExceptionObject(new \InvalidArgumentException($message));
+        $this->expectExceptionObject(new InvalidArgumentException($message));
         NumericHelper::convertHumanReadableSizeToBytes($string);
+    }
+
+    public static function dataTrimDecimalZeros(): array
+    {
+        return [
+            'no decimals in integer with zeros' => ['390', '390'],
+            'all zeros' => ['390.000', '390'],
+            'no zeros' => ['3.14', '3.14'],
+            'some zeros' => ['42.010', '42.01'],
+            'zeros' => ['0.0', '0'],
+            'decimal only' => ['.5', '.5'],
+            'decimal zero' => ['.0', '0'],
+            'start with zero' => ['0.25', '0.25'],
+            'negative' => ['-3.000', '-3'],
+            'null' => [null, null],
+            'starts with zero' => ['02471', '02471'],
+            'exponent' => ['1337e0', '1337e0'],
+            'spaces' => ['3.140  ', '3.14'],
+        ];
+    }
+
+    #[DataProvider('dataTrimDecimalZeros')]
+    public function testTrimDecimalZeros(?string $input, ?string $expected): void
+    {
+        $this->assertSame($expected, NumericHelper::trimDecimalZeros($input));
+    }
+
+    public function trimDecimalZerosWithNonNumericString(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        NumericHelper::trimDecimalZeros('hello');
     }
 }

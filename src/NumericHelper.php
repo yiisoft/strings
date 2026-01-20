@@ -122,7 +122,7 @@ final class NumericHelper
     }
 
     /**
-     * Converts human readable size to bytes.
+     * Converts human-readable size to bytes.
      *
      * @param string $string Human readable size. Examples: `1024`, `1kB`, `1.5M`, `1GiB`. Full
      * list of supported postfixes in {@see FILESYSTEM_SIZE_POSTFIXES}.
@@ -161,5 +161,42 @@ final class NumericHelper
         }
 
         throw new InvalidArgumentException("Incorrect input string: $string");
+    }
+
+    /**
+     * Trims spaces and trailing decimal zeros from a numeric string.
+     *
+     * If the fractional part consists only of zeros, the decimal dot separator is removed as well.
+     * The value that is `null` is returned as-is.
+     *
+     * @param string|null $value Numeric string or null.
+     *
+     * @return string|null The input string with spaces, trailing decimal zeros (and a trailing decimal
+     * dot separator, if any) removed, or `null` if the input was `null`.
+     *
+     * @see is_numeric()
+     */
+    public static function trimDecimalZeros(?string $value): ?string
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        if (!is_numeric($value)) {
+            throw new InvalidArgumentException(
+                sprintf('Value must be numeric string or null. "%s" given.', $value)
+            );
+        }
+
+        $value = trim($value);
+
+        if (!str_contains($value, '.')) {
+            return $value;
+        }
+
+        $value = rtrim($value, '0');
+        $value = rtrim($value, '.');
+
+        return $value ?: '0';
     }
 }

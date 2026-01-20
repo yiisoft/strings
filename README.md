@@ -116,6 +116,7 @@ The following methods are available:
 - normalize
 - isInteger
 - convertHumanReadableSizeToBytes
+- trimDecimalZeros
 
 ## Inflector usage
 
