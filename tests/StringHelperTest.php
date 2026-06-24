@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Strings\Tests;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\StringHelper;
 
@@ -118,11 +120,34 @@ final class StringHelperTest extends TestCase
         $this->assertEquals('это строка с          неожиданными…', StringHelper::truncateWords(' это строка с          неожиданными пробелами ', 4));
     }
 
-    /**
-     * @dataProvider providerStartsWith
-     *
-     * @param string|null $with
-     */
+    #[DataProvider('provideTruncateWordsByLength')]
+    public function testTruncateWordsByLength(string $expected, string $input, int $length, string $trimMarker = '…', string $encoding = 'UTF-8'): void
+    {
+        $this->assertSame($expected, StringHelper::truncateWordsByLength($input, $length, $trimMarker, $encoding));
+    }
+
+    public static function provideTruncateWordsByLength(): array
+    {
+        return [
+            'basic truncation' => ['Do you like drink…', 'Do you like drink coffee at work?', 20],
+            'string shorter than limit should return as-is' => ['Short text', 'Short text', 20],
+            'string exactly at limit should return as-is' => ['Exact length text', 'Exact length text', 17],
+            'custom trim marker' => ['Do you like drink!!!', 'Do you like drink coffee at work?', 23, '!!!'],
+            'multibyte characters' => ['это тестовая…', 'это тестовая multibyte строка', 15],
+            'no spaces (single word) - should break the word' => ['verylongwo…', 'verylongword', 11],
+            'very short limit with marker' => ['A…', 'A long sentence', 2],
+            'limit with the same length as marker' => ['…', 'Some text', 1],
+            'empty string' => ['', '', 10],
+            'spaces that exceed limit should truncate to empty' => ['', '     ', 3],
+            'text with trailing spaces should be trimmed' => ['Hello world', 'Hello world   ', 15],
+            'multiple words that fit exactly' => ['Hello…', 'Hello world', 6],
+            'space at start should add marker' => ['Hel…', ' Hello', 4],
+            'spaces should be trimmed' => ['Hello', '  Hello  ', 100],
+            'nested spaces should be trimmed' => ['Hello…', 'Hello   World', 8],
+        ];
+    }
+
+    #[DataProvider('providerStartsWith')]
     public function testStartsWith(bool $result, string $string, ?string $with): void
     {
         $this->assertSame($result, StringHelper::startsWith($string, $with));
@@ -131,7 +156,7 @@ final class StringHelperTest extends TestCase
     /**
      * Rules that should work the same for case-sensitive and case-insensitive `startsWith()`.
      */
-    public function providerStartsWith(): array
+    public static function providerStartsWith(): array
     {
         return [
             // positive check
@@ -170,11 +195,7 @@ final class StringHelperTest extends TestCase
         $this->assertTrue(StringHelper::startsWithIgnoringCase('anything', null));
     }
 
-    /**
-     * @dataProvider providerEndsWith
-     *
-     * @param string|null $with
-     */
+    #[DataProvider('providerEndsWith')]
     public function testEndsWith(bool $result, string $string, ?string $with): void
     {
         // case sensitive version check
@@ -184,7 +205,7 @@ final class StringHelperTest extends TestCase
     /**
      * Rules that should work the same for case-sensitive and case-insensitive `endsWith()`.
      */
-    public function providerEndsWith(): array
+    public static function providerEndsWith(): array
     {
         return [
             // positive check
@@ -231,38 +252,32 @@ final class StringHelperTest extends TestCase
         $this->assertEquals(1, StringHelper::countWords(' слово '));
     }
 
-    /**
-     * @dataProvider base64UrlEncodedStringsProvider
-     */
+    #[DataProvider('base64UrlEncodedStringsProvider')]
     public function testBase64UrlEncode(string $input, string $base64UrlEncoded): void
     {
         $encoded = StringHelper::base64UrlEncode($input);
         $this->assertEquals($base64UrlEncoded, $encoded);
     }
 
-    /**
-     * @dataProvider base64UrlEncodedStringsProvider
-     *
-     * @param $output
-     * @param $base64UrlEncoded
-     */
+    #[DataProvider('base64UrlEncodedStringsProvider')]
     public function testBase64UrlDecode($output, $base64UrlEncoded): void
     {
         $decoded = StringHelper::base64UrlDecode($base64UrlEncoded);
         $this->assertEquals($output, $decoded);
     }
 
-    public function base64UrlEncodedStringsProvider(): array
+    public static function base64UrlEncodedStringsProvider(): array
     {
         return [
             'Regular string' => ['This is an encoded string', 'VGhpcyBpcyBhbiBlbmNvZGVkIHN0cmluZw=='],
             '? and _ characters' => ['subjects?_d=1', 'c3ViamVjdHM_X2Q9MQ=='],
             '> character' => ['subjects>_d=1', 'c3ViamVjdHM-X2Q9MQ=='],
             'Unicode' => ['Это закодированная строка', '0K3RgtC-INC30LDQutC-0LTQuNGA0L7QstCw0L3QvdCw0Y8g0YHRgtGA0L7QutCw'],
+            'empty string' => ['', ''],
         ];
     }
 
-    public function uppercaseFirstCharacterProvider(): array
+    public static function uppercaseFirstCharacterProvider(): array
     {
         return [
             ['foo', 'Foo'],
@@ -273,15 +288,13 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider uppercaseFirstCharacterProvider
-     */
+    #[DataProvider('uppercaseFirstCharacterProvider')]
     public function testUppercaseFirstCharacter(string $string, string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::uppercaseFirstCharacter($string));
     }
 
-    public function uppercaseFirstCharacterInEachWordProvider(): array
+    public static function uppercaseFirstCharacterInEachWordProvider(): array
     {
         return [
             'Single word' => ['foo', 'Foo'],
@@ -292,9 +305,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider uppercaseFirstCharacterInEachWordProvider
-     */
+    #[DataProvider('uppercaseFirstCharacterInEachWordProvider')]
     public function testUppercaseFirstCharacterInEachWord(string $string, string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::uppercaseFirstCharacterInEachWord($string));
@@ -347,7 +358,7 @@ final class StringHelperTest extends TestCase
     /**
      * @see https://github.com/php/php-src/blob/master/ext/standard/tests/strings/substr_replace.phpt
      */
-    public function replaceSubstringProvider(): array
+    public static function replaceSubstringProvider(): array
     {
         return [
             ['trbala ', ['try this', 'bala ', 2]],
@@ -360,15 +371,13 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider replaceSubstringProvider
-     */
+    #[DataProvider('replaceSubstringProvider')]
     public function testReplaceSubstring(string $expected, array $arguments): void
     {
         $this->assertSame($expected, StringHelper::replaceSubstring(...$arguments));
     }
 
-    public function dataSplit(): array
+    public static function dataSplit(): array
     {
         return [
             ['', []],
@@ -410,9 +419,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataSplit
-     */
+    #[DataProvider('dataSplit')]
     public function testSplit(string $string, array $expected): void
     {
         $this->assertSame($expected, StringHelper::split($string));
@@ -423,7 +430,7 @@ final class StringHelperTest extends TestCase
         $this->assertSame(['A', 'B', 'C'], StringHelper::split(' A 2 B3C', '\d'));
     }
 
-    public function dataParsePath(): array
+    public static function dataParsePath(): array
     {
         return [
             ['key1.key2.key3', '.', '\\', false, ['key1', 'key2', 'key3']],
@@ -464,14 +471,12 @@ final class StringHelperTest extends TestCase
             ['.key1.key2', '.', '\\', false, ['', 'key1', 'key2']],
             ['~key1~key2', '~', '\\', false, ['', 'key1', 'key2']],
 
-            ['', '.', '\\', false, []],
-            ['', '.', '\\', true, []],
+            ['', '.', '\\', false, ['']],
+            ['', '.', '\\', true, ['']],
         ];
     }
 
-    /**
-     * @dataProvider dataParsePath
-     */
+    #[DataProvider('dataParsePath')]
     public function testParsePath(
         string $path,
         string $delimiter,
@@ -507,7 +512,7 @@ final class StringHelperTest extends TestCase
         StringHelper::parsePath('key1.key2.key3', '.', '.');
     }
 
-    public function dataInvariantTrim(): iterable
+    public static function dataInvariantTrim(): iterable
     {
         $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
@@ -525,7 +530,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    public function dataTrim(): iterable
+    public static function dataTrim(): iterable
     {
         $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
@@ -551,7 +556,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    public function dataLtrim(): iterable
+    public static function dataLtrim(): iterable
     {
         $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
@@ -577,7 +582,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    public function dataRtrim(): iterable
+    public static function dataRtrim(): iterable
     {
         $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
@@ -599,7 +604,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    public function dataTrimPattern(): iterable
+    public static function dataTrimPattern(): iterable
     {
         $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
@@ -640,7 +645,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    public function dataLtrimPattern(): iterable
+    public static function dataLtrimPattern(): iterable
     {
         $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
@@ -666,7 +671,7 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    public function dataRtrimPattern(): iterable
+    public static function dataRtrimPattern(): iterable
     {
         $base = 'Здесь我' . self::WS['nbsp'] . '-' . self::WS['thsp'] . 'Multibyte我' . self::WS['lsep'] . 'Строка 👍🏻';
 
@@ -707,52 +712,40 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataInvariantTrim
-     * @dataProvider dataTrim
-     */
+    #[DataProvider('dataTrim')]
+    #[DataProvider('dataInvariantTrim')]
     public function testTrim(string|array $string, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::trim($string));
     }
 
-    /**
-     * @dataProvider dataInvariantTrim
-     * @dataProvider dataLtrim
-     */
+    #[DataProvider('dataLtrim')]
+    #[DataProvider('dataInvariantTrim')]
     public function testLtrim(string|array $string, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::ltrim($string));
     }
 
-    /**
-     * @dataProvider dataInvariantTrim
-     * @dataProvider dataRtrim
-     */
+    #[DataProvider('dataRtrim')]
+    #[DataProvider('dataInvariantTrim')]
     public function testRtrim(string|array $string, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::rtrim($string));
     }
 
-    /**
-     * @dataProvider dataTrimPattern
-     */
+    #[DataProvider('dataTrimPattern')]
     public function testTrimPattern(string|array $string, string $pattern, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::trim($string, $pattern));
     }
 
-    /**
-     * @dataProvider dataLtrimPattern
-     */
+    #[DataProvider('dataLtrimPattern')]
     public function testLtrimPattern(string|array $string, string $pattern, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::ltrim($string, $pattern));
     }
 
-    /**
-     * @dataProvider dataRtrimPattern
-     */
+    #[DataProvider('dataRtrimPattern')]
     public function testRtrimPattern(string|array $string, string $pattern, string|array $expected): void
     {
         $this->assertSame($expected, StringHelper::rtrim($string, $pattern));
@@ -761,19 +754,58 @@ final class StringHelperTest extends TestCase
     public function testInvalidTrimPattern(): void
     {
         $this->expectException(InvalidArgumentException::class);
-
+        $this->expectExceptionMessage('Pattern is not a valid UTF-8 string.');
         StringHelper::trim('string', "\xC3\x28");
     }
 
-    /**
-     * @dataProvider dataProviderFindBetween
-     */
+    #[TestWith(["abc\xFF"])]
+    #[TestWith([['hello', "abc\xFF"]])]
+    public function testInvalidTrimString(string|array $string): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('String is not a valid UTF-8 string.');
+        StringHelper::trim($string);
+    }
+
+    public function testInvalidLtrimPattern(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Pattern is not a valid UTF-8 string.');
+        StringHelper::ltrim('string', "\xC3\x28");
+    }
+
+    #[TestWith(["abc\xFF"])]
+    #[TestWith([['hello', "abc\xFF"]])]
+    public function testInvalidLtrimString(string|array $string): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('String is not a valid UTF-8 string.');
+        StringHelper::ltrim($string);
+    }
+
+    public function testInvalidRtrimPattern(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Pattern is not a valid UTF-8 string.');
+        StringHelper::ltrim('string', "\xC3\x28");
+    }
+
+    #[TestWith(["abc\xFF"])]
+    #[TestWith([['hello', "abc\xFF"]])]
+    public function testInvalidRtrimString(string|array $string): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('String is not a valid UTF-8 string.');
+        StringHelper::rtrim($string);
+    }
+
+    #[DataProvider('dataProviderFindBetween')]
     public function testFindBetween(string $string, string $start, ?string $end, ?string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::findBetween($string, $start, $end));
     }
 
-    public function dataProviderFindBetween(): array
+    public static function dataProviderFindBetween(): array
     {
         return [
             ['hello world hello', ' hello', ' world', null],  // end before start
@@ -793,15 +825,13 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderFindBetweenFirst
-     */
+    #[DataProvider('dataProviderFindBetweenFirst')]
     public function testFindBetweenFirst(string $string, string $start, ?string $end, ?string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::findBetweenFirst($string, $start, $end));
     }
 
-    public function dataProviderFindBetweenFirst(): array
+    public static function dataProviderFindBetweenFirst(): array
     {
         return [
             ['[a][b][c]', '[', ']', 'a'], // normal case
@@ -823,15 +853,13 @@ final class StringHelperTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderFindBetweenLast
-     */
+    #[DataProvider('dataProviderFindBetweenLast')]
     public function testFindBetweenLast(string $string, string $start, ?string $end, ?string $expectedResult): void
     {
         $this->assertSame($expectedResult, StringHelper::findBetweenLast($string, $start, $end));
     }
 
-    public function dataProviderFindBetweenLast(): array
+    public static function dataProviderFindBetweenLast(): array
     {
         return [
             ['[a][b][c]', '[', ']', 'c'], // normal case
