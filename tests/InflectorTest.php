@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings\Tests;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\Inflector;
 
@@ -39,21 +38,6 @@ final class InflectorTest extends TestCase
             'analysis' => 'analyses',
             'datum' => 'data',
             'schema' => 'schemas',
-            'nation' => 'nations',
-            'action' => 'actions',
-            'creation' => 'creations',
-            'decision' => 'decisions',
-            'vision' => 'visions',
-            'explosion' => 'explosions',
-            'legion' => 'legions',
-            'region' => 'regions',
-            'information' => 'information', // special case - already ends in 'tion' but is uncountable
-            'education' => 'educations',
-            'attention' => 'attentions',
-            'function' => 'functions',
-            'junction' => 'junctions',
-            'baron' => 'barons',
-            'demon' => 'demons',
         ];
     }
 
@@ -151,7 +135,9 @@ final class InflectorTest extends TestCase
         $this->assertEquals('і це дійсно так!', $inflector->toWords('ІЦеДійсноТак!'));
     }
 
-    #[DataProvider('pascalCaseToIdProvider')]
+    /**
+     * @dataProvider pascalCaseToIdProvider()
+     */
     public function testPascalCaseToId(string $expectedResult, array $arguments): void
     {
         $inflector = new Inflector();
@@ -176,7 +162,7 @@ final class InflectorTest extends TestCase
         $this->assertEquals('ひらがなHepimiz', $inflector->toCamelCase('ひらがな_hepimiz'));
     }
 
-    public static function dataToSnakeCase(): array
+    public function dataToSnakeCase(): array
     {
         return [
             [['input' => 'userName'], 'user_name'],
@@ -190,7 +176,9 @@ final class InflectorTest extends TestCase
         ];
     }
 
-    #[DataProvider('dataToSnakeCase')]
+    /**
+     * @dataProvider dataToSnakeCase
+     */
     public function testToSnakeCase(array $arguments, string $expectedOutput): void
     {
         $inflector = new Inflector();
@@ -205,7 +193,7 @@ final class InflectorTest extends TestCase
         $this->assertEquals('customer_tables', $inflector->classToTable('customerTable'));
     }
 
-    public static function toSlugCommonsDataProvider(): array
+    public function toSlugCommonsDataProvider(): array
     {
         return [
             ['', ''],
@@ -228,7 +216,9 @@ final class InflectorTest extends TestCase
         ];
     }
 
-    #[DataProvider('toSlugCommonsDataProvider')]
+    /**
+     * @dataProvider toSlugCommonsDataProvider
+     */
     public function testToSlugCommons(string $input, string $expected, string $replacement = '-'): void
     {
         $inflector = new Inflector();
@@ -499,7 +489,7 @@ final class InflectorTest extends TestCase
         self::assertThat($actual, new IsOneOfAssert($expected), $message);
     }
 
-    public static function pascalCaseToIdProvider(): array
+    public function pascalCaseToIdProvider(): array
     {
         return [
             ['photo\\album-controller', ['Photo\\AlbumController', '-', false]],

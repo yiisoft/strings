@@ -101,9 +101,7 @@ final class Inflector
         '/(alias)$/i' => '\1es',
         '/(ax|cris|test)is$/i' => '\1es',
         '/(currenc)y$/' => '\1ies',
-        '/(tion|sion|gion)$/i' => '\1s',
-        '/menon$/i' => 'mena',
-        '/maton$/i' => 'mata',
+        '/on$/i' => 'a',
         '/s$/' => 's',
         '/^$/' => '',
         '/$/' => 's',
@@ -147,8 +145,6 @@ final class Inflector
         '/(^analy)ses$/i' => '\1sis',
         '/(analy|diagno|^ba|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i' => '\1\2sis',
         '/criteria$/i' => 'criterion',
-        '/mena$/i' => 'menon',
-        '/mata$/i' => 'maton',
         '/([ti])a$/i' => '\1um',
         '/(p)eople$/i' => '\1\2erson',
         '/(m)en$/i' => '\1an',
@@ -213,7 +209,6 @@ final class Inflector
         'corps' => 'corps',
         'corpus' => 'corpuses',
         'cow' => 'cows',
-        'criterion' => 'criteria',
         'curve' => 'curves',
         'debris' => 'debris',
         'diabetes' => 'diabetes',
@@ -440,7 +435,6 @@ final class Inflector
         }
         foreach ($this->pluralizeRules as $rule => $replacement) {
             if (preg_match($rule, $input)) {
-                /** @var string `$rule` and `$replacement` always correct, so `preg_replace` always returns string */
                 return preg_replace($rule, $replacement, $input);
             }
         }
@@ -465,7 +459,6 @@ final class Inflector
 
         foreach ($this->singularizeRules as $rule => $replacement) {
             if (preg_match($rule, $input)) {
-                /** @var string `$rule` and `$replacement` always correct, so `preg_replace` always returns string */
                 return preg_replace($rule, $replacement, $input);
             }
         }
@@ -495,21 +488,17 @@ final class Inflector
      * Converts a string into space-separated words.
      * For example, 'PostTag' will be converted to 'Post Tag'.
      *
-     * @param string $input The valid UTF-8 string to be converted.
+     * @param string $input The string to be converted.
      *
      * @return string The resulting words.
      */
     public function toWords(string $input): string
     {
-        /**
-         * @var string $words We assume that `$input` is valid UTF-8 string, so `preg_replace()` never returns `false`.
-         */
-        $words = preg_replace('/(?<!\p{Lu})(\p{Lu})|(\p{Lu})(?=\p{Ll})/u', ' \0', $input);
-        return mb_strtolower(
-            trim(
-                str_replace(['-', '_', '.'], ' ', $words)
-            )
-        );
+        return mb_strtolower(trim(str_replace([
+            '-',
+            '_',
+            '.',
+        ], ' ', preg_replace('/(?<!\p{Lu})(\p{Lu})|(\p{Lu})(?=\p{Ll})/u', ' \0', $input))));
     }
 
     /**
@@ -518,7 +507,7 @@ final class Inflector
      * For example, 'PostTag' will be converted to 'post-tag'.
      *
      * @param string $input The string to be converted.
-     * @param string $separator The character used to concatenate the words in the ID. It must be valid UTF-8 string.
+     * @param string $separator The character used to concatenate the words in the ID.
      * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to false.
      *
      * @return string The resulting ID.
@@ -529,10 +518,6 @@ final class Inflector
             ? '/(?<=\p{L})(\p{Lu})/u'
             : '/(?<=\p{L})(?<!\p{Lu})(\p{Lu})/u';
 
-        /**
-         * @var string $result We assume that `$separator` and `$input` are valid UTF-8 strings, so `preg_replace()`
-         * never returns `false`.
-         */
         $result = preg_replace($regex, addslashes($separator) . '\1', $input);
 
         if ($separator !== '_') {
@@ -549,7 +534,7 @@ final class Inflector
      * will remove non alphanumeric character from the word, so
      * "who's online" will be converted to "WhoSOnline".
      *
-     * @param string $input The word to PascalCase. It must be valid UTF-8 string.
+     * @param string $input The word to PascalCase.
      *
      * @return string PascalCased string.
      *
@@ -557,30 +542,24 @@ final class Inflector
      */
     public function toPascalCase(string $input): string
     {
-        /**
-         * @var string $input We assume that `$input` is valid UTF-8 string, so `preg_replace()` never returns `false`.
-         */
-        $input = preg_replace('/[^\pL\pN]+/u', ' ', $input);
         return str_replace(
             ' ',
             '',
-            StringHelper::uppercaseFirstCharacterInEachWord($input),
+            StringHelper::uppercaseFirstCharacterInEachWord(preg_replace('/[^\pL\pN]+/u', ' ', $input)),
         );
     }
 
     /**
      * Returns a human-readable string.
      *
-     * @param string $input The valid UTF-8 string to humanize.
+     * @param string $input The string to humanize.
      * @param bool $uppercaseWords Whether to set all words to uppercase or not.
+     *
+     * @return string
      */
     public function toHumanReadable(string $input, bool $uppercaseWords = false): string
     {
-        /**
-         * @var string $input We assume that `$input` is valid UTF-8 string, so `preg_replace()` never returns `false`.
-         */
-        $input = preg_replace('/_id$/', '', $input);
-        $input = str_replace('_', ' ', $input);
+        $input = str_replace('_', ' ', preg_replace('/_id$/', '', $input));
 
         return $uppercaseWords
             ? StringHelper::uppercaseFirstCharacterInEachWord($input)
@@ -612,18 +591,14 @@ final class Inflector
      * It will remove non-alphanumeric character from the word,
      * so "who's online" will be converted to "who_s_online".
      *
-     * @param string $input The word to convert. It must be valid UTF-8 string.
-     * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to true.
+     * @param string $input The word to convert.
+     * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to false.
      *
      * @return string The "snake_cased" string.
      */
     public function toSnakeCase(string $input, bool $strict = false): string
     {
-        /**
-         * @var string $input We assume that `$input` is valid UTF-8 string, so `preg_replace()` never returns `false`.
-         */
-        $input = preg_replace('/[^\pL\pN]+/u', '_', $input);
-        return $this->pascalCaseToId($input, '_', $strict);
+        return $this->pascalCaseToId(preg_replace('/[^\pL\pN]+/u', '_', $input), '_', $strict);
     }
 
     /**
@@ -660,8 +635,8 @@ final class Inflector
      * and removes the rest. You may customize characters map via $transliteration property
      * of the helper.
      *
-     * @param string $input An arbitrary valid UTF-8 string to convert.
-     * @param string $replacement The replacement to use for spaces. It must be valid UTF-8 string.
+     * @param string $input An arbitrary string to convert.
+     * @param string $replacement The replacement to use for spaces.
      * @param bool $lowercase whether to return the string in lowercase or not. Defaults to `true`.
      *
      * @return string The converted string.
@@ -669,21 +644,9 @@ final class Inflector
     public function toSlug(string $input, string $replacement = '-', bool $lowercase = true): string
     {
         $quotedReplacement = preg_quote($replacement, '/');
-
-        /**
-         * Replace all non-words character
-         *
-         * @var string $input We assume that `$input` and `$replacement` are valid UTF-8 strings, so `preg_replace()`
-         * never returns `false`.
-         */
+        // replace all non words character
         $input = preg_replace('/[^a-zA-Z0-9]+/u', $replacement, $this->toTransliterated($input));
-
-        /**
-         * Remove first and last replacements
-         *
-         * @var string $input We assume that `$input` and `$quotedReplacement` are valid UTF-8 strings, so
-         * `preg_replace()` never returns `false`.
-         */
+        // remove first and last replacements
         $input = preg_replace(
             "/^(?:$quotedReplacement)+|(?:$quotedReplacement)+$/u" . ($lowercase ? 'i' : ''),
             '',
@@ -702,10 +665,12 @@ final class Inflector
      *
      * @noinspection PhpComposerExtensionStubsInspection
      *
-     * @param string $input Input string. It must be valid UTF-8 string.
+     * @param string $input Input string.
      * @param string|Transliterator|null $transliterator either a {@see \Transliterator} or a string
      * from which a {@see \Transliterator} can be built. If null, value set with {@see withTransliterator()}
      * or {@see TRANSLITERATE_LOOSE} is used.
+     *
+     * @return string
      */
     public function toTransliterated(string $input, $transliterator = null): string
     {
@@ -714,11 +679,7 @@ final class Inflector
                 $transliterator = $this->transliterator;
             }
 
-            /**
-             * @noinspection PhpComposerExtensionStubsInspection
-             * @var string We assume that `$input` are valid UTF-8 strings and `$transliterator` is valid, so
-             * `preg_replace()` never returns `false`.
-             */
+            /* @noinspection PhpComposerExtensionStubsInspection */
             return transliterator_transliterate($transliterator, $input);
         }
 

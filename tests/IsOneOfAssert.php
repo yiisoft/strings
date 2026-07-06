@@ -11,7 +11,7 @@ use PHPUnit\Framework\Constraint\Constraint;
  */
 final class IsOneOfAssert extends Constraint
 {
-    public function __construct(private readonly array $allowedValues)
+    public function __construct(private array $allowedValues)
     {
     }
 

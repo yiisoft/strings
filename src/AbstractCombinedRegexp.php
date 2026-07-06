@@ -15,14 +15,7 @@ use function sprintf;
  */
 abstract class AbstractCombinedRegexp
 {
-    /**
-     * @psalm-suppress MissingClassConstType
-     */
     public const REGEXP_DELIMITER = '/';
-
-    /**
-     * @psalm-suppress MissingClassConstType
-     */
     public const QUOTE_REPLACER = '\\/';
 
     /**
