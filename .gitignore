@@ -1,9 +1,6 @@
 # phpstorm project files
 .idea
 
-# visual studio code project files
-.vscode
-
 # netbeans project files
 nbproject
 
@@ -26,10 +23,9 @@ composer.phar
 # Mac DS_Store Files
 .DS_Store
 
-# PHPUnit
-/phpunit.phar
+# phpunit itself is not needed
+phpunit.phar
+# local phpunit config
 /phpunit.xml
-/.phpunit.cache
-
-# PHPBench
-.phpbench
+# phpunit cache
+.phpunit.result.cache

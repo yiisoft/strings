@@ -10,34 +10,24 @@
     "homepage": "https://www.yiiframework.com/",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/strings/issues?state=open",
         "source": "https://github.com/yiisoft/strings",
+        "issues": "https://github.com/yiisoft/strings/issues",
         "forum": "https://www.yiiframework.com/forum/",
         "wiki": "https://www.yiiframework.com/wiki/",
-        "irc": "ircs://irc.libera.chat:6697/yii",
+        "irc": "irc://irc.freenode.net/yii",
         "chat": "https://t.me/yii3en"
     },
-    "funding": [
-        {
-            "type": "opencollective",
-            "url": "https://opencollective.com/yiisoft"
-        },
-        {
-            "type": "github",
-            "url": "https://github.com/sponsors/yiisoft"
-        }
-    ],
     "require": {
-        "php": "8.1 - 8.5",
+        "php": "^8.0",
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "bamarni/composer-bin-plugin": "^1.8.2",
-        "maglnet/composer-require-checker": "^4.7.1",
-        "phpunit/phpunit": "^10.5.48",
-        "rector/rector": "^2.1.2",
-        "spatie/phpunit-watcher": "^1.24",
-        "phpbench/phpbench": "^1.4.1"
+        "maglnet/composer-require-checker": "^4.2",
+        "phpunit/phpunit": "^9.5",
+        "rector/rector": "^0.18.3",
+        "roave/infection-static-analysis-plugin": "^1.16",
+        "spatie/phpunit-watcher": "^1.23",
+        "vimeo/psalm": "^4.30|^5.8"
     },
     "autoload": {
         "psr-4": {
@@ -52,15 +42,8 @@
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "bamarni/composer-bin-plugin": true,
+            "infection/extension-installer": true,
             "composer/package-versions-deprecated": true
-        }
-    },
-    "extra": {
-        "bamarni-bin": {
-            "bin-links": true,
-            "target-directory": "tools",
-            "forward-command": true
         }
     },
     "scripts": {

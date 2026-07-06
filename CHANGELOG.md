@@ -3,30 +3,6 @@
 ## 3.0.0 under development
 
 - Chg #112: Change default value of `$strict` parameter in `Inflector::toSnakeCase()` to `false` (@vjik)
-## 2.7.1 under development
-
-- New #156: Add `NumericHelper::trimDecimalZeros()` (@samdark, @vjik)
-
-## 2.7.0 November 23, 2025
-
-- New #148, #149: Add `NumericHelper::convertHumanReadableSizeToBytes()` method (@mspirkov)
-- New #3: Add `StringHelper::truncateWordsByLength()` method to truncate text by character length while preserving word 
-  boundaries (@samdark)
-- Enh #150: Add PHP 8.5 support (@vjik)
-- Bug #119: Fix incorrect pluralization of words ending in "tion", "sion" and "gion" (@samdark)
-
-## 2.6.0 February 09, 2025
-
-- Chg #140: Bump minimal required PHP version to 8.1 and minor refactoring (@vjik)
-- Chg #143: Change PHP constraint in `composer.json` to `~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0` (@vjik)
-- Bug #138: Explicitly mark nullable parameters (@ferrumfist)
-- Bug #141: `StringHelper::parsePath()` for empty string returns path `['']` instead of `[]` before (@vjik)
-- Bug #142: Check string on a valid UTF-8 in `StringHelper` methods: `trim()`, `ltrim()` and `rtrim()` (@vjik)
-
-## 2.5.0 January 19, 2025
-
-- New #137: Add `StringHelper::matchAnyRegex()` method as a facade for `CombinedRegexp` (@vjik)
-- Enh #128: Add more specific psalm type for result of `StringHelper::base64UrlEncode()` method (@vjik)
 
 ## 2.4.0 December 22, 2023
 
