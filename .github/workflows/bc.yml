@@ -34,3 +34,5 @@ jobs:
         ['ubuntu-latest']
       php: >-
         ['8.4']
+      composer-require-options: >-
+        --with-all-dependencies --no-progress --ansi --ignore-platform-req=php+
