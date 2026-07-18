@@ -9,9 +9,8 @@ use Stringable;
 final class StringableObject implements Stringable
 {
     public function __construct(
-        private readonly string $string
-    ) {
-    }
+        private readonly string $string,
+    ) {}
 
     public function __toString(): string
     {

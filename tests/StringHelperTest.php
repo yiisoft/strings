@@ -10,6 +10,8 @@ use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\StringHelper;
 
+use const PHP_EOL;
+
 final class StringHelperTest extends TestCase
 {
     private const WS = [
@@ -482,7 +484,7 @@ final class StringHelperTest extends TestCase
         string $delimiter,
         string $escapeCharacter,
         bool $preserveDelimiterEscaping,
-        array $expectedPath
+        array $expectedPath,
     ): void {
         $actualPath = StringHelper::parsePath($path, $delimiter, $escapeCharacter, $preserveDelimiterEscaping);
         $this->assertSame($expectedPath, $actualPath);

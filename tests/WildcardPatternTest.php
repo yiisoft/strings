@@ -101,16 +101,6 @@ final class WildcardPatternTest extends TestCase
         $this->assertSame($expectedResult, $wildcardPattern->match($string));
     }
 
-    private function getWildcardPattern(string $pattern, array $options): WildcardPattern
-    {
-        $wildcardPattern = new WildcardPattern($pattern);
-        if (isset($options['caseSensitive']) && $options['caseSensitive'] === false) {
-            $wildcardPattern = $wildcardPattern->ignoreCase();
-        }
-
-        return $wildcardPattern;
-    }
-
     public function testDisableOptions(): void
     {
         $wildcardPattern = (new WildcardPattern('abc42'))
@@ -170,5 +160,15 @@ final class WildcardPatternTest extends TestCase
     public function testQuote(string $string, string $expected): void
     {
         $this->assertSame($expected, WildcardPattern::quote($string));
+    }
+
+    private function getWildcardPattern(string $pattern, array $options): WildcardPattern
+    {
+        $wildcardPattern = new WildcardPattern($pattern);
+        if (isset($options['caseSensitive']) && $options['caseSensitive'] === false) {
+            $wildcardPattern = $wildcardPattern->ignoreCase();
+        }
+
+        return $wildcardPattern;
     }
 }

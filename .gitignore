@@ -33,3 +33,6 @@ composer.phar
 
 # PHPBench
 .phpbench
+
+# PHP CS Fixer
+/.php-cs-fixer.cache

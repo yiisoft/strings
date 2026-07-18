@@ -34,6 +34,10 @@ use function strlen;
 use function strtr;
 use function trim;
 
+use const PREG_SPLIT_DELIM_CAPTURE;
+use const PREG_SPLIT_NO_EMPTY;
+use const PREG_SPLIT_OFFSET_CAPTURE;
+
 /**
  * Provides static methods to work with strings.
  */
@@ -50,9 +54,9 @@ final class StringHelper
      *
      * @return int The number of bytes in the given string.
      */
-    public static function byteLength(string|null $input): int
+    public static function byteLength(?string $input): int
     {
-        return mb_strlen((string)$input, '8bit');
+        return mb_strlen((string) $input, '8bit');
     }
 
     /**
@@ -158,7 +162,7 @@ final class StringHelper
         string $string,
         string $replacement,
         int $start,
-        int|null $length = null,
+        ?int $length = null,
         string $encoding = 'UTF-8',
     ): string {
         $stringLength = mb_strlen($string, $encoding);
@@ -193,7 +197,7 @@ final class StringHelper
      *
      * @return bool Returns true if first input starts with second input, false otherwise.
      */
-    public static function startsWith(string $input, string|null $with): bool
+    public static function startsWith(string $input, ?string $with): bool
     {
         return $with === null || str_starts_with($input, $with);
     }
@@ -207,7 +211,7 @@ final class StringHelper
      *
      * @return bool Returns true if first input starts with second input, false otherwise.
      */
-    public static function startsWithIgnoringCase(string $input, string|null $with): bool
+    public static function startsWithIgnoringCase(string $input, ?string $with): bool
     {
         $bytes = self::byteLength($with);
 
@@ -228,7 +232,7 @@ final class StringHelper
      *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
-    public static function endsWith(string $input, string|null $with): bool
+    public static function endsWith(string $input, ?string $with): bool
     {
         return $with === null || str_ends_with($input, $with);
     }
@@ -242,7 +246,7 @@ final class StringHelper
      *
      * @return bool Returns true if first input ends with second input, false otherwise.
      */
-    public static function endsWithIgnoringCase(string $input, string|null $with): bool
+    public static function endsWithIgnoringCase(string $input, ?string $with): bool
     {
         $bytes = self::byteLength($with);
 
@@ -294,7 +298,7 @@ final class StringHelper
         }
 
         $trimMarkerLength = mb_strlen($trimMarker, $encoding);
-        $start = (int)ceil(($length - $trimMarkerLength) / 2);
+        $start = (int) ceil(($length - $trimMarkerLength) / 2);
         $end = $length - $start - $trimMarkerLength;
 
         return self::replaceSubstring($input, $trimMarker, $start, -$end, $encoding);
@@ -468,8 +472,8 @@ final class StringHelper
         $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
         $wordsWithUppercaseFirstCharacter = array_map(
-            static fn (string $word) => self::uppercaseFirstCharacter($word, $encoding),
-            $words
+            static fn(string $word) => self::uppercaseFirstCharacter($word, $encoding),
+            $words,
         );
 
         return implode(' ', $wordsWithUppercaseFirstCharacter);
@@ -552,7 +556,7 @@ final class StringHelper
         string $path,
         string $delimiter = '.',
         string $escapeCharacter = '\\',
-        bool $preserveDelimiterEscaping = false
+        bool $preserveDelimiterEscaping = false,
     ): array {
         if (strlen($delimiter) !== 1) {
             throw new InvalidArgumentException('Only 1 character is allowed for delimiter.');
@@ -583,11 +587,11 @@ final class StringHelper
             sprintf(
                 '/(?<!%1$s)((?>%1$s%1$s)*)%2$s/',
                 preg_quote($escapeCharacter, '/'),
-                preg_quote($delimiter, '/')
+                preg_quote($delimiter, '/'),
             ),
             $path,
             -1,
-            PREG_SPLIT_OFFSET_CAPTURE
+            PREG_SPLIT_OFFSET_CAPTURE,
         );
         $result = [];
         $countResults = count($matches);
@@ -602,7 +606,7 @@ final class StringHelper
         }
 
         return array_map(
-            static fn (string $key): string => str_replace(
+            static fn(string $key): string => str_replace(
                 [
                     $escapeCharacter . $escapeCharacter,
                     $escapeCharacter . $delimiter,
@@ -611,9 +615,9 @@ final class StringHelper
                     $escapeCharacter,
                     $delimiter,
                 ],
-                $key
+                $key,
             ),
-            $result
+            $result,
         );
     }
 

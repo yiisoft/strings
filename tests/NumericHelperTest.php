@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\NumericHelper;
 use Yiisoft\Strings\Tests\Support\StringableObject;
+use stdClass;
 
 final class NumericHelperTest extends TestCase
 {
@@ -71,7 +72,7 @@ final class NumericHelperTest extends TestCase
     public static function dataIsInteger(): array
     {
         return [
-            [new \stdClass(), false],
+            [new stdClass(), false],
             [[], false],
             ['42', true],
             ['-42', true],

@@ -18,6 +18,9 @@ use function preg_match;
 use function preg_replace;
 use function str_replace;
 use function substr;
+use function sprintf;
+
+use const FILTER_VALIDATE_INT;
 
 /**
  * Provides static methods to work with numeric strings.
@@ -68,8 +71,8 @@ final class NumericHelper
             throw new InvalidArgumentException("Value must be numeric. $type given.");
         }
 
-        if (fmod((float)$value, 1) !== 0.00) {
-            return (string)$value;
+        if (fmod((float) $value, 1) !== 0.00) {
+            return (string) $value;
         }
 
         if (in_array($value % 100, [11, 12, 13], true)) {
@@ -184,7 +187,7 @@ final class NumericHelper
 
         if (!is_numeric($value)) {
             throw new InvalidArgumentException(
-                sprintf('Value must be numeric string or null. "%s" given.', $value)
+                sprintf('Value must be numeric string or null. "%s" given.', $value),
             );
         }
 
