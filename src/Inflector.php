@@ -384,8 +384,8 @@ final class Inflector
     }
 
     /**
-     * @param string|Transliterator $transliterator Either a {@see \Transliterator}, or a string from which
-     * a {@see \Transliterator} can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
+     * @param string|Transliterator $transliterator Either a {@see Transliterator}, or a string from which
+     * a {@see Transliterator} can be built for transliteration. Used by {@see toTransliterated()} when intl is available.
      * Defaults to {@see TRANSLITERATE_LOOSE}.
      *
      * @return self
@@ -507,8 +507,8 @@ final class Inflector
         $words = preg_replace('/(?<!\p{Lu})(\p{Lu})|(\p{Lu})(?=\p{Ll})/u', ' \0', $input);
         return mb_strtolower(
             trim(
-                str_replace(['-', '_', '.'], ' ', $words)
-            )
+                str_replace(['-', '_', '.'], ' ', $words),
+            ),
         );
     }
 
@@ -703,8 +703,8 @@ final class Inflector
      * @noinspection PhpComposerExtensionStubsInspection
      *
      * @param string $input Input string. It must be valid UTF-8 string.
-     * @param string|Transliterator|null $transliterator either a {@see \Transliterator} or a string
-     * from which a {@see \Transliterator} can be built. If null, value set with {@see withTransliterator()}
+     * @param string|Transliterator|null $transliterator either a {@see Transliterator} or a string
+     * from which a {@see Transliterator} can be built. If null, value set with {@see withTransliterator()}
      * or {@see TRANSLITERATE_LOOSE} is used.
      */
     public function toTransliterated(string $input, $transliterator = null): string

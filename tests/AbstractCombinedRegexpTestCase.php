@@ -7,6 +7,10 @@ namespace Yiisoft\Strings\Tests;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Strings\AbstractCombinedRegexp;
+use Exception;
+use InvalidArgumentException;
+
+use function sprintf;
 
 abstract class AbstractCombinedRegexpTestCase extends TestCase
 {
@@ -18,7 +22,7 @@ abstract class AbstractCombinedRegexpTestCase extends TestCase
         $message = sprintf(
             'Failed to assert that string "%s" matches the string "%s".',
             $regexp->getCompiledPattern(),
-            $string
+            $string,
         );
         $this->assertEquals($expectedResult, $actualResult, $message);
     }
@@ -113,7 +117,7 @@ abstract class AbstractCombinedRegexpTestCase extends TestCase
         $message = sprintf(
             'Failed to assert that string "%s" matches the string "%s".',
             $regexp->getCompiledPattern(),
-            $string
+            $string,
         );
         $this->assertEquals($expectedResult, $actualResult, $message);
     }
@@ -199,7 +203,7 @@ abstract class AbstractCombinedRegexpTestCase extends TestCase
     public function testMatchDifferentDelimiters(
         array $patterns,
         string $flags,
-        string $string
+        string $string,
     ): void {
         $regexp = $this->createCombinedRegexp($patterns, $flags);
         $message = sprintf(
@@ -228,7 +232,7 @@ abstract class AbstractCombinedRegexpTestCase extends TestCase
 
     public function testInvalidNumberOfPatterns(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('At least one pattern should be specified.');
         $this->createCombinedRegexp([]);
     }
@@ -239,7 +243,7 @@ abstract class AbstractCombinedRegexpTestCase extends TestCase
         $string = 'def';
         $this->assertFalse($regexp->matches($string));
 
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Failed to match pattern "/(?|abc)/" with string "def".');
 
         $regexp->getMatchingPatternPosition($string);

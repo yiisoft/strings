@@ -10,11 +10,6 @@ use Yiisoft\Strings\MemoizedCombinedRegexp;
 
 final class MemoizedCombinedRegexpTest extends AbstractCombinedRegexpTestCase
 {
-    protected function createCombinedRegexp(array $patterns, string $flags = ''): AbstractCombinedRegexp
-    {
-        return new MemoizedCombinedRegexp(new CombinedRegexp($patterns, $flags));
-    }
-
     public function testMemoization(): void
     {
         $decorated = $this->createMock(AbstractCombinedRegexp::class);
@@ -31,5 +26,10 @@ final class MemoizedCombinedRegexpTest extends AbstractCombinedRegexpTestCase
         $combinedRegexp->matches('test');
         $combinedRegexp->getMatchingPattern('test');
         $combinedRegexp->getMatchingPatternPosition('test');
+    }
+
+    protected function createCombinedRegexp(array $patterns, string $flags = ''): AbstractCombinedRegexp
+    {
+        return new MemoizedCombinedRegexp(new CombinedRegexp($patterns, $flags));
     }
 }

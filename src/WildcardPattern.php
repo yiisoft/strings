@@ -39,8 +39,7 @@ final class WildcardPattern
     public function __construct(
         private string $pattern,
         private array $delimiters = ['\\\\', '/'],
-    ) {
-    }
+    ) {}
 
     /**
      * Checks if the passed string would match the given shell wildcard pattern.

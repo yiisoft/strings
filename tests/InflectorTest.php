@@ -12,56 +12,6 @@ use function extension_loaded;
 
 final class InflectorTest extends TestCase
 {
-    private function getTestDataForToPlural(): array
-    {
-        return [
-            'access' => 'accesses',
-            'address' => 'addresses',
-            'move' => 'moves',
-            'foot' => 'feet',
-            'child' => 'children',
-            'human' => 'humans',
-            'man' => 'men',
-            'staff' => 'staff',
-            'tooth' => 'teeth',
-            'person' => 'people',
-            'mouse' => 'mice',
-            'touch' => 'touches',
-            'hash' => 'hashes',
-            'shelf' => 'shelves',
-            'potato' => 'potatoes',
-            'bus' => 'buses',
-            'test' => 'tests',
-            'car' => 'cars',
-            'netherlands' => 'netherlands',
-            'currency' => 'currencies',
-            'criterion' => 'criteria',
-            'analysis' => 'analyses',
-            'datum' => 'data',
-            'schema' => 'schemas',
-            'nation' => 'nations',
-            'action' => 'actions',
-            'creation' => 'creations',
-            'decision' => 'decisions',
-            'vision' => 'visions',
-            'explosion' => 'explosions',
-            'legion' => 'legions',
-            'region' => 'regions',
-            'information' => 'information', // special case - already ends in 'tion' but is uncountable
-            'education' => 'educations',
-            'attention' => 'attentions',
-            'function' => 'functions',
-            'junction' => 'junctions',
-            'baron' => 'barons',
-            'demon' => 'demons',
-        ];
-    }
-
-    private function getTestDataForToSingular(): array
-    {
-        return array_flip($this->getTestDataForToPlural());
-    }
-
     public function testToPlural(): void
     {
         $inflector = new Inflector();
@@ -137,7 +87,7 @@ final class InflectorTest extends TestCase
         $this->assertEquals('QweQweEwq', $inflector->toPascalCase('qwe qwe^ewq'));
         $this->assertEquals(
             'ВідомоЩоТестиЗберігатьНашіНЕРВИ',
-            $inflector->toPascalCase('Відомо, що тести зберігать наші НЕРВИ! 🙃')
+            $inflector->toPascalCase('Відомо, що тести зберігать наші НЕРВИ! 🙃'),
         );
     }
 
@@ -453,7 +403,7 @@ final class InflectorTest extends TestCase
                     'O' => 'E',
                     'N' => 'N',
                     'E' => 'O',
-                ]
+                ],
             );
         $this->assertEquals('ENO', $inflector->toTransliterated('ONE'));
     }
@@ -487,16 +437,6 @@ final class InflectorTest extends TestCase
         $this->assertNotSame($original, $original->withSpecialRules([]));
         $this->assertNotSame($original, $original->withTransliterationMap([]));
         $this->assertNotSame($original, $original->withTransliterator(Inflector::TRANSLITERATE_MEDIUM));
-    }
-
-    /**
-     * Asserts that value is one of expected values.
-     *
-     * @param string $message
-     */
-    private function assertIsOneOf(mixed $actual, array $expected, $message = ''): void
-    {
-        self::assertThat($actual, new IsOneOfAssert($expected), $message);
     }
 
     public static function pascalCaseToIdProvider(): array
@@ -539,5 +479,65 @@ final class InflectorTest extends TestCase
             ['t-e-s-t', ['TEST', '-', true]],
             ['test', ['TEST', '-']],
         ];
+    }
+
+    private function getTestDataForToPlural(): array
+    {
+        return [
+            'access' => 'accesses',
+            'address' => 'addresses',
+            'move' => 'moves',
+            'foot' => 'feet',
+            'child' => 'children',
+            'human' => 'humans',
+            'man' => 'men',
+            'staff' => 'staff',
+            'tooth' => 'teeth',
+            'person' => 'people',
+            'mouse' => 'mice',
+            'touch' => 'touches',
+            'hash' => 'hashes',
+            'shelf' => 'shelves',
+            'potato' => 'potatoes',
+            'bus' => 'buses',
+            'test' => 'tests',
+            'car' => 'cars',
+            'netherlands' => 'netherlands',
+            'currency' => 'currencies',
+            'criterion' => 'criteria',
+            'analysis' => 'analyses',
+            'datum' => 'data',
+            'schema' => 'schemas',
+            'nation' => 'nations',
+            'action' => 'actions',
+            'creation' => 'creations',
+            'decision' => 'decisions',
+            'vision' => 'visions',
+            'explosion' => 'explosions',
+            'legion' => 'legions',
+            'region' => 'regions',
+            'information' => 'information', // special case - already ends in 'tion' but is uncountable
+            'education' => 'educations',
+            'attention' => 'attentions',
+            'function' => 'functions',
+            'junction' => 'junctions',
+            'baron' => 'barons',
+            'demon' => 'demons',
+        ];
+    }
+
+    private function getTestDataForToSingular(): array
+    {
+        return array_flip($this->getTestDataForToPlural());
+    }
+
+    /**
+     * Asserts that value is one of expected values.
+     *
+     * @param string $message
+     */
+    private function assertIsOneOf(mixed $actual, array $expected, $message = ''): void
+    {
+        self::assertThat($actual, new IsOneOfAssert($expected), $message);
     }
 }

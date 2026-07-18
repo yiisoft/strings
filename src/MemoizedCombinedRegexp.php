@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Strings;
 
+use Exception;
+
 /**
  * `MemoizedCombinedRegexp` is a decorator for {@see AbstractCombinedRegexp} that caches results of
  * - {@see AbstractCombinedRegexp::matches()}
@@ -19,8 +21,7 @@ final class MemoizedCombinedRegexp extends AbstractCombinedRegexp
 
     public function __construct(
         private readonly AbstractCombinedRegexp $decorated,
-    ) {
-    }
+    ) {}
 
     public function getCompiledPattern(): string
     {
@@ -48,6 +49,16 @@ final class MemoizedCombinedRegexp extends AbstractCombinedRegexp
         return $this->results[$string]['position'] ?? $this->throwFailedMatchException($string);
     }
 
+    public function getPatterns(): array
+    {
+        return $this->decorated->getPatterns();
+    }
+
+    public function getFlags(): string
+    {
+        return $this->decorated->getFlags();
+    }
+
     private function evaluate(string $string): void
     {
         if (isset($this->results[$string])) {
@@ -58,18 +69,8 @@ final class MemoizedCombinedRegexp extends AbstractCombinedRegexp
 
             $this->results[$string]['matches'] = true;
             $this->results[$string]['position'] = $position;
-        } catch (\Exception) {
+        } catch (Exception) {
             $this->results[$string]['matches'] = false;
         }
-    }
-
-    public function getPatterns(): array
-    {
-        return $this->decorated->getPatterns();
-    }
-
-    public function getFlags(): string
-    {
-        return $this->decorated->getFlags();
     }
 }

@@ -6,24 +6,24 @@ namespace Yiisoft\Strings\Tests;
 
 use PHPUnit\Framework\Constraint\Constraint;
 
+use function in_array;
+
 /**
  * IsOneOfAssert asserts that the value is one of the expected values.
  */
 final class IsOneOfAssert extends Constraint
 {
-    public function __construct(private readonly array $allowedValues)
-    {
-    }
+    public function __construct(private readonly array $allowedValues) {}
 
     public function toString(): string
     {
-        $allowedValues = array_map(static fn ($value) => (string)$value, $this->allowedValues);
+        $allowedValues = array_map(static fn($value) => (string) $value, $this->allowedValues);
         $expectedAsString = implode(', ', $allowedValues);
         return "is one of $expectedAsString";
     }
 
     protected function matches($other): bool
     {
-        return \in_array($other, $this->allowedValues, false);
+        return in_array($other, $this->allowedValues, false);
     }
 }

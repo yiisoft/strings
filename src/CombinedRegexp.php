@@ -36,7 +36,7 @@ final class CombinedRegexp extends AbstractCombinedRegexp
      */
     public function __construct(
         array $patterns,
-        private readonly string $flags = ''
+        private readonly string $flags = '',
     ) {
         if (empty($patterns)) {
             throw new InvalidArgumentException('At least one pattern should be specified.');
@@ -85,6 +85,16 @@ final class CombinedRegexp extends AbstractCombinedRegexp
         return count($matches) - 1;
     }
 
+    public function getPatterns(): array
+    {
+        return $this->patterns;
+    }
+
+    public function getFlags(): string
+    {
+        return $this->flags;
+    }
+
     /**
      * @param string[] $patterns
      *
@@ -106,19 +116,9 @@ final class CombinedRegexp extends AbstractCombinedRegexp
 
         $combinedRegexps = '(?|' . strtr(
             implode('|', $quotedPatterns),
-            [self::REGEXP_DELIMITER => self::QUOTE_REPLACER]
+            [self::REGEXP_DELIMITER => self::QUOTE_REPLACER],
         ) . ')';
 
         return self::REGEXP_DELIMITER . $combinedRegexps . self::REGEXP_DELIMITER;
-    }
-
-    public function getPatterns(): array
-    {
-        return $this->patterns;
-    }
-
-    public function getFlags(): string
-    {
-        return $this->flags;
     }
 }

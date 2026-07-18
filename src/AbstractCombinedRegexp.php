@@ -68,7 +68,7 @@ abstract class AbstractCombinedRegexp
                 'Failed to match pattern "%s" with string "%s".',
                 $this->getCompiledPattern(),
                 $string,
-            )
+            ),
         );
     }
 }

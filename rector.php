@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
 use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
+use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 
 return RectorConfig::configure()
@@ -18,5 +19,6 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         ClosureToArrowFunctionRector::class,
+        ReadOnlyPropertyRector::class,
         NullToStrictStringFuncCallArgRector::class,
     ]);
