@@ -9,12 +9,15 @@ application when you upgrade the package from one version to another.
 
 ## Upgrade from 2.x to 3.x
 
-Default value of `$strict` parameter in `Inflector::toSnakeCase()` changed to `false`. To keep previous behavior, pass `strict: true` when calling `toSnakeCase()` without explicitly specifying the `$strict` argument. For example:
+Default value of `$strict` parameter in `Inflector::toSnakeCase()` changed to `false`. To keep previous behavior,
+pass `strict: true` when calling `toSnakeCase()` without explicitly specifying the `$strict` argument. For example:
 
-    $inflector = new Inflector();
-    $inflector->toSnakeCase($name);
-    // change to
-    $inflector->toSnakeCase($name, strict: true);
+```php
+$inflector = new Yiisoft\Strings\Inflector();
+$inflector->toSnakeCase($name);
+// change to
+$inflector->toSnakeCase($name, strict: true);
+```
 
 ## Upgrade from 1.x to 2.x
 
