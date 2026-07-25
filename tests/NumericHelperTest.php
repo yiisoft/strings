@@ -198,9 +198,10 @@ final class NumericHelperTest extends TestCase
         $this->assertSame($expected, NumericHelper::trimDecimalZeros($input));
     }
 
-    public function trimDecimalZerosWithNonNumericString(): void
+    public function testTrimDecimalZerosWithNonNumericString(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value must be numeric string or null. "hello" given.');
         NumericHelper::trimDecimalZeros('hello');
     }
 }
