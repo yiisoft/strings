@@ -4,6 +4,7 @@
 
 - New #156: Add `NumericHelper::trimDecimalZeros()` (@samdark, @vjik)
 - Enh #163: Explicitly import classes, functions, and constants in "use" sections (@vjik)
+- Enh #167: Remove dead code in `StringHelper::truncateWordsByLength()` (@vjik)
 
 ## 2.7.0 November 23, 2025
 
