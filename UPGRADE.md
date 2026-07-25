@@ -9,14 +9,12 @@ application when you upgrade the package from one version to another.
 
 ## Upgrade from 2.x to 3.x
 
-Default value of `$strict` parameter in `Inflector::toSnakeCase()` changed to `false`. To keep previous behaviour add 
-`strict: true` to call methods `Inflector::toSnakeCase()` without `strict` argument. For example:
+Default value of `$strict` parameter in `Inflector::toSnakeCase()` changed to `false`. To keep previous behavior, pass `strict: true` when calling `toSnakeCase()` without explicitly specifying the `$strict` argument. For example:
 
-```php
-Inflector::toSnakeCase($name);
-// change to
-Inflector::toSnakeCase($name, true);
-```
+    $inflector = new Inflector();
+    $inflector->toSnakeCase($name);
+    // change to
+    $inflector->toSnakeCase($name, strict: true);
 
 ## Upgrade from 1.x to 2.x
 
