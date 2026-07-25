@@ -68,6 +68,7 @@
     "scripts": {
         "cs-fix": "php-cs-fixer fix",
         "rector": "rector",
+        "psalm": "psalm",
         "test": "phpunit --testdox --no-interaction",
         "test-watch": "phpunit-watcher watch"
     }
