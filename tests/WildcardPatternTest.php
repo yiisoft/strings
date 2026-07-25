@@ -109,6 +109,14 @@ final class WildcardPatternTest extends TestCase
         $this->assertFalse($wildcardPattern->match('ABC42'));
     }
 
+    public function testPreparedPatternIsCachedBetweenMatchCalls(): void
+    {
+        $wildcardPattern = new WildcardPattern('begin*end');
+
+        $this->assertTrue($wildcardPattern->match('begin-middle-end'));
+        $this->assertFalse($wildcardPattern->match('begin-middle'));
+    }
+
     public function testImmutability(): void
     {
         $original = new WildcardPattern('*');
