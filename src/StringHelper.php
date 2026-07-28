@@ -382,10 +382,8 @@ final class StringHelper
         // Prefer not to break words if there's a space within the snippet.
         $lastSpace = mb_strrpos($truncated, ' ', 0, $encoding);
         if ($lastSpace !== false) {
-            $cut = rtrim(mb_substr($truncated, 0, $lastSpace, $encoding));
-            return $cut === ''
-                ? mb_substr($trimMarker, 0, $length, $encoding)
-                : $cut . $trimMarker;
+            return rtrim(mb_substr($truncated, 0, $lastSpace, $encoding))
+                . $trimMarker;
         }
 
         return $truncated . $trimMarker;
