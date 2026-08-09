@@ -10,6 +10,7 @@ return (new Configuration())
     ->setFileExtensions(['php'])
     ->addPathToScan(__DIR__ . '/src', isDev: false)
     ->addPathToScan(__DIR__ . '/tests', isDev: true)
-    // ext-intl is used conditionally (guarded by extension_loaded('intl')) and ext-filter ships with PHP
-    // core by default, so neither is a hard requirement. Previously whitelisted in composer-require-checker.json.
-    ->ignoreErrorsOnExtensions(['ext-intl', 'ext-filter'], [ErrorType::SHADOW_DEPENDENCY]);
+    // ext-intl is used conditionally (guarded by extension_loaded('intl')), so it's not a hard requirement.
+    ->ignoreErrorsOnExtensions(['ext-intl'], [ErrorType::SHADOW_DEPENDENCY])
+    // ext-filter is optional dependency
+    ->ignoreErrorsOnExtensions(['ext-filter'], [ErrorType::SHADOW_DEPENDENCY]);
