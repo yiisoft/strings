@@ -18,7 +18,6 @@ use function preg_match;
 use function preg_replace;
 use function str_replace;
 use function substr;
-use function sprintf;
 
 use const FILTER_VALIDATE_INT;
 
