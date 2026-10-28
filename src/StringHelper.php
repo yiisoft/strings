@@ -716,9 +716,7 @@ final class StringHelper
      */
     public static function findBetween(string $string, string $start, ?string $end = null): ?string
     {
-        if ($end === null) {
-            $end = $start;
-        }
+        $end ??= $start;
 
         $startPos = mb_strpos($string, $start);
 
@@ -748,9 +746,7 @@ final class StringHelper
      */
     public static function findBetweenFirst(string $string, string $start, ?string $end = null): ?string
     {
-        if ($end === null) {
-            $end = $start;
-        }
+        $end ??= $start;
 
         $startPos = mb_strpos($string, $start);
 
@@ -780,9 +776,7 @@ final class StringHelper
      */
     public static function findBetweenLast(string $string, string $start, ?string $end = null): ?string
     {
-        if ($end === null) {
-            $end = $start;
-        }
+        $end ??= $start;
 
         $endPos = mb_strrpos($string, $end);
 
