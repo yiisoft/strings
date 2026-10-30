@@ -28,7 +28,7 @@ use const FILTER_VALIDATE_INT;
 final class NumericHelper
 {
     /**
-     * @psalm-var array<int, array<string, int>>
+     * @var array<int, array<string, int>>
      */
     private const FILESYSTEM_SIZE_POSTFIXES = [
         3 => [
@@ -96,7 +96,6 @@ final class NumericHelper
      */
     public static function normalize(mixed $value): string
     {
-        /** @psalm-suppress DocblockTypeContradiction */
         if (!is_scalar($value) && !$value instanceof Stringable) {
             $type = gettype($value);
             throw new InvalidArgumentException("Value must be scalar. $type given.");

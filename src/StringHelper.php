@@ -335,7 +335,7 @@ final class StringHelper
      */
     public static function truncateWords(string $input, int $count, string $trimMarker = '…'): string
     {
-        /** @psalm-var list<string> $words */
+        /** @var list<string> $words */
         $words = preg_split('/(\s+)/u', trim($input), -1, PREG_SPLIT_DELIM_CAPTURE);
         if (count($words) / 2 > $count) {
             $words = array_slice($words, 0, ($count * 2) - 1);
@@ -405,7 +405,7 @@ final class StringHelper
      */
     public static function countWords(string $input): int
     {
-        /** @var array $words */
+        /** @var list<string> $words */
         $words = preg_split('/\s+/u', $input, -1, PREG_SPLIT_NO_EMPTY);
         return count($words);
     }
@@ -463,7 +463,7 @@ final class StringHelper
     public static function uppercaseFirstCharacterInEachWord(string $string, string $encoding = 'UTF-8'): string
     {
         /**
-         * @var array $words We assume that `$string` is valid UTF-8 string, so `preg_split()` never returns `false`.
+         * @var list<string> $words We assume that `$string` is valid UTF-8 string, so `preg_split()` never returns `false`.
          */
         $words = preg_split('/\s/u', $string, -1, PREG_SPLIT_NO_EMPTY);
 
@@ -483,13 +483,11 @@ final class StringHelper
      *
      * @see https://tools.ietf.org/html/rfc4648#page-7
      *
-     * @param string $input The string to encode.
+     * @param T $input The string to encode.
      *
-     * @return string Encoded string.
+     * @return (T is non-empty-string ? non-empty-string : '') Encoded string.
      *
-     * @psalm-template T as string
-     * @psalm-param T $input
-     * @psalm-return (T is non-empty-string ? non-empty-string : "")
+     * @template T of string
      */
     public static function base64UrlEncode(string $input): string
     {
@@ -517,6 +515,8 @@ final class StringHelper
      * @param string $string The input string. It must be valid UTF-8 string.
      * @param string $separator The boundary string. It is a part of regular expression
      * so should be taken into account or properly escaped with {@see preg_quote()}. It must be valid UTF-8 string.
+     *
+     * @return list<string>
      */
     public static function split(string $string, string $separator = '\R'): array
     {
@@ -527,7 +527,7 @@ final class StringHelper
         $string = preg_replace('(^\s*|\s*$)', '', $string);
 
         /**
-         * @var array We assume that $separator is prepared by `preg_quote()` and $string is valid UTF-8 string,
+         * @var list<string> We assume that $separator is prepared by `preg_quote()` and $string is valid UTF-8 string,
          * so `preg_split()` never returns `false`.
          */
         return preg_split('~\s*' . $separator . '\s*~u', $string, -1, PREG_SPLIT_NO_EMPTY);
@@ -544,9 +544,7 @@ final class StringHelper
      * case of using string as an input). When `false`, "\" (backslashes) are removed. For a "." as delimiter, "."
      * becomes "\.". Defaults to `false`.
      *
-     * @return string[]
-     *
-     * @psalm-return non-empty-list<string>
+     * @return non-empty-list<string>
      */
     public static function parsePath(
         string $path,
@@ -578,7 +576,7 @@ final class StringHelper
             return [str_replace($escapeCharacter . $escapeCharacter, $escapeCharacter, $path)];
         }
 
-        /** @psalm-var non-empty-list<array{0:string, 1:int}> $matches */
+        /** @var non-empty-list<array{0:string, 1:int<0, max>}> $matches */
         $matches = preg_split(
             sprintf(
                 '/(?<!%1$s)((?>%1$s%1$s)*)%2$s/',
@@ -624,16 +622,13 @@ final class StringHelper
      * @see https://en.wikipedia.org/wiki/Whitespace_character#Unicode
      * @see https://www.php.net/manual/function.preg-replace
      *
-     * @param string|string[] $string The string or an array with strings.
-     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * @param array<TKey, string>|string $string The string or an array with strings.
+     * @param non-empty-string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
      * special regular expression characters.
      *
-     * @psalm-template TKey of array-key
-     * @psalm-param string|array<TKey, string> $string
-     * @psalm-param non-empty-string $pattern
-     * @psalm-return ($string is array ? array<TKey, string> : string)
+     * @return ($string is array ? array<TKey, string> : string)
      *
-     * @return string|string[]
+     * @template TKey of array-key
      */
     public static function trim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
@@ -641,7 +636,7 @@ final class StringHelper
         self::ensureUtf8Pattern($pattern);
 
         /**
-         * @var string|string[] `$string` is correct UTF-8 string and `$pattern` is correct (it should be passed
+         * @var array<TKey, string>|string `$string` is correct UTF-8 string and `$pattern` is correct (it should be passed
          * already prepared), so `preg_replace` never returns `null`.
          */
         return preg_replace("#^[$pattern]+|[$pattern]+$#uD", '', $string);
@@ -652,16 +647,13 @@ final class StringHelper
      *
      * @see self::trim()
      *
-     * @param string|string[] $string The string or an array with strings.
-     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * @param array<TKey, string>|string $string The string or an array with strings.
+     * @param non-empty-string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
      * special regular expression characters.
      *
-     * @psalm-template TKey of array-key
-     * @psalm-param string|array<TKey, string> $string
-     * @psalm-param non-empty-string $pattern
-     * @psalm-return ($string is array ? array<TKey, string> : string)
+     * @return ($string is array ? array<TKey, string> : string)
      *
-     * @return string|string[]
+     * @template TKey of array-key
      */
     public static function ltrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
@@ -669,7 +661,7 @@ final class StringHelper
         self::ensureUtf8Pattern($pattern);
 
         /**
-         * @var string|string[] `$string` is correct UTF-8 string and `$pattern` is correct (it should be passed
+         * @var array<TKey, string>|string `$string` is correct UTF-8 string and `$pattern` is correct (it should be passed
          * already prepared), so `preg_replace` never returns `null`.
          */
         return preg_replace("#^[$pattern]+#u", '', $string);
@@ -680,16 +672,13 @@ final class StringHelper
      *
      * @see self::trim()
      *
-     * @param string|string[] $string The string or an array with strings.
-     * @param string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
+     * @param array<TKey, string>|string $string The string or an array with strings.
+     * @param non-empty-string $pattern PCRE regex pattern to search for, as UTF-8 string. Use {@see preg_quote()} to quote `$pattern` if it contains
      * special regular expression characters.
      *
-     * @psalm-template TKey of array-key
-     * @psalm-param string|array<TKey, string> $string
-     * @psalm-param non-empty-string $pattern
-     * @psalm-return ($string is array ? array<TKey, string> : string)
+     * @return ($string is array ? array<TKey, string> : string)
      *
-     * @return string|string[]
+     * @template TKey of array-key
      */
     public static function rtrim(string|array $string, string $pattern = self::DEFAULT_WHITESPACE_PATTERN): string|array
     {
@@ -697,7 +686,7 @@ final class StringHelper
         self::ensureUtf8Pattern($pattern);
 
         /**
-         * @var string|string[] `$string` is correct UTF-8 string and `$pattern` is correct (it should be passed
+         * @var array<TKey, string>|string `$string` is correct UTF-8 string and `$pattern` is correct (it should be passed
          * already prepared), so `preg_replace` never returns `null`.
          */
         return preg_replace("#[$pattern]+$#uD", '', $string);
@@ -833,11 +822,9 @@ final class StringHelper
     /**
      * Ensure the string is a valid UTF-8 string.
      *
-     * @param array|string $string The string.
+     * @param string|string[] $string The string.
      *
      * @throws InvalidArgumentException
-     *
-     * @psalm-param string|string[] $string
      */
     private static function ensureUtf8String(string|array $string): void
     {

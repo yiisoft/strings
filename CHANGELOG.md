@@ -3,6 +3,7 @@
 ## 2.7.1 under development
 
 - New #156: Add `NumericHelper::trimDecimalZeros()` (@samdark, @vjik)
+- Chg #173: Replace Psalm with PHPStan (@vjik)
 - Enh #163: Explicitly import classes, functions, and constants in "use" sections (@vjik)
 - Enh #167: Remove dead code in `StringHelper::truncateWordsByLength()` (@vjik)
 - Enh #172: Optimize `StringHelper::startsWithIgnoringCase()` and `StringHelper::endsWithIgnoringCase()` (@vjik)
