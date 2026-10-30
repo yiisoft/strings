@@ -1,6 +1,6 @@
 # Yii Strings Change Log
 
-## 2.7.1 under development
+## 2.8.0 October 30, 2026
 
 - New #156: Add `NumericHelper::trimDecimalZeros()` (@samdark, @vjik)
 - Chg #173: Replace Psalm with PHPStan (@vjik)
