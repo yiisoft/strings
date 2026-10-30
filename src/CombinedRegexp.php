@@ -26,7 +26,7 @@ final class CombinedRegexp extends AbstractCombinedRegexp
      */
     private array $patterns;
     /**
-     * @psalm-var non-empty-string
+     * @var non-empty-string
      */
     private readonly string $compiledPattern;
 
@@ -96,10 +96,9 @@ final class CombinedRegexp extends AbstractCombinedRegexp
     }
 
     /**
-     * @param string[] $patterns
+     * @param list<string> $patterns
      *
-     * @psalm-param list<string> $patterns
-     * @psalm-return non-empty-string
+     * @return non-empty-string
      */
     private function compilePatterns(array $patterns): string
     {

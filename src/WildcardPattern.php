@@ -28,7 +28,7 @@ final class WildcardPattern
     private bool $ignoreCase = false;
 
     /**
-     * @psalm-var non-empty-string|null
+     * @var non-empty-string|null
      */
     private ?string $patternPrepared = null;
 

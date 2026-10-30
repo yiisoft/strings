@@ -68,9 +68,7 @@ final class Inflector
     public const TRANSLITERATE_LOOSE = 'Any-Latin; Latin-ASCII; [\u0080-\uffff] remove';
 
     /**
-     * @var string[] The rules for converting a word into its plural form.
-     *
-     * @psalm-var non-empty-array<non-empty-string,string>
+     * @var array<non-empty-string, string> The rules for converting a word into its plural form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $pluralizeRules = [
@@ -110,9 +108,7 @@ final class Inflector
     ];
 
     /**
-     * @var string[] The rules for converting a word into its singular form.
-     *
-     * @psalm-var non-empty-array<non-empty-string, string>
+     * @var array<non-empty-string, string> The rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $singularizeRules = [
@@ -162,9 +158,7 @@ final class Inflector
     ];
 
     /**
-     * @psalm-var array<string, string>
-     *
-     * @var string[] The special rules for converting a word between its plural form and singular form.
+     * @var array<string, string> The special rules for converting a word between its plural form and singular form.
      * The keys are the special words in singular form, and the values are the corresponding plural form.
      */
     private array $specialRules = [
@@ -312,10 +306,8 @@ final class Inflector
     private bool $withoutIntl = false;
 
     /**
-     * @param string[] $rules The rules for converting a word into its plural form.
-     *
+     * @param array<non-empty-string, string> $rules The rules for converting a word into its plural form.
      * The keys are the regular expressions and the values are the corresponding replacements.
-     * @psalm-param non-empty-array<non-empty-string, string> $rules
      *
      * @return self
      */
@@ -336,10 +328,8 @@ final class Inflector
     }
 
     /**
-     * @param string[] $rules The rules for converting a word into its singular form.
+     * @param array<non-empty-string, string> $rules The rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
-     *
-     * @psalm-param non-empty-array<non-empty-string, string> $rules
      *
      * @return self
      */
@@ -360,9 +350,7 @@ final class Inflector
     }
 
     /**
-     * @param string[] $rules The special rules for converting a word between its plural form and singular form.
-     *
-     * @psalm-param array<string, string> $rules
+     * @param array<string, string> $rules The special rules for converting a word between its plural form and singular form.
      * The keys are the special words in singular form, and the values are the corresponding plural form.
      *
      * @return self
@@ -403,7 +391,7 @@ final class Inflector
      * @param string[] $transliterationMap Fallback map for transliteration used by {@see toTransliterated()} when intl
      * isn't available or turned off with {@see withoutIntl()}.
      *
-     * @return $this
+     * @return self
      */
     public function withTransliterationMap(array $transliterationMap): self
     {
