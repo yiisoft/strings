@@ -1,5 +1,9 @@
 # Yii Strings Change Log
 
+## 2.8.1 under development
+
+- no changes in this release.
+
 ## 2.8.0 October 30, 2026
 
 - New #156: Add `NumericHelper::trimDecimalZeros()` (@samdark, @vjik)
