@@ -7,7 +7,19 @@ application when you upgrade the package from one version to another.
 > to upgrade from version A to version C and there is version B between A and C, you need
 > to following the instructions for both A and B.
 
-## Upgrade from 1.2.0
+## Upgrade from 2.x to 3.x
+
+Default value of `$strict` parameter in `Inflector::toSnakeCase()` changed to `false`. To keep previous behavior,
+pass `strict: true` when calling `toSnakeCase()` without explicitly specifying the `$strict` argument. For example:
+
+```php
+$inflector = new Yiisoft\Strings\Inflector();
+$inflector->toSnakeCase($name);
+// change to
+$inflector->toSnakeCase($name, strict: true);
+```
+
+## Upgrade from 1.x to 2.x
 
 `\Yiisoft\Strings\WildCardPattern` was changed.
 

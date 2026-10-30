@@ -613,11 +613,11 @@ final class Inflector
      * so "who's online" will be converted to "who_s_online".
      *
      * @param string $input The word to convert. It must be valid UTF-8 string.
-     * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to true.
+     * @param bool $strict Whether to insert a separator between two consecutive uppercase chars, defaults to false.
      *
      * @return string The "snake_cased" string.
      */
-    public function toSnakeCase(string $input, bool $strict = true): string
+    public function toSnakeCase(string $input, bool $strict = false): string
     {
         /**
          * @var string $input We assume that `$input` is valid UTF-8 string, so `preg_replace()` never returns `false`.

@@ -1,7 +1,8 @@
 # Yii Strings Change Log
 
-## 2.7.1 under development
+## 3.0.0 under development
 
+- Chg #165: Change default value of `$strict` parameter in `Inflector::toSnakeCase()` to `false` (@vjik)
 - New #156: Add `NumericHelper::trimDecimalZeros()` (@samdark, @vjik)
 - Enh #163: Explicitly import classes, functions, and constants in "use" sections (@vjik)
 - Enh #167: Remove dead code in `StringHelper::truncateWordsByLength()` (@vjik)
