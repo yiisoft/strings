@@ -710,9 +710,7 @@ final class Inflector
     public function toTransliterated(string $input, $transliterator = null): string
     {
         if ($this->useIntl()) {
-            if ($transliterator === null) {
-                $transliterator = $this->transliterator;
-            }
+            $transliterator ??= $this->transliterator;
 
             /**
              * @noinspection PhpComposerExtensionStubsInspection

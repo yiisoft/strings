@@ -213,13 +213,12 @@ final class StringHelper
      */
     public static function startsWithIgnoringCase(string $input, ?string $with): bool
     {
-        $bytes = self::byteLength($with);
-
-        if ($bytes === 0) {
+        if ($with === null || $with === '') {
             return true;
         }
 
-        /** @psalm-suppress PossiblyNullArgument */
+        $bytes = self::byteLength($with);
+
         return self::lowercase(self::substring($input, 0, $bytes, '8bit')) === self::lowercase($with);
     }
 
@@ -248,13 +247,12 @@ final class StringHelper
      */
     public static function endsWithIgnoringCase(string $input, ?string $with): bool
     {
-        $bytes = self::byteLength($with);
-
-        if ($bytes === 0) {
+        if ($with === null || $with === '') {
             return true;
         }
 
-        /** @psalm-suppress PossiblyNullArgument */
+        $bytes = self::byteLength($with);
+
         return self::lowercase(mb_substr($input, -$bytes, mb_strlen($input, '8bit'), '8bit')) === self::lowercase($with);
     }
 
@@ -718,9 +716,7 @@ final class StringHelper
      */
     public static function findBetween(string $string, string $start, ?string $end = null): ?string
     {
-        if ($end === null) {
-            $end = $start;
-        }
+        $end ??= $start;
 
         $startPos = mb_strpos($string, $start);
 
@@ -750,9 +746,7 @@ final class StringHelper
      */
     public static function findBetweenFirst(string $string, string $start, ?string $end = null): ?string
     {
-        if ($end === null) {
-            $end = $start;
-        }
+        $end ??= $start;
 
         $startPos = mb_strpos($string, $start);
 
@@ -782,9 +776,7 @@ final class StringHelper
      */
     public static function findBetweenLast(string $string, string $start, ?string $end = null): ?string
     {
-        if ($end === null) {
-            $end = $start;
-        }
+        $end ??= $start;
 
         $endPos = mb_strrpos($string, $end);
 
