@@ -68,7 +68,7 @@ final class Inflector
     public const TRANSLITERATE_LOOSE = 'Any-Latin; Latin-ASCII; [\u0080-\uffff] remove';
 
     /**
-     * @var non-empty-array<non-empty-string, string> The rules for converting a word into its plural form.
+     * @var array<non-empty-string, string> The rules for converting a word into its plural form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $pluralizeRules = [
@@ -108,7 +108,7 @@ final class Inflector
     ];
 
     /**
-     * @var non-empty-array<non-empty-string, string> The rules for converting a word into its singular form.
+     * @var array<non-empty-string, string> The rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      */
     private array $singularizeRules = [
@@ -306,7 +306,7 @@ final class Inflector
     private bool $withoutIntl = false;
 
     /**
-     * @param non-empty-array<non-empty-string, string> $rules The rules for converting a word into its plural form.
+     * @param array<non-empty-string, string> $rules The rules for converting a word into its plural form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      *
      * @return self
@@ -328,7 +328,7 @@ final class Inflector
     }
 
     /**
-     * @param non-empty-array<non-empty-string, string> $rules The rules for converting a word into its singular form.
+     * @param array<non-empty-string, string> $rules The rules for converting a word into its singular form.
      * The keys are the regular expressions and the values are the corresponding replacements.
      *
      * @return self
