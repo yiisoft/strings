@@ -7,6 +7,7 @@
 - Enh #163: Explicitly import classes, functions, and constants in "use" sections (@vjik)
 - Enh #167: Remove dead code in `StringHelper::truncateWordsByLength()` (@vjik)
 - Enh #172: Optimize `StringHelper::startsWithIgnoringCase()` and `StringHelper::endsWithIgnoringCase()` (@vjik)
+- Enh #174: Exclude all development files from distribution archive (@vjik)
 
 ## 2.7.0 November 23, 2025
 
